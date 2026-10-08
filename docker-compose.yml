@@ -1,0 +1,30 @@
+services:
+  frontend-backoffice:
+    build: .
+    container_name: astc-frontend-backoffice
+    ports:
+      - "3002:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+      - ../frontend-project/features/pm/proyectos:/app/features/projects:ro
+      - ../frontend-project/components/dashboard/projects:/app/components/dashboard/projects:ro
+      - ../frontend-project/app/services/project.assistance.service.ts:/app/app/services/project.assistance.service.ts:ro
+    environment:
+      NODE_ENV: development
+
+      # 👇 BACKEND BACKOFFICE
+      NEXT_PUBLIC_GRAPHQL_URL: http://localhost:8084/graphql
+
+
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
+
+    command: npm run dev
+    networks:
+      - astc-network
+
+networks:
+  astc-network:
+    external: true
