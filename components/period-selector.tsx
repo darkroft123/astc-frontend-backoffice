@@ -258,38 +258,35 @@ export default function PeriodSelector({
     <div className="flex items-center">
       <div className="flex bg-muted border border-border p-0.5 rounded-xl shadow-sm items-center">
         {periodOptions.map((p) => (
-          <Button
+          <button
             key={p.key}
-            variant="ghost"
             onClick={() => selectPreset(p.key)}
-            className={`px-3 h-8 text-[13px] font-semibold rounded-lg transition-all whitespace-nowrap flex items-center shrink-0 ${
+            className={`px-3.5 h-8 text-xs font-semibold rounded-xl transition-all whitespace-nowrap flex items-center shrink-0 cursor-pointer ${
               period === p.key
-                ? "bg-primary text-white shadow-sm hover:bg-primary"
-                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                ? "bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white shadow-[0_2px_10px_rgba(99,102,241,0.35)]"
+                : "text-slate-400 hover:text-white dark:hover:text-white hover:text-slate-900 hover:bg-white/5"
             }`}
           >
             {p.label}
-          </Button>
+          </button>
         ))}
 
         <Popover>
           <PopoverTrigger asChild>
-            <Button
-              variant="ghost"
-              className={cn(
-                "px-3 h-8 text-[13px] font-semibold rounded-lg transition-all whitespace-nowrap flex items-center shrink-0",
+            <button
+              className={`px-3.5 h-8 text-xs font-semibold rounded-xl transition-all whitespace-nowrap flex items-center shrink-0 cursor-pointer ${
                 period === "custom"
-                  ? "bg-primary text-white shadow-sm hover:bg-primary/90"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
-              )}
+                  ? "bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white shadow-[0_2px_10px_rgba(99,102,241,0.35)]"
+                : "text-slate-400 hover:text-white dark:hover:text-white hover:text-slate-900 hover:bg-white/5"
+              }`}
             >
               <CalendarIcon className="mr-1.5 h-3.5 w-3.5" />
               Personalizado
-            </Button>
+            </button>
           </PopoverTrigger>
 
           <PopoverContent
-            className="w-auto p-4 border border-[#D0D7DE] rounded-3xl shadow-xl"
+            className="w-auto p-4 border border-border bg-card rounded-3xl shadow-2xl"
             align="end"
             sideOffset={8}
           >
@@ -305,13 +302,13 @@ export default function PeriodSelector({
                   setCustomTo(range?.to);
                 }}
                 numberOfMonths={2}
-                className="rounded-2xl border border-[#D0D7DE] p-3"
+                className="rounded-2xl border border-border p-3"
               />
 
               <Button
                 onClick={applyCustomRange}
                 disabled={!customFrom || !customTo}
-                className="w-full bg-primary hover:bg-primary/90 text-white rounded-2xl h-11 font-semibold"
+                className="w-full bg-gradient-to-r from-[#3B82F6] via-[#6366F1] to-[#8B5CF6] hover:opacity-95 text-white rounded-2xl h-11 font-semibold text-xs shadow-md"
               >
                 Aplicar rango
               </Button>
