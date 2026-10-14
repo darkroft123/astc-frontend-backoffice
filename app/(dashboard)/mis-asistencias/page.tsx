@@ -204,7 +204,7 @@ export default function AttendanceHistoryPage() {
       key: "checkIn",
       header: "HORA ENTRADA",
       render: (r) => (
-        <span className="font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+        <span className="font-mono text-xs font-semibold text-green-ink">
           {formatLocalTime(r.checkIn, timezone)}
         </span>
       ),
@@ -213,7 +213,7 @@ export default function AttendanceHistoryPage() {
       key: "checkOut",
       header: "HORA SALIDA",
       render: (r) => (
-        <span className="font-mono text-xs font-semibold text-amber-600 dark:text-amber-400">
+        <span className="font-mono text-xs font-semibold text-amber-ink">
           {formatLocalTime(r.checkOut, timezone)}
         </span>
       ),
@@ -236,7 +236,7 @@ export default function AttendanceHistoryPage() {
           <Button
             size="sm"
             variant="outline"
-            className="h-7 text-xs border-violet-200 text-violet-700 hover:bg-violet-50 px-2 rounded-lg"
+            className="h-7 text-xs border-primary/20 text-primary hover:bg-primary/10 px-2 rounded-lg"
             onClick={() => setSelectedPhotoUrl(formatAvatarUrl(r.photoUrl))}
           >
             Ver Foto
@@ -321,7 +321,7 @@ export default function AttendanceHistoryPage() {
                 </Button>
                 <Button
                   onClick={handleExportCSV}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold gap-1.5 h-9 px-3 shadow-sm"
+                  className="bg-green hover:bg-green/90 text-white rounded-xl text-xs font-bold gap-1.5 h-9 px-3 shadow-sm"
                 >
                   <Download className="w-3.5 h-3.5" /> Exportar CSV
                 </Button>

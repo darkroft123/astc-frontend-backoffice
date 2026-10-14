@@ -111,7 +111,7 @@ export default function AdminDashboardPage() {
   if (!hydrated || checkingAuth || !token || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -168,13 +168,13 @@ export default function AdminDashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="bg-blue-100 text-blue-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              <span className="bg-primary/10 text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                 Panel Global
               </span>
-              <span className="text-zinc-400 text-xs">•</span>
-              <span className="text-zinc-500 text-xs font-medium">Panel Administrativo</span>
+              <span className="text-text-4 text-xs">•</span>
+              <span className="text-text-4 text-xs font-medium">Panel Administrativo</span>
             </div>
-            <h1 className="text-2xl font-extrabold text-zinc-900 tracking-tight mt-1">
+            <h1 className="text-2xl font-extrabold text-foreground tracking-tight mt-1">
               Dashboard General
             </h1>
             <p className="text-sm text-muted-foreground">
@@ -188,7 +188,7 @@ export default function AdminDashboardPage() {
         {/* TOP ROW: PROFILE & KEY METRICS */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* USER PROFILE CARD */}
-          <Card className="lg:col-span-4 bg-gradient-to-br from-primary via-primary to-primary/80 rounded-2xl shadow-md border-0 overflow-hidden text-white">
+          <Card className="lg:col-span-4 bg-brand-gradient rounded-2xl shadow-md border-0 overflow-hidden text-white">
             <CardContent className="p-4 sm:p-5 flex flex-col justify-between h-full space-y-3">
               <div className="flex items-center gap-3">
                 <Avatar className="w-12 h-12 rounded-full border-2 border-white/40 shadow-sm shrink-0">
@@ -205,7 +205,7 @@ export default function AdminDashboardPage() {
                   <h2 className="text-base font-bold text-white truncate mt-0.5">
                     {fullName}
                   </h2>
-                  <p className="text-blue-100 text-xs truncate">
+                  <p className="text-white/70 text-xs truncate">
                     {userData?.email || user.email || "—"}
                   </p>
                 </div>
@@ -300,7 +300,7 @@ export default function AdminDashboardPage() {
                   <h3 className="font-bold text-lg text-foreground">Resumen de Recursos</h3>
                   <p className="text-xs text-muted-foreground">Distribución de entidades del sistema</p>
                 </div>
-                <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">
+                <span className="text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
                   Global
                 </span>
               </div>
@@ -308,10 +308,10 @@ export default function AdminDashboardPage() {
               <div className="flex-1 w-full min-h-[220px]">
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData}>
-                    <XAxis dataKey="name" stroke="#71717A" fontSize={12} interval={0} />
-                    <YAxis stroke="#71717A" fontSize={12} />
-                    <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid #E4E4E7' }} />
-                    <Bar dataKey="value" fill="#2563EB" radius={[6, 6, 0, 0]} />
+                    <XAxis dataKey="name" stroke="var(--text-4)" fontSize={12} interval={0} />
+                    <YAxis stroke="var(--text-4)" fontSize={12} />
+                    <Tooltip contentStyle={{ borderRadius: '12px', border: '1px solid var(--line-2)', background: 'var(--surface)' }} />
+                     <Bar dataKey="value" fill="var(--primary)" radius={[6, 6, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -332,7 +332,7 @@ export default function AdminDashboardPage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
               <Button
                 onClick={() => router.push("/registrar")}
-                className="h-auto py-3.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm transition-all hover:shadow-md"
+                className="h-auto py-3.5 px-4 bg-green/80 hover:bg-green text-white rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm transition-all hover:shadow-md"
               >
                 <ScanFace className="w-5 h-5" />
                 <span className="text-xs font-bold">Marcar Asistencia</span>
@@ -341,36 +341,36 @@ export default function AdminDashboardPage() {
               <Button
                 variant="outline"
                 onClick={() => router.push("/users")}
-                className="h-auto py-3.5 px-4 border-border hover:bg-accent text-zinc-800 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm"
+                className="h-auto py-3.5 px-4 border-border hover:bg-accent text-foreground rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm"
               >
-                <Users className="w-5 h-5 text-blue-600" />
+                <Users className="w-5 h-5 text-primary" />
                 <span className="text-xs font-bold">Usuarios</span>
               </Button>
 
               <Button
                 variant="outline"
                 onClick={() => router.push("/projects")}
-                className="h-auto py-3.5 px-4 border-border hover:bg-accent text-zinc-800 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm"
+                className="h-auto py-3.5 px-4 border-border hover:bg-accent text-foreground rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm"
               >
-                <Briefcase className="w-5 h-5 text-violet-600" />
+                <Briefcase className="w-5 h-5 text-violet-ink" />
                 <span className="text-xs font-bold">Proyectos</span>
               </Button>
 
               <Button
                 variant="outline"
                 onClick={() => router.push("/feriados")}
-                className="h-auto py-3.5 px-4 border-border hover:bg-accent text-zinc-800 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm"
+                className="h-auto py-3.5 px-4 border-border hover:bg-accent text-foreground rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm"
               >
-                <Calendar className="w-5 h-5 text-amber-600" />
+                <Calendar className="w-5 h-5 text-amber-ink" />
                 <span className="text-xs font-bold">Feriados Globales</span>
               </Button>
 
               <Button
                 variant="outline"
                 onClick={() => router.push("/mis-asistencias")}
-                className="h-auto py-3.5 px-4 border-border hover:bg-accent text-zinc-800 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm col-span-2 sm:col-span-1"
+                className="h-auto py-3.5 px-4 border-border hover:bg-accent text-foreground rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-sm col-span-2 sm:col-span-1"
               >
-                <Clock className="w-5 h-5 text-indigo-600" />
+                <Clock className="w-5 h-5 text-primary" />
                 <span className="text-xs font-bold">Mis Asistencias</span>
               </Button>
             </div>

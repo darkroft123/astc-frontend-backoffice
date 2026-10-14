@@ -201,7 +201,7 @@ export default function PeriodSelector({
           <SelectTrigger className="w-full bg-background border border-border rounded-2xl h-[44px] px-4 text-sm font-semibold shadow-sm [&>svg]:text-muted-foreground">
             <SelectValue placeholder="Seleccionar período" />
           </SelectTrigger>
-          <SelectContent className="rounded-2xl border border-[#D0D7DE] shadow-xl">
+          <SelectContent className="rounded-[14px] border border-line-2 shadow-xl">
             {periodOptions.map((p) => (
               <SelectItem
                 key={p.key}
@@ -263,8 +263,8 @@ export default function PeriodSelector({
             onClick={() => selectPreset(p.key)}
             className={`px-3.5 h-8 text-xs font-semibold rounded-xl transition-all whitespace-nowrap flex items-center shrink-0 cursor-pointer ${
               period === p.key
-                ? "bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white shadow-[0_2px_10px_rgba(99,102,241,0.35)]"
-                : "text-slate-400 hover:text-white dark:hover:text-white hover:text-slate-900 hover:bg-white/5"
+                ? "bg-brand-gradient text-white shadow-sm"
+                : "text-text-4 hover:text-foreground hover:bg-accent"
             }`}
           >
             {p.label}
@@ -274,11 +274,11 @@ export default function PeriodSelector({
         <Popover>
           <PopoverTrigger asChild>
             <button
-              className={`px-3.5 h-8 text-xs font-semibold rounded-xl transition-all whitespace-nowrap flex items-center shrink-0 cursor-pointer ${
-                period === "custom"
-                  ? "bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] text-white shadow-[0_2px_10px_rgba(99,102,241,0.35)]"
-                : "text-slate-400 hover:text-white dark:hover:text-white hover:text-slate-900 hover:bg-white/5"
-              }`}
+            className={`px-3.5 h-8 text-xs font-semibold rounded-xl transition-all whitespace-nowrap flex items-center shrink-0 cursor-pointer ${
+              period === "custom"
+                ? "bg-brand-gradient text-white shadow-sm"
+                : "text-text-4 hover:text-foreground hover:bg-accent"
+            }`}
             >
               <CalendarIcon className="mr-1.5 h-3.5 w-3.5" />
               Personalizado
@@ -308,7 +308,7 @@ export default function PeriodSelector({
               <Button
                 onClick={applyCustomRange}
                 disabled={!customFrom || !customTo}
-                className="w-full bg-gradient-to-r from-[#3B82F6] via-[#6366F1] to-[#8B5CF6] hover:opacity-95 text-white rounded-2xl h-11 font-semibold text-xs shadow-md"
+                className="w-full bg-brand-gradient hover:opacity-95 text-white rounded-2xl h-11 font-semibold text-xs shadow-md"
               >
                 Aplicar rango
               </Button>

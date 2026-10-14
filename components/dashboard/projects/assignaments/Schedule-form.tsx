@@ -268,8 +268,8 @@ export default function ScheduleForm({
 
         <div className="flex items-center justify-between gap-2 mb-6">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
-              <CalendarDays className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+              <CalendarDays className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-foreground">Configurar Horario del Proyecto</h1>
@@ -300,7 +300,7 @@ export default function ScheduleForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
               <div className="md:col-span-2">
-                <label className="text-xs font-semibold text-zinc-600 block mb-1">Proyecto</label>
+                <label className="text-xs font-semibold text-text-3 block mb-1">Proyecto</label>
                 <select
                   className="h-10 w-full border rounded-lg px-3 text-sm bg-background"
                   value={selectedProjectId}
@@ -321,33 +321,33 @@ export default function ScheduleForm({
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-zinc-600 block mb-1">Hora de entrada</label>
-                <input type="time" value={startHour} onChange={(e) => setStartHour(e.target.value)} className="h-10 w-full border rounded-lg px-3 text-sm" />
-                <p className="text-[10px] text-zinc-400 mt-0.5">Hora esperada de inicio de jornada</p>
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-zinc-600 block mb-1">Hora de salida</label>
-                <input type="time" value={endHour} onChange={(e) => setEndHour(e.target.value)} className="h-10 w-full border rounded-lg px-3 text-sm" />
-                <p className="text-[10px] text-zinc-400 mt-0.5">Hora esperada de fin de jornada</p>
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-zinc-600 block mb-1">Tolerancia (min)</label>
-                <input type="number" min={0} max={120} value={graceMinutes} onChange={(e) => setGraceMinutes(parseInt(e.target.value) || 0)} className="h-10 w-full border rounded-lg px-3 text-sm" />
-                <p className="text-[10px] text-zinc-400 mt-0.5">Minutos de gracia para llegar tarde</p>
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-zinc-600 block mb-1">Corte de falta</label>
-                <input type="time" value={absenceCutoffTime} onChange={(e) => setAbsenceCutoffTime(e.target.value)} className="h-10 w-full border rounded-lg px-3 text-sm" />
-                <p className="text-[10px] text-zinc-400 mt-0.5">Hora límite para marcar o genera falta</p>
+                 <label className="text-xs font-semibold text-text-3 block mb-1">Hora de entrada</label>
+                 <input type="time" value={startHour} onChange={(e) => setStartHour(e.target.value)} className="h-10 w-full border border-line rounded-lg px-3 text-sm bg-background" />
+                 <p className="text-[10px] text-text-5 mt-0.5">Hora esperada de inicio de jornada</p>
+               </div>
+               <div>
+                 <label className="text-xs font-semibold text-text-3 block mb-1">Hora de salida</label>
+                 <input type="time" value={endHour} onChange={(e) => setEndHour(e.target.value)} className="h-10 w-full border border-line rounded-lg px-3 text-sm bg-background" />
+                 <p className="text-[10px] text-text-5 mt-0.5">Hora esperada de fin de jornada</p>
+               </div>
+               <div>
+                 <label className="text-xs font-semibold text-text-3 block mb-1">Tolerancia (min)</label>
+                 <input type="number" min={0} max={120} value={graceMinutes} onChange={(e) => setGraceMinutes(parseInt(e.target.value) || 0)} className="h-10 w-full border border-line rounded-lg px-3 text-sm bg-background" />
+                 <p className="text-[10px] text-text-5 mt-0.5">Minutos de gracia para llegar tarde</p>
+               </div>
+               <div>
+                 <label className="text-xs font-semibold text-text-3 block mb-1">Corte de falta</label>
+                 <input type="time" value={absenceCutoffTime} onChange={(e) => setAbsenceCutoffTime(e.target.value)} className="h-10 w-full border border-line rounded-lg px-3 text-sm bg-background" />
+                 <p className="text-[10px] text-text-5 mt-0.5">Hora límite para marcar o genera falta</p>
               </div>
             </div>
 
             <div className="flex justify-end gap-3 mt-6">
               <Button variant="outline" onClick={() => window.history.back()}>Cancelar</Button>
-              <Button onClick={handleSubmit} disabled={isSubmitting} className="bg-blue-600">
-                <Save className="w-4 h-4 mr-2" />
-                {isSubmitting ? "Guardando..." : "Guardar horario base"}
-              </Button>
+               <Button onClick={handleSubmit} disabled={isSubmitting} className="bg-primary hover:bg-primary/90 text-primary-foreground">
+                 <Save className="w-4 h-4 mr-2" />
+                 {isSubmitting ? "Guardando..." : "Guardar horario base"}
+               </Button>
             </div>
           </div>
         )}
@@ -358,10 +358,10 @@ export default function ScheduleForm({
             <div className="space-y-6">
 
               <Card className="border-border shadow-sm">
-                <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                  <CardTitle className="text-sm">1. Proyecto</CardTitle>
-                  <CardDescription className="text-xs">Selecciona el proyecto para la plantilla de horario</CardDescription>
-                </CardHeader>
+              <CardHeader className="pb-3 bg-raised border-b border-line">
+                 <CardTitle className="text-sm">1. Proyecto</CardTitle>
+                 <CardDescription className="text-xs">Selecciona el proyecto para la plantilla de horario</CardDescription>
+               </CardHeader>
                 <CardContent className="pt-4">
                   <Select value={selectedProjectId} onValueChange={(v) => {
                     const p = projects.find((x) => x.id === v);
@@ -384,10 +384,10 @@ export default function ScheduleForm({
               </Card>
 
               <Card className="border-border shadow-sm">
-                <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                  <CardTitle className="text-sm">2. Tipo de Turno</CardTitle>
-                  <CardDescription className="text-xs">Elige la modalidad de horario para el proyecto</CardDescription>
-                </CardHeader>
+              <CardHeader className="pb-3 bg-raised border-b border-line">
+                 <CardTitle className="text-sm">2. Tipo de Turno</CardTitle>
+                 <CardDescription className="text-xs">Elige la modalidad de horario para el proyecto</CardDescription>
+               </CardHeader>
                 <CardContent className="pt-4">
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                     {SHIFT_TYPES.map((t) => {
@@ -398,12 +398,12 @@ export default function ScheduleForm({
                           key={t.key}
                           type="button"
                           onClick={() => setShiftType(t.key)}
-                          className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl border-2 text-xs font-medium transition-all
-                            ${isActive
-                              ? "bg-blue-600/10 text-blue-700 border-blue-600 shadow-sm"
-                              : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"}`}
-                        >
-                          <Icon className={`w-5 h-5 ${isActive ? "text-blue-600" : "text-zinc-400"}`} />
+                           className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl border-2 text-xs font-medium transition-all
+                             ${isActive
+                               ? "bg-primary/10 text-primary border-primary shadow-sm"
+                               : "border-border bg-background text-muted-foreground hover:border-border hover:bg-muted"}`}
+                         >
+                           <Icon className={`w-5 h-5 ${isActive ? "text-primary" : "text-text-4"}`} />
                           <span className="text-center leading-tight font-semibold">{t.label}</span>
                         </button>
                       );
@@ -417,37 +417,37 @@ export default function ScheduleForm({
 
               {(shiftType === "REGULAR" || shiftType === "TRANSITORY") && (
                 <Card className="border-border shadow-sm">
-                  <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-muted-foreground" />
-                      3. Horario {shiftType === "TRANSITORY" ? "Transitorio" : "Regular"}
-                    </CardTitle>
-                    <CardDescription className="text-xs mt-1">Define las horas de entrada y salida</CardDescription>
-                  </CardHeader>
+                  <CardHeader className="pb-3 bg-raised border-b border-line">
+                     <CardTitle className="text-sm flex items-center gap-2">
+                       <Clock className="w-4 h-4 text-muted-foreground" />
+                       3. Horario {shiftType === "TRANSITORY" ? "Transitorio" : "Regular"}
+                     </CardTitle>
+                     <CardDescription className="text-xs mt-1">Define las horas de entrada y salida</CardDescription>
+                   </CardHeader>
                   <CardContent className="pt-4 space-y-4">
-                    <div className="flex gap-3 bg-blue-50/50 text-blue-800 p-3 rounded-lg border border-blue-100 text-xs">
-                      <Info className="w-4 h-4 shrink-0 mt-0.5 text-blue-600" />
-                      <p>
+                     <div className="flex gap-3 bg-primary/10 text-primary-foreground p-3 rounded-lg border border-primary/20 text-xs">
+                       <Info className="w-4 h-4 shrink-0 mt-0.5 text-primary" />
+                       <p>
                         {shiftType === "REGULAR"
                           ? "Horario laboral de Lunes a Viernes. Sábados y Domingos son descanso automático (no se exige marcar ni genera falta). Ideal para personal administrativo u oficina."
                           : "Los miembros tendrán este horario solo durante el rango de fechas seleccionado."}
                       </p>
                     </div>
                     {(shiftType === "REGULAR" || shiftType === "TRANSITORY") && (
-                      <div className="flex gap-2 bg-muted/50 p-2 rounded-lg border border-zinc-100">
-                        <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setStartHour("08:00"); setEndHour("17:00"); }}>Día</Button>
-                        <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setStartHour("14:00"); setEndHour("22:00"); }}>Tarde</Button>
-                        <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setStartHour("22:00"); setEndHour("06:00"); }}>
-Noche <span className="text-[9px] text-zinc-400 ml-1">22:00–06:00</span>
-                        </Button>
-                      </div>
+                       <div className="flex gap-2 bg-muted/50 p-2 rounded-lg border border-line">
+                         <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setStartHour("08:00"); setEndHour("17:00"); }}>Día</Button>
+                         <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setStartHour("14:00"); setEndHour("22:00"); }}>Tarde</Button>
+                         <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setStartHour("22:00"); setEndHour("06:00"); }}>
+                           Noche <span className="text-[9px] text-text-5 ml-1">22:00–06:00</span>
+                         </Button>
+                       </div>
                     )}
-                    {(shiftType === "REGULAR" || shiftType === "TRANSITORY") && startHour === "22:00" && endHour === "06:00" && (
-                      <div className="flex gap-2 bg-amber-50/50 text-amber-700 p-2 rounded-lg border border-amber-200 text-[10px]">
-                        <Info className="w-3 h-3 shrink-0 mt-0.5" />
-                        <p>Turno nocturno: la jornada cruza la medianoche. El sistema evaluará la asistencia entre las 22:00 y las 06:00 del día siguiente.</p>
-                      </div>
-                    )}
+                     {(shiftType === "REGULAR" || shiftType === "TRANSITORY") && startHour === "22:00" && endHour === "06:00" && (
+                       <div className="flex gap-2 bg-amber/10 text-amber-ink p-2 rounded-lg border border-amber/30 text-[10px]">
+                         <Info className="w-3 h-3 shrink-0 mt-0.5" />
+                         <p>Turno nocturno: la jornada cruza la medianoche. El sistema evaluará la asistencia entre las 22:00 y las 06:00 del día siguiente.</p>
+                       </div>
+                     )}
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <Label className="text-xs text-muted-foreground">Hora de Entrada</Label>
@@ -459,16 +459,16 @@ Noche <span className="text-[9px] text-zinc-400 ml-1">22:00–06:00</span>
                       </div>
                     </div>
                     {shiftType === "TRANSITORY" && (
-                      <div className="grid grid-cols-2 gap-4 pt-2 border-t border-zinc-100">
-                        <div className="space-y-1.5">
-                          <Label className="text-xs text-muted-foreground">Válido desde</Label>
-                          <Input type="date" value={validFrom} onChange={(e) => setValidFrom(e.target.value)} />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label className="text-xs text-muted-foreground">Válido hasta</Label>
-                          <Input type="date" value={validUntil} onChange={(e) => setValidUntil(e.target.value)} />
-                        </div>
-                      </div>
+                       <div className="grid grid-cols-2 gap-4 pt-2 border-t border-line">
+                         <div className="space-y-1.5">
+                           <Label className="text-xs text-muted-foreground">Válido desde</Label>
+                           <Input type="date" value={validFrom} onChange={(e) => setValidFrom(e.target.value)} />
+                         </div>
+                         <div className="space-y-1.5">
+                           <Label className="text-xs text-muted-foreground">Válido hasta</Label>
+                           <Input type="date" value={validUntil} onChange={(e) => setValidUntil(e.target.value)} />
+                         </div>
+                       </div>
                     )}
                   </CardContent>
                 </Card>
@@ -476,18 +476,18 @@ Noche <span className="text-[9px] text-zinc-400 ml-1">22:00–06:00</span>
 
               {shiftType === "FLEXIBLE" && (
                 <Card className="border-border shadow-sm">
-                  <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <CalendarDays className="w-4 h-4 text-muted-foreground" />
-                      3. Horario Flexible
-                    </CardTitle>
-                    <CardDescription className="text-xs mt-1">Configura horas distintas por día</CardDescription>
-                  </CardHeader>
+                  <CardHeader className="pb-3 bg-raised border-b border-line">
+                     <CardTitle className="text-sm flex items-center gap-2">
+                       <CalendarDays className="w-4 h-4 text-muted-foreground" />
+                       3. Horario Flexible
+                     </CardTitle>
+                     <CardDescription className="text-xs mt-1">Configura horas distintas por día</CardDescription>
+                   </CardHeader>
                   <CardContent className="pt-4 space-y-3">
-                    <div className="flex gap-3 bg-blue-50/50 text-blue-800 p-3 rounded-lg border border-blue-100 text-xs mb-4">
-                      <Info className="w-4 h-4 shrink-0 mt-0.5 text-blue-600" />
-                      <p>Los días sin horas configuradas se consideran día libre y no generarán faltas automáticas.</p>
-                    </div>
+                     <div className="flex gap-3 bg-primary/10 text-primary-foreground p-3 rounded-lg border border-primary/20 text-xs mb-4">
+                       <Info className="w-4 h-4 shrink-0 mt-0.5 text-primary" />
+                       <p>Los días sin horas configuradas se consideran día libre y no generarán faltas automáticas.</p>
+                     </div>
                     {DAYS.map((day) => {
                       const h = flexHours[day.key];
                       return (
@@ -498,25 +498,25 @@ Noche <span className="text-[9px] text-zinc-400 ml-1">22:00–06:00</span>
                         </div>
                       );
                     })}
-                    <p className="text-[10px] text-zinc-400 mt-2 text-center bg-muted/50 py-1 rounded">Deja vacío si es día libre</p>
+                     <p className="text-[10px] text-text-5 mt-2 text-center bg-muted/50 py-1 rounded">Deja vacío si es día libre</p>
                   </CardContent>
                 </Card>
               )}
 
               {shiftType.startsWith("ROTATING") && (
                 <Card className="border-border shadow-sm">
-                  <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                    <CardTitle className="text-sm flex items-center gap-2">
-                      <Repeat className="w-4 h-4 text-muted-foreground" />
-                      3. Turno Rotativo
-                    </CardTitle>
-                    <CardDescription className="text-xs mt-1">Ciclos de trabajo y descanso</CardDescription>
-                  </CardHeader>
+                  <CardHeader className="pb-3 bg-raised border-b border-line">
+                     <CardTitle className="text-sm flex items-center gap-2">
+                       <Repeat className="w-4 h-4 text-muted-foreground" />
+                       3. Turno Rotativo
+                     </CardTitle>
+                     <CardDescription className="text-xs mt-1">Ciclos de trabajo y descanso</CardDescription>
+                   </CardHeader>
                   <CardContent className="pt-4 space-y-4">
-                    <div className="flex gap-3 bg-blue-50/50 text-blue-800 p-3 rounded-lg border border-blue-100 text-xs">
-                      <Info className="w-4 h-4 shrink-0 mt-0.5 text-blue-600" />
-                      <p>El equipo trabajará <strong>{rotationWorkDays} días</strong> consecutivos y descansará <strong>{rotationRestDays} días</strong>. Durante el descanso no se generarán faltas.</p>
-                    </div>
+                     <div className="flex gap-3 bg-primary/10 text-primary-foreground p-3 rounded-lg border border-primary/20 text-xs">
+                       <Info className="w-4 h-4 shrink-0 mt-0.5 text-primary" />
+                       <p>El equipo trabajará <strong>{rotationWorkDays} días</strong> consecutivos y descansará <strong>{rotationRestDays} días</strong>. Durante el descanso no se generarán faltas.</p>
+                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <Label className="text-xs text-muted-foreground">Días de trabajo</Label>
@@ -527,22 +527,22 @@ Noche <span className="text-[9px] text-zinc-400 ml-1">22:00–06:00</span>
                         <Input type="number" min={1} max={30} value={rotationRestDays} onChange={(e) => setRotationRestDays(parseInt(e.target.value) || 4)} />
                       </div>
                     </div>
-                    <div className="p-3 bg-blue-50/50 border border-blue-100 rounded-lg text-center">
-                      <p className="text-xs text-blue-700 font-medium">Ciclo: {rotationWorkDays}d trabajo → {rotationRestDays}d descanso</p>
-                    </div>
-                    <div className="flex gap-2 bg-muted/50 p-2 rounded-lg border border-zinc-100">
-                      <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setRotationStartHour("08:00"); setRotationEndHour("20:00"); }}>Día</Button>
-                      <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setRotationStartHour("14:00"); setRotationEndHour("22:00"); }}>Tarde</Button>
-                      <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setRotationStartHour("22:00"); setRotationEndHour("06:00"); }}>
-                        Noche <span className="text-[9px] text-zinc-400 ml-1">22:00–06:00</span>
-                      </Button>
-                    </div>
-                    {rotationStartHour === "22:00" && rotationEndHour === "06:00" && (
-                      <div className="flex gap-2 bg-amber-50/50 text-amber-700 p-2 rounded-lg border border-amber-200 text-[10px]">
-                        <Info className="w-3 h-3 shrink-0 mt-0.5" />
-                        <p>Turno nocturno: la jornada cruza la medianoche. El sistema evaluará la asistencia entre las 22:00 y las 06:00 del día siguiente.</p>
-                      </div>
-                    )}
+                     <div className="p-3 bg-primary/10 border border-primary/20 rounded-lg text-center">
+                       <p className="text-xs text-primary font-medium">Ciclo: {rotationWorkDays}d trabajo → {rotationRestDays}d descanso</p>
+                     </div>
+                     <div className="flex gap-2 bg-muted/50 p-2 rounded-lg border border-line">
+                       <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setRotationStartHour("08:00"); setRotationEndHour("20:00"); }}>Día</Button>
+                       <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setRotationStartHour("14:00"); setRotationEndHour("22:00"); }}>Tarde</Button>
+                       <Button type="button" variant="outline" size="sm" className="h-8 text-xs flex-1 bg-background" onClick={() => { setRotationStartHour("22:00"); setRotationEndHour("06:00"); }}>
+                         Noche <span className="text-[9px] text-text-5 ml-1">22:00–06:00</span>
+                       </Button>
+                     </div>
+                     {rotationStartHour === "22:00" && rotationEndHour === "06:00" && (
+                       <div className="flex gap-2 bg-amber/10 text-amber-ink p-2 rounded-lg border border-amber/30 text-[10px]">
+                         <Info className="w-3 h-3 shrink-0 mt-0.5" />
+                         <p>Turno nocturno: la jornada cruza la medianoche. El sistema evaluará la asistencia entre las 22:00 y las 06:00 del día siguiente.</p>
+                       </div>
+                     )}
                     <div className="grid grid-cols-2 gap-4 pt-2">
                       <div className="space-y-1.5">
                         <Label className="text-xs text-muted-foreground">Entrada (laboral)</Label>
@@ -553,23 +553,23 @@ Noche <span className="text-[9px] text-zinc-400 ml-1">22:00–06:00</span>
                         <Input type="time" value={rotationEndHour} onChange={(e) => setRotationEndHour(e.target.value)} />
                       </div>
                     </div>
-                    <div className="space-y-1.5 pt-2 border-t border-zinc-100">
-                      <Label className="text-xs text-muted-foreground">Fecha de inicio del ciclo</Label>
-                      <Input type="date" value={validFrom} onChange={(e) => setValidFrom(e.target.value)} />
-                      <p className="text-[10px] text-muted-foreground">El sistema empezará a contar el ciclo desde esta fecha. Si no se asigna, usará la fecha actual.</p>
-                    </div>
+                     <div className="space-y-1.5 pt-2 border-t border-line">
+                       <Label className="text-xs text-muted-foreground">Fecha de inicio del ciclo</Label>
+                       <Input type="date" value={validFrom} onChange={(e) => setValidFrom(e.target.value)} />
+                       <p className="text-[10px] text-muted-foreground">El sistema empezará a contar el ciclo desde esta fecha. Si no se asigna, usará la fecha actual.</p>
+                     </div>
                   </CardContent>
                 </Card>
               )}
 
-              <Card className="border-border shadow-sm">
-                <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                  <CardTitle className="text-sm flex items-center gap-2">
-                    <Settings className="w-4 h-4 text-muted-foreground" />
-                    4. Reglas Generales
-                  </CardTitle>
-                  <CardDescription className="text-xs mt-1">Tolerancia y hora límite para generar faltas</CardDescription>
-                </CardHeader>
+               <Card className="border-border shadow-sm">
+                 <CardHeader className="pb-3 bg-raised border-b border-line">
+                   <CardTitle className="text-sm flex items-center gap-2">
+                     <Settings className="w-4 h-4 text-muted-foreground" />
+                     4. Reglas Generales
+                   </CardTitle>
+                   <CardDescription className="text-xs mt-1">Tolerancia y hora límite para generar faltas</CardDescription>
+                 </CardHeader>
                 <CardContent className="pt-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1.5">
@@ -586,23 +586,23 @@ Noche <span className="text-[9px] text-zinc-400 ml-1">22:00–06:00</span>
                 </CardContent>
               </Card>
 
-              <Card className="bg-blue-600/5 border-blue-600/20 shadow-sm">
-                <CardContent className="p-4 flex items-center justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1">
-                      <SelectedIcon className="w-4 h-4 text-blue-700" />
-                      <p className="text-sm font-medium text-foreground">{selectedProject?.name || "Sin proyecto"}</p>
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      {SHIFT_TYPES.find(s => s.key === shiftType)?.label} | Tolerancia: {graceMinutes}m | Corte: {absenceCutoffTime || "—"}
-                    </p>
-                  </div>
-                  <Button onClick={handleSubmit} disabled={isSubmitting || !selectedProjectId} className="shrink-0 shadow-sm bg-blue-600 hover:bg-blue-700">
-                    <Save className="w-4 h-4 mr-2" />
-                    {isSubmitting ? "Guardando..." : "Guardar plantilla"}
-                  </Button>
-                </CardContent>
-              </Card>
+               <Card className="bg-primary/5 border-primary/20 shadow-sm">
+                 <CardContent className="p-4 flex items-center justify-between">
+                   <div>
+                     <div className="flex items-center gap-2 mb-1">
+                       <SelectedIcon className="w-4 h-4 text-primary" />
+                       <p className="text-sm font-medium text-foreground">{selectedProject?.name || "Sin proyecto"}</p>
+                     </div>
+                     <p className="text-xs text-muted-foreground">
+                       {SHIFT_TYPES.find(s => s.key === shiftType)?.label} | Tolerancia: {graceMinutes}m | Corte: {absenceCutoffTime || "—"}
+                     </p>
+                   </div>
+                   <Button onClick={handleSubmit} disabled={isSubmitting || !selectedProjectId} className="shrink-0 shadow-sm bg-primary hover:bg-primary/90 text-primary-foreground">
+                     <Save className="w-4 h-4 mr-2" />
+                     {isSubmitting ? "Guardando..." : "Guardar plantilla"}
+                   </Button>
+                 </CardContent>
+               </Card>
             </div>
           </div>
         )}

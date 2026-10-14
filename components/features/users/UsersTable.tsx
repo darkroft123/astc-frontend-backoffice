@@ -47,15 +47,15 @@ export default function UsersTable({
 
   const getStatusBadge = (isBlocked: boolean) => {
     return isBlocked ? (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-100 text-red-700 border border-red-200 rounded-full text-xs font-medium">
-        <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
-        Bloqueado
-      </span>
-    ) : (
-      <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-full text-xs font-medium">
-        <div className="w-2 h-2 bg-emerald-500 rounded-full" />
-        Activo
-      </span>
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red/10 text-red-ink border border-red/20 rounded-full text-xs font-medium">
+          <div className="w-2 h-2 bg-red rounded-full animate-pulse" />
+          Bloqueado
+        </span>
+      ) : (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green/10 text-green-ink border border-green/20 rounded-full text-xs font-medium">
+          <div className="w-2 h-2 bg-green rounded-full" />
+          Activo
+        </span>
     );
   };
 
@@ -67,34 +67,34 @@ export default function UsersTable({
     <>
       <div className="overflow-x-auto rounded-2xl border border-border bg-card shadow-sm">
         <table className="w-full min-w-full">
-          <thead className="bg-gradient-to-r from-[#1E3A8A] to-[#1E40AF] text-white">
-            <tr className="border-b border-blue-900/40">
+          <thead className="bg-inset text-text-2">
+            <tr className="border-b border-line-2">
               <th
-                className={`text-left text-xs font-extrabold text-white uppercase tracking-widest ${headerPadding}`}
+                className={`text-left text-[10.5px] font-mono font-semibold text-text-3 uppercase tracking-[0.05em] ${headerPadding}`}
               >
                 Usuario
               </th>
 
               <th
-                className={`text-left text-xs font-extrabold text-white uppercase tracking-widest ${headerPadding}`}
+                className={`text-left text-[10.5px] font-mono font-semibold text-text-3 uppercase tracking-[0.05em] ${headerPadding}`}
               >
                 Rol
               </th>
 
               <th
-                className={`text-left text-xs font-extrabold text-white uppercase tracking-widest ${headerPadding}`}
+                className={`text-left text-[10.5px] font-mono font-semibold text-text-3 uppercase tracking-[0.05em] ${headerPadding}`}
               >
                 Proyecto
               </th>
 
               <th
-                className={`text-left text-xs font-extrabold text-white uppercase tracking-widest ${headerPadding}`}
+                className={`text-left text-[10.5px] font-mono font-semibold text-text-3 uppercase tracking-[0.05em] ${headerPadding}`}
               >
                 Estado
               </th>
 
               <th
-                className={`text-right text-xs font-extrabold text-white uppercase tracking-widest ${headerPadding}`}
+                className={`text-right text-[10.5px] font-mono font-semibold text-text-3 uppercase tracking-[0.05em] ${headerPadding}`}
               >
                 Acciones
               </th>
@@ -105,13 +105,13 @@ export default function UsersTable({
             {users.map((user) => (
               <tr
                 key={user.id}
-                className="hover:bg-blue-50/50 dark:hover:bg-blue-950/20 transition-colors group"
-              >
-                <td className={rowPadding}>
-                  <div className="flex items-center gap-3">
-                    <div
-                      className={`bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center text-white font-semibold flex-shrink-0 ${avatarSize}`}
-                    >
+                  className="hover:bg-raised transition-colors group"
+                >
+                  <td className={rowPadding}>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`bg-brand-gradient rounded-2xl flex items-center justify-center text-primary-foreground font-semibold flex-shrink-0 ${avatarSize}`}
+                      >
                       {(user.firstName?.[0] || '') +
                         ((user.lastName?.[0] || '') ||
                           user.username?.[0] ||

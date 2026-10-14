@@ -26,11 +26,8 @@ export default function Header() {
   return (
     <header
       className="
-        bg-gradient-to-r
-        from-violet-700
-        via-purple-700
-        to-fuchsia-700
-        border-b border-violet-500/30
+        bg-brand-gradient
+        border-b border-line-2
         px-8 py-5
         flex items-center justify-between
         shadow-lg
@@ -50,7 +47,7 @@ export default function Header() {
           {getPageTitle()}
         </h1>
 
-        <p className="text-violet-100 text-sm mt-1">
+        <p className="text-primary-foreground/90 text-sm mt-1">
           Panel administrativo
         </p>
 
@@ -63,12 +60,12 @@ export default function Header() {
           className="
             w-11 h-11
             rounded-2xl
-            bg-white/10
-            border border-white/10
+            bg-primary-foreground/10
+            border border-primary-foreground/10
             flex items-center justify-center
-            text-violet-100
-            hover:bg-white/20
-            hover:text-white
+            text-primary-foreground/90
+            hover:bg-primary-foreground/20
+            hover:text-primary-foreground
             transition-all
             backdrop-blur-sm
           "

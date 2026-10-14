@@ -13,7 +13,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <MobileSidebar>
           <SidebarNav onNavigate={() => {}} />
         </MobileSidebar>
-        <main className="flex-1 min-h-screen md:ml-64 bg-background overflow-auto pb-6 md:pb-0 relative">
+        <main className="flex-1 min-h-screen md:ml-[268px] bg-background overflow-auto pb-6 md:pb-0 relative">
           <div className="absolute top-4 right-4 z-50"><NotificationBell /></div>
           <div className="md:hidden p-4"><HamburgerButton /></div>
           {children}

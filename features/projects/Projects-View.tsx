@@ -152,7 +152,7 @@ async function handleDeleteConfirm() {
         render: (r) => (
           <div>
             <p className="font-medium text-foreground">{r.name}</p>
-            <p className="text-xs text-zinc-500 mt-0.5">{r.id}</p>
+             <p className="text-xs text-text-4 mt-0.5">{r.id}</p>
           </div>
         ),
       },
@@ -197,7 +197,7 @@ async function handleDeleteConfirm() {
         hideOnMobile: true,
         render: (r: any) => {
           const responsibleMember = r.members?.find((m: any) => m.role === "PROJECT_MANAGER") || r.members?.[0];
-          if (!responsibleMember || !responsibleMember.user) return <span className="text-zinc-400 text-xs">-</span>;
+          if (!responsibleMember || !responsibleMember.user) return <span className="text-text-4 text-xs">-</span>;
           const u = responsibleMember.user;
           return (
             <div>
@@ -239,7 +239,7 @@ async function handleDeleteConfirm() {
             )}
             <Button
               size="sm"
-              className="bg-violet-600 hover:bg-violet-700"
+              className="bg-primary hover:bg-primary/90"
               onClick={() => setSelectedProjectForMembers(r)}
             >
               <Users className="w-3.5 h-3.5 mr-1.5" />
@@ -279,7 +279,7 @@ return (
 
             {/* SEARCH */}
             <input
-              className="border border-border px-3 h-9 rounded-lg text-sm w-full sm:w-auto sm:min-w-[200px] focus:border-violet-400 outline-none transition-all"
+              className="border border-border px-3 h-9 rounded-lg text-sm w-full sm:w-auto sm:min-w-[200px] focus:border-primary outline-none transition-all"
               placeholder="Buscar por nombre o ID..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -287,7 +287,7 @@ return (
 
             {/* STATE */}
             <select
-              className="border border-border px-3 h-9 rounded-lg text-sm focus:border-violet-400 outline-none"
+              className="border border-border px-3 h-9 rounded-lg text-sm focus:border-primary outline-none"
               value={estadoFilter}
               onChange={(e) => setEstadoFilter(e.target.value)}
             >
@@ -302,7 +302,7 @@ return (
               {isAdmin && (
                 <Button
                   onClick={() => router.push("/projects/create")}
-                  className="h-9 bg-blue-600 hover:bg-blue-700"
+                  className="h-9 bg-primary hover:bg-primary/90"
                 >
                   <FolderKanban className="w-4 h-4 mr-1.5" />
                   Crear Proyecto
@@ -312,7 +312,7 @@ return (
               <Button
                 onClick={fetchProjects}
                 variant="ghost"
-                className="h-9 border border-slate-200 bg-card text-zinc-700 hover:bg-slate-50"
+                className="h-9 border border-line-2 bg-card text-text-2 hover:bg-raised"
               >
                 <RefreshCw className="w-4 h-4" />
                 Actualizar
@@ -331,7 +331,7 @@ return (
 
        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 mt-4">
 
-            <span className="text-sm text-zinc-500 order-2 sm:order-1">
+            <span className="text-sm text-text-4 order-2 sm:order-1">
               Página {page} de {totalPages}
             </span>
 
@@ -379,7 +379,7 @@ return (
                           @{u?.username || m.userId}
                         </p>
                       </div>
-                      <span className="text-xs bg-violet-100 text-violet-700 px-2.5 py-0.5 rounded-full font-medium">
+                      <span className="text-xs bg-primary/10 text-violet-ink px-2.5 py-0.5 rounded-full font-medium">
                         {m.role || "TEAM_MEMBER"}
                       </span>
                     </div>
@@ -387,7 +387,7 @@ return (
                 })}
               </div>
             ) : (
-              <p className="text-sm text-zinc-500 text-center py-4">No hay miembros asignados a este proyecto.</p>
+              <p className="text-sm text-text-4 text-center py-4">No hay miembros asignados a este proyecto.</p>
             )}
           </div>
         </DialogContent>
@@ -414,8 +414,8 @@ function ProjectStatusBadge({ status }: { status: string }) {
     <span
       className={`px-2 py-1 text-xs rounded-full ${
         status === "ACTIVE"
-          ? "bg-green-100 text-green-700"
-          : "bg-red-100 text-red-700"
+          ? "bg-green/10 text-green-ink border border-green/20"
+          : "bg-red/10 text-red-ink border border-red/20"
       }`}
     >
       {status === "ACTIVE" ? "Activo" : status === "INACTIVE" ? "Inactivo" : status === "COMPLETED" ? "Completado" : status}

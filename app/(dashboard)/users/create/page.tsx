@@ -1,30 +1,24 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { ArrowLeft, Save, Eye, EyeOff, Upload, X, UserPlus, UserCheck, Shield, Briefcase, User as UserIcon, Loader2, Info, Globe, Phone, Clock, CalendarDays, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import React, { useState, useEffect } from "react";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupButton,
-} from "@/components/ui/input-group";
+  ArrowLeft,
+  Save,
+  Eye,
+  EyeOff,
+  Upload,
+  X,
+  UserPlus,
+  UserCheck,
+  Shield,
+  Briefcase,
+  User as UserIcon,
+  Loader2,
+  Info,
+  Globe,
+  Phone,
+  Clock,
+} from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import {
   createUser,
   editUser,
@@ -42,20 +36,23 @@ const ROLES = {
 const ROLE_INFO = [
   {
     id: ROLES.TEAM_MEMBER,
-    title: "Team Member",
-    description: "Colaborador estándar. Marca asistencia con biometría facial, GPS y envía justificaciones.",
+    title: "Team member",
+    description:
+      "Colaborador estándar. Marca asistencia con biometría facial y GPS, y envía justificaciones.",
     icon: UserIcon,
   },
   {
     id: ROLES.PROJECT_MANAGER,
-    title: "Project Manager",
-    description: "Jefe de proyecto. Gestiona equipos, horarios de turno, excepciones y aprueba justificaciones.",
+    title: "Project manager",
+    description:
+      "Jefe de proyecto. Gestiona equipos, horarios de turno, excepciones y aprueba justificaciones.",
     icon: Briefcase,
   },
   {
     id: ROLES.ADMIN,
     title: "Administrador",
-    description: "Acceso total. Administra catálogo de usuarios, proyectos globales, sedes y reportes.",
+    description:
+      "Acceso total. Administra catálogo de usuarios, proyectos globales, sedes y reportes.",
     icon: Shield,
   },
 ];
@@ -68,8 +65,6 @@ interface CountryConfig {
   placeholder: string;
   timezone: string;
   utcOffset: string;
-  diffFromPeru: string;
-  holidayLaw: string;
   description: string;
 }
 
@@ -82,8 +77,6 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "987654321",
     timezone: "America/Lima",
     utcOffset: "UTC-5",
-    diffFromPeru: "Mismo horario",
-    holidayLaw: "Feriados de Perú",
     description: "Horario estándar (UTC-5) y feriados nacionales de Perú.",
   },
   Mexico: {
@@ -94,8 +87,6 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "5512345678",
     timezone: "America/Mexico_City",
     utcOffset: "UTC-6",
-    diffFromPeru: "-1 hora",
-    holidayLaw: "Feriados de México",
     description: "Horario de México (UTC-6). Los turnos se ajustan a su hora local.",
   },
   Colombia: {
@@ -106,8 +97,6 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "3001234567",
     timezone: "America/Bogota",
     utcOffset: "UTC-5",
-    diffFromPeru: "Mismo horario",
-    holidayLaw: "Feriados de Colombia",
     description: "Horario de Colombia (UTC-5) y feriados locales.",
   },
   Chile: {
@@ -118,8 +107,6 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "912345678",
     timezone: "America/Santiago",
     utcOffset: "UTC-3 / UTC-4",
-    diffFromPeru: "+1 a +2 horas",
-    holidayLaw: "Feriados de Chile",
     description: "Horario de Chile y feriados nacionales chilenos.",
   },
   Argentina: {
@@ -130,8 +117,6 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "1123456789",
     timezone: "America/Argentina/Buenos_Aires",
     utcOffset: "UTC-3",
-    diffFromPeru: "+2 horas",
-    holidayLaw: "Feriados de Argentina",
     description: "Horario de Argentina (UTC-3) y feriados nacionales.",
   },
   Ecuador: {
@@ -142,8 +127,6 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "991234567",
     timezone: "America/Guayaquil",
     utcOffset: "UTC-5",
-    diffFromPeru: "Mismo horario",
-    holidayLaw: "Feriados de Ecuador",
     description: "Horario de Ecuador (UTC-5) y feriados locales.",
   },
   Espana: {
@@ -154,8 +137,6 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "612345678",
     timezone: "Europe/Madrid",
     utcOffset: "UTC+1 / UTC+2",
-    diffFromPeru: "+6 a +7 horas",
-    holidayLaw: "Feriados de España",
     description: "Horario de España y calendario laboral español.",
   },
   Otros: {
@@ -166,8 +147,6 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "Número telefónico",
     timezone: "UTC",
     utcOffset: "UTC",
-    diffFromPeru: "Según proyecto",
-    holidayLaw: "Según proyecto",
     description: "Configuración para colaboradores en otros países.",
   },
 };
@@ -183,15 +162,15 @@ export default function CreateUserPage() {
   const [changePassword, setChangePassword] = useState(false);
 
   const [formData, setFormData] = useState({
-    username: '',
-    firstName: '',
-    lastName: '',
-    email: '',
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
     roleId: ROLES.TEAM_MEMBER,
-    country: 'Peru',
-    phoneLocal: '',
-    password: '',
-    confirmPassword: '',
+    country: "Peru",
+    phoneLocal: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -207,22 +186,25 @@ export default function CreateUserPage() {
     loadUser();
   }, [token, userId]);
 
-  // Función para detectar país a partir de un número de teléfono guardado
-  function parsePhoneAndCountry(rawPhone: string | null | undefined): { countryId: string; localDigits: string } {
+  function parsePhoneAndCountry(rawPhone: string | null | undefined): {
+    countryId: string;
+    localDigits: string;
+  } {
     if (!rawPhone) return { countryId: "Peru", localDigits: "" };
 
     const clean = rawPhone.trim();
 
-    // Buscar si coincide con algún prefijo conocido
     for (const [cId, config] of Object.entries(COUNTRIES)) {
       if (cId === "Otros") continue;
       if (clean.startsWith(config.prefix)) {
-        const local = clean.substring(config.prefix.length).replace(/\D/g, "").slice(0, config.digits);
+        const local = clean
+          .substring(config.prefix.length)
+          .replace(/\D/g, "")
+          .slice(0, config.digits);
         return { countryId: cId, localDigits: local };
       }
     }
 
-    // Si es sólo números (sin prefijo explícito)
     const digitsOnly = clean.replace(/\D/g, "");
     if (digitsOnly.length === 9) {
       return { countryId: "Peru", localDigits: digitsOnly };
@@ -261,28 +243,27 @@ export default function CreateUserPage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Manejo del teléfono con límite de dígitos según país
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawVal = e.target.value;
 
-    // Detectar si el usuario pegó un número con código internacional (+52, +51, etc.)
     if (rawVal.startsWith("+")) {
       for (const [cId, config] of Object.entries(COUNTRIES)) {
         if (cId === "Otros") continue;
         if (rawVal.startsWith(config.prefix)) {
-          const digits = rawVal.substring(config.prefix.length).replace(/\D/g, "").slice(0, config.digits);
+          const digits = rawVal
+            .substring(config.prefix.length)
+            .replace(/\D/g, "")
+            .slice(0, config.digits);
           setFormData((prev) => ({ ...prev, country: cId, phoneLocal: digits }));
           return;
         }
       }
     }
 
-    // Filtrar solo dígitos y limitar a la cantidad del país
     const cleanDigits = rawVal.replace(/\D/g, "").slice(0, currentCountry.digits);
     setFormData((prev) => ({ ...prev, phoneLocal: cleanDigits }));
   };
 
-  // Manejo de cambio de país
   const handleCountryChange = (newCountryId: string) => {
     const newConfig = COUNTRIES[newCountryId] || COUNTRIES.Peru;
     setFormData((prev) => ({
@@ -329,14 +310,17 @@ export default function CreateUserPage() {
     setLoading(true);
 
     try {
-      // Validar longitud del teléfono si se ingresó
-      if (formData.phoneLocal && formData.phoneLocal.length < Math.min(currentCountry.digits, 8)) {
-        setError(`El número de teléfono para ${currentCountry.name} debe tener ${currentCountry.digits} dígitos.`);
+      if (
+        formData.phoneLocal &&
+        formData.phoneLocal.length < Math.min(currentCountry.digits, 8)
+      ) {
+        setError(
+          `El número de teléfono para ${currentCountry.name} debe tener ${currentCountry.digits} dígitos.`
+        );
         setLoading(false);
         return;
       }
 
-      // Ensamblar teléfono completo con prefijo internacional
       const fullPhone = formData.phoneLocal
         ? `${currentCountry.prefix} ${formData.phoneLocal}`
         : null;
@@ -353,15 +337,15 @@ export default function CreateUserPage() {
       let avatarPayload = "";
       if (imageFile) {
         const base64Full = await fileToBase64(imageFile);
-        avatarPayload = base64Full.includes(",") ? base64Full.split(",")[1] : base64Full;
+        avatarPayload = base64Full.includes(",")
+          ? base64Full.split(",")[1]
+          : base64Full;
       } else if (imagePreview) {
         if (imagePreview.startsWith("data:image/")) {
           avatarPayload = imagePreview.split(",")[1];
         } else {
           avatarPayload = imagePreview;
         }
-      } else {
-        avatarPayload = "";
       }
 
       if (isEditMode) {
@@ -415,467 +399,508 @@ export default function CreateUserPage() {
   if (!isReady) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="max-w-5xl mx-auto px-4 py-6">
-
+      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6">
         {/* HEADER */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-xs">
               {isEditMode ? (
-                <UserCheck className="w-5 h-5 text-white" />
+                <UserCheck className="w-5 h-5" />
               ) : (
-                <UserPlus className="w-5 h-5 text-white" />
+                <UserPlus className="w-5 h-5" />
               )}
             </div>
             <div>
-              <h1 className="text-lg font-bold text-foreground">
-                {isEditMode ? "Editar Usuario" : "Crear Nuevo Usuario"}
+              <h1 className="text-xl font-bold text-foreground">
+                {isEditMode ? "Editar usuario" : "Crear nuevo usuario"}
               </h1>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 {isEditMode
-                  ? "Modifica los datos del usuario, país, rol y credenciales de acceso"
-                  : "Registra al colaborador con su país de residencia, biometría y rol institucional"}
+                  ? "Modifica los datos del usuario, país, rol y credenciales de acceso."
+                  : "Registra al colaborador con su país de residencia, biometría y rol institucional."}
               </p>
             </div>
           </div>
 
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => router.push('/users')}
-            className="text-xs"
+          <button
+            type="button"
+            onClick={() => router.push("/users")}
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-border bg-card hover:bg-raised text-xs font-medium text-foreground transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-3.5 h-3.5 mr-1.5" />
-            Volver a Usuarios
-          </Button>
+            <ArrowLeft className="w-4 h-4" />
+            <span>Volver a usuarios</span>
+          </button>
         </div>
 
         {error && (
-          <div className="mb-5 p-4 rounded-xl bg-rose-50 border border-rose-200 text-sm text-rose-800 flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-rose-500 shrink-0" />
+          <div className="p-4 rounded-xl bg-red/10 border border-red/20 text-sm text-red-ink flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-red shrink-0" />
             <span>{error}</span>
           </div>
         )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* LEFT COLUMN: Personal Info & Location (Card 1) */}
+            <div className="lg:col-span-7 bg-card border border-border rounded-2xl p-5 shadow-xs space-y-5">
+              {/* Card 1 Header */}
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-lg bg-primary/15 text-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                  1
+                </div>
+                <div>
+                  <h2 className="text-sm font-bold text-foreground">
+                    Datos personales y ubicación
+                  </h2>
+                  <p className="text-xs text-muted-foreground mt-0.5">
+                    Datos de identidad y país para calcular el huso horario y los feriados
+                  </p>
+                </div>
+              </div>
 
-            {/* LEFT COLUMN: Personal Info & Avatar */}
-            <div className="space-y-6">
-              
-              {/* CARD 1: PERSONAL INFORMATION */}
-              <Card className="border-border shadow-sm">
-                <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                  <CardTitle className="text-sm flex items-center justify-between">
-                    <span>1. Datos Personales y Ubicación</span>
-                    <span className="text-[11px] font-normal text-muted-foreground">Información básica oficial</span>
-                  </CardTitle>
-                  <CardDescription className="text-xs">
-                    Datos de identidad y país para cálculo de huso horario y feriados
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-4 space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    
-                    {/* USUARIO */}
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="username" className="text-xs font-semibold text-muted-foreground">Usuario (@) *</Label>
-                      </div>
-                      <Input
-                        id="username"
-                        name="username"
-                        value={formData.username}
-                        onChange={handleChange}
-                        placeholder="ej. carlos.mamani"
-                        required
-                        className="h-9 text-xs"
-                      />
-                      <p className="text-[10px] text-muted-foreground">Nombre de usuario único para menciones y login.</p>
-                    </div>
+              {/* Form Fields */}
+              <div className="space-y-4 pt-1">
+                {/* USUARIO */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground">
+                    Usuario (@) <span className="text-red">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleChange}
+                    placeholder="ej. carlos.mamani"
+                    required
+                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-background text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all shadow-xs"
+                  />
+                  <p className="text-[11px] text-muted-foreground">
+                    Nombre de usuario único para menciones y acceso.
+                  </p>
+                </div>
 
-                    {/* CORREO */}
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="email" className="text-xs font-semibold text-muted-foreground">Correo Electrónico *</Label>
-                      </div>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        placeholder="ej. carlos@empresa.com"
-                        required
-                        className="h-9 text-xs"
-                      />
-                      <p className="text-[10px] text-muted-foreground">Email institucional para recepción de notificaciones.</p>
-                    </div>
+                {/* CORREO ELECTRÓNICO */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground">
+                    Correo electrónico <span className="text-red">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="ej. carlos@empresa.com"
+                    required
+                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-background text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all shadow-xs"
+                  />
+                  <p className="text-[11px] text-muted-foreground">
+                    Correo institucional para recibir notificaciones.
+                  </p>
+                </div>
 
-                    {/* NOMBRE */}
-                    <div className="space-y-1">
-                      <Label htmlFor="firstName" className="text-xs font-semibold text-muted-foreground">Nombres *</Label>
-                      <Input
-                        id="firstName"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        placeholder="ej. Carlos Enrique"
-                        required
-                        className="h-9 text-xs"
-                      />
-                      <p className="text-[10px] text-muted-foreground">Nombres según documento de identidad.</p>
-                    </div>
+                {/* NOMBRES */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground">
+                    Nombres <span className="text-red">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="ej. Carlos Enrique"
+                    required
+                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-background text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all shadow-xs"
+                  />
+                  <p className="text-[11px] text-muted-foreground">
+                    Según documento de identidad.
+                  </p>
+                </div>
 
-                    {/* APELLIDOS */}
-                    <div className="space-y-1">
-                      <Label htmlFor="lastName" className="text-xs font-semibold text-muted-foreground">Apellidos *</Label>
-                      <Input
-                        id="lastName"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        placeholder="ej. Mamani Gutiérrez"
-                        required
-                        className="h-9 text-xs"
-                      />
-                      <p className="text-[10px] text-muted-foreground">Apellido paterno y materno.</p>
-                    </div>
+                {/* APELLIDOS */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground">
+                    Apellidos <span className="text-red">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="ej. Mamani Gutiérrez"
+                    required
+                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-background text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all shadow-xs"
+                  />
+                  <p className="text-[11px] text-muted-foreground">
+                    Apellido paterno y materno.
+                  </p>
+                </div>
 
-                    {/* PAÍS SELECTOR */}
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="country" className="text-xs font-semibold text-zinc-700 flex items-center gap-1">
-                          <Globe className="w-3.5 h-3.5 text-blue-600" />
-                          <span>País de Residencia *</span>
-                        </Label>
-                      </div>
-                      <Select
-                        name="country"
-                        value={formData.country}
-                        onValueChange={handleCountryChange}
-                      >
-                        <SelectTrigger className="w-full h-9 text-xs">
-                          <SelectValue placeholder="Seleccionar país" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.values(COUNTRIES).map((c) => (
-                            <SelectItem key={c.id} value={c.id} className="text-xs">
-                              <span className="font-medium">{c.name}</span>
-                              <span className="ml-2 text-zinc-400 text-[10px]">({c.prefix})</span>
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <p className="text-[10px] text-muted-foreground">Sincroniza prefijo y matriz horaria.</p>
-                    </div>
+                {/* PAÍS DE RESIDENCIA */}
+                <div className="space-y-1">
+                  <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                    <Globe className="w-3.5 h-3.5 text-primary" />
+                    <span>País de residencia</span>
+                    <span className="text-red">*</span>
+                  </label>
+                  <select
+                    name="country"
+                    value={formData.country}
+                    onChange={(e) => handleCountryChange(e.target.value)}
+                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-background text-foreground text-xs focus:border-primary focus:ring-2 focus:ring-primary/10 cursor-pointer outline-none transition-all shadow-xs"
+                  >
+                    {Object.values(COUNTRIES).map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name} ({c.prefix})
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-[11px] text-muted-foreground">
+                    Sincroniza el prefijo telefónico y la zona horaria.
+                  </p>
+                </div>
 
-                    {/* TELÉFONO DINÁMICO */}
-                    <div className="space-y-1">
-                      <div className="flex items-center justify-between">
-                        <Label htmlFor="phoneLocal" className="text-xs font-semibold text-zinc-700 flex items-center gap-1">
-                          <Phone className="w-3.5 h-3.5 text-emerald-600" />
-                          <span>Teléfono / Celular</span>
-                        </Label>
-                        <span className="text-[10px] font-mono text-muted-foreground">
-                          {formData.phoneLocal.length}/{currentCountry.digits} dígitos
-                        </span>
-                      </div>
-                      
-                      <div className="relative flex rounded-lg border border-border bg-card overflow-hidden focus-within:ring-1 focus-within:ring-blue-500 focus-within:border-blue-500">
-                        {/* BADGE DE PREFIJO */}
-                        <div className="flex items-center px-2.5 bg-zinc-100/80 border-r border-border text-xs font-bold text-blue-700 select-none transition-all duration-300">
-                          <span>{currentCountry.prefix}</span>
-                        </div>
-                        <input
-                          id="phoneLocal"
-                          type="tel"
-                          value={formData.phoneLocal}
-                          onChange={handlePhoneChange}
-                          placeholder={currentCountry.placeholder}
-                          maxLength={currentCountry.digits}
-                          className="h-9 w-full px-3 text-xs focus:outline-none bg-transparent"
-                        />
-                      </div>
-                      <p className="text-[10px] text-muted-foreground">
-                        Máx. {currentCountry.digits} dígitos para {currentCountry.name}.
-                      </p>
-                    </div>
-
-                  </div>
-
-                  {/* TARJETA INFORMATIVA: ZONA HORARIA Y PAÍS */}
-                  <div className="mt-3 p-3 rounded-xl bg-blue-50/70 border border-blue-100 text-xs space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1.5 font-semibold text-blue-900">
-                        <Clock className="w-3.5 h-3.5 text-blue-600" />
-                        <span>Zona Horaria: {currentCountry.name}</span>
-                      </div>
-                      <span className="text-[10px] font-mono font-semibold bg-card text-blue-800 px-2 py-0.5 rounded-full border border-blue-200 shadow-2xs">
-                        {currentCountry.utcOffset}
-                      </span>
-                    </div>
-
-                    <p className="text-[11px] text-muted-foreground">
-                      {currentCountry.description}
-                    </p>
-                  </div>
-
-                </CardContent>
-              </Card>
-
-              {/* CARD 2: AVATAR & PHOTO */}
-              <Card className="border-border shadow-sm">
-                <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                  <CardTitle className="text-sm">2. Fotografía de Perfil (Patrón Biométrico IA)</CardTitle>
-                  <CardDescription className="text-xs">
-                    Imagen oficial utilizada por el motor de IA para validar el rostro en cada Check-In
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <div className="flex items-center gap-5">
-                    <div className="relative">
-                      <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-border bg-muted flex items-center justify-center">
-                        {imagePreview ? (
-                          <img
-                            src={imagePreview}
-                            alt="preview"
-                            className="w-full h-full object-cover"
-                            onError={() => setImagePreview(null)}
-                          />
-                        ) : (
-                          <UserIcon className="w-8 h-8 text-muted-foreground" />
-                        )}
-                      </div>
-                      {imagePreview && (
-                        <button
-                          type="button"
-                          onClick={removeImage}
-                          className="absolute -top-1 -right-1 w-5 h-5 bg-rose-600 text-white rounded-full flex items-center justify-center shadow hover:bg-rose-700 transition-colors"
-                        >
-                          <X className="w-3 h-3" />
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label className="cursor-pointer inline-block">
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          className="hidden"
-                        />
-                        <div className="h-8 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1.5 text-xs font-semibold shadow-sm transition-colors">
-                          <Upload className="w-3.5 h-3.5" />
-                          {imagePreview ? "Cambiar Imagen" : "Subir Foto Oficial"}
-                        </div>
-                      </label>
-                      <p className="text-[10px] text-muted-foreground">Rostro frontal, fondo claro (JPG, PNG o WEBP - Máx. 5MB).</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-            </div>
-
-            {/* RIGHT COLUMN: Roles & Credentials */}
-            <div className="space-y-6">
-              
-              {/* CARD 3: ROLE SELECTION */}
-              <Card className="border-border shadow-sm">
-                <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                  <CardTitle className="text-sm">3. Rol Institucional y Nivel de Acceso</CardTitle>
-                  <CardDescription className="text-xs">Define los permisos y el portal asignado al usuario</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {ROLE_INFO.map((r) => {
-                      const isSelected = formData.roleId === r.id;
-                      const Icon = r.icon;
-                      return (
-                        <button
-                          key={r.id}
-                          type="button"
-                          onClick={() => setFormData({ ...formData, roleId: r.id })}
-                          className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl border-2 text-xs font-medium transition-all ${
-                            isSelected
-                              ? "bg-blue-50 text-blue-700 border-blue-600 shadow-sm"
-                              : "border-zinc-100 bg-card text-zinc-500 hover:border-border hover:bg-background"
-                          }`}
-                        >
-                          <Icon className={`w-5 h-5 ${isSelected ? "text-blue-600" : "text-zinc-400"}`} />
-                          <span className="font-semibold text-center leading-tight">{r.title}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-3 p-2.5 rounded-lg bg-muted/50 border border-zinc-100 text-[11px] text-zinc-600 flex items-start gap-2">
-                    <Info className="w-3.5 h-3.5 text-blue-600 shrink-0 mt-0.5" />
-                    <span>
-                      {ROLE_INFO.find(r => r.id === formData.roleId)?.description}
+                {/* TELÉFONO */}
+                <div className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-medium text-foreground flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-green-ink" />
+                      <span>Teléfono / celular</span>
+                    </label>
+                    <span className="text-[11px] font-mono text-muted-foreground">
+                      {formData.phoneLocal.length}/{currentCountry.digits} dígitos
                     </span>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="flex rounded-xl border border-border bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary/10 focus-within:border-primary transition-all shadow-xs">
+                    <div className="flex items-center px-3 bg-muted/40 border-r border-border text-xs font-semibold text-primary select-none">
+                      {currentCountry.prefix}
+                    </div>
+                    <input
+                      type="tel"
+                      value={formData.phoneLocal}
+                      onChange={handlePhoneChange}
+                      placeholder={currentCountry.placeholder}
+                      maxLength={currentCountry.digits}
+                      className="h-10 w-full px-3.5 text-xs bg-transparent text-foreground placeholder:text-muted-foreground outline-none"
+                    />
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Máx. {currentCountry.digits} dígitos para {currentCountry.name}.
+                  </p>
+                </div>
 
-              {/* CARD 4: CREDENTIALS */}
-              <Card className="border-border shadow-sm">
-                <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                  <CardTitle className="text-sm">4. Credenciales de Acceso</CardTitle>
-                  <CardDescription className="text-xs">
-                    {isEditMode ? "Modificar contraseña del usuario (opcional)" : "Contraseña de acceso inicial segura"}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="pt-4 space-y-3">
-                  {isEditMode ? (
-                    <div>
-                      <label className="flex items-center gap-2 text-xs font-medium text-zinc-700 cursor-pointer select-none mb-3">
-                        <input
-                          type="checkbox"
-                          checked={changePassword}
-                          onChange={(e) => setChangePassword(e.target.checked)}
-                          className="rounded text-blue-600 border-zinc-300 focus:ring-blue-500"
+                {/* ZONA HORARIA CALLOUT */}
+                <div className="mt-4 p-3.5 rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/20 space-y-1">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5 text-xs font-semibold text-primary">
+                      <Clock className="w-3.5 h-3.5 text-primary" />
+                      <span>Zona horaria: {currentCountry.name}</span>
+                    </div>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-card border border-primary/20 text-primary">
+                      {currentCountry.utcOffset}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    {currentCountry.description}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* RIGHT COLUMN: Photo (2), Role (3), Credentials (4) */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* CARD 2: FOTOGRAFÍA DE PERFIL */}
+              <div className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-lg bg-primary/15 text-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    2
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-foreground">
+                      Fotografía de perfil (patrón biométrico IA)
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Imagen oficial que usa el motor de IA para validar el rostro en cada check-in
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 pt-1">
+                  <div className="relative">
+                    <div className="w-16 h-16 rounded-full border border-border bg-muted/40 flex items-center justify-center overflow-hidden shrink-0">
+                      {imagePreview ? (
+                        <img
+                          src={imagePreview}
+                          alt="preview"
+                          className="w-full h-full object-cover"
+                          onError={() => setImagePreview(null)}
                         />
-                        <span>Cambiar contraseña de este usuario</span>
-                      </label>
-
-                      {changePassword && (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 border-t border-zinc-100">
-                          <div className="space-y-1.5">
-                            <Label htmlFor="edit-password" className="text-xs text-muted-foreground">Nueva Contraseña</Label>
-                            <InputGroup>
-                              <InputGroupInput
-                                id="edit-password"
-                                type={showPassword ? "text" : "password"}
-                                name="password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                required
-                                placeholder="Mínimo 8 caracteres"
-                                className="h-9 text-xs"
-                              />
-                              <InputGroupButton
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                              >
-                                {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                              </InputGroupButton>
-                            </InputGroup>
-                          </div>
-
-                          <div className="space-y-1.5">
-                            <Label htmlFor="edit-confirm" className="text-xs text-muted-foreground">Confirmar Contraseña</Label>
-                            <InputGroup>
-                              <InputGroupInput
-                                id="edit-confirm"
-                                type={showConfirmPassword ? "text" : "password"}
-                                name="confirmPassword"
-                                value={formData.confirmPassword}
-                                onChange={handleChange}
-                                required
-                                placeholder="Repite la contraseña"
-                                className="h-9 text-xs"
-                              />
-                              <InputGroupButton
-                                type="button"
-                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                              >
-                                {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                              </InputGroupButton>
-                            </InputGroup>
-                          </div>
-                        </div>
+                      ) : (
+                        <UserIcon className="w-7 h-7 text-muted-foreground" />
                       )}
                     </div>
-                  ) : (
-                    <div className="space-y-3">
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
-                          <Label htmlFor="password" className="text-xs text-muted-foreground">Contraseña *</Label>
-                          <InputGroup>
-                            <InputGroupInput
-                              id="password"
+                    {imagePreview && (
+                      <button
+                        type="button"
+                        onClick={removeImage}
+                        className="absolute -top-1 -right-1 w-5 h-5 bg-destructive text-white rounded-full flex items-center justify-center shadow-xs hover:bg-destructive/90 transition-colors"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="space-y-1.5 flex-1">
+                    <label className="cursor-pointer inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-border bg-card hover:bg-raised text-xs font-medium text-foreground transition-colors shadow-xs">
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
+                      />
+                      <Upload className="w-3.5 h-3.5 text-muted-foreground" />
+                      <span>{imagePreview ? "Cambiar foto oficial" : "Subir foto oficial"}</span>
+                    </label>
+                    <p className="text-[10px] text-muted-foreground leading-tight">
+                      Rostro frontal y fondo claro · JPG, PNG o WEBP · máx. 5 MB
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* CARD 3: ROL INSTITUCIONAL */}
+              <div className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-lg bg-primary/15 text-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    3
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-foreground">
+                      Rol institucional y nivel de acceso
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Define los permisos y el portal asignado al usuario
+                    </p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2.5 pt-1">
+                  {ROLE_INFO.map((r) => {
+                    const isSelected = formData.roleId === r.id;
+                    const Icon = r.icon;
+                    return (
+                      <button
+                        key={r.id}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, roleId: r.id })}
+                        className={`flex flex-col items-center justify-center gap-2 p-3 rounded-xl text-xs font-medium transition-all cursor-pointer ${
+                          isSelected
+                            ? "bg-primary/10 text-primary border-2 border-primary shadow-xs"
+                            : "border border-border bg-card text-muted-foreground hover:bg-raised hover:text-foreground"
+                        }`}
+                      >
+                        <Icon className={`w-4 h-4 ${isSelected ? "text-primary" : "text-muted-foreground"}`} />
+                        <span className="font-semibold text-center leading-tight">
+                          {r.title}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="p-3 rounded-xl bg-muted/40 border border-border text-xs text-muted-foreground flex items-center gap-2.5">
+                  <Info className="w-4 h-4 text-primary shrink-0" />
+                  <span>
+                    {ROLE_INFO.find((r) => r.id === formData.roleId)?.description}
+                  </span>
+                </div>
+              </div>
+
+              {/* CARD 4: CREDENCIALES DE ACCESO */}
+              <div className="bg-card border border-border rounded-2xl p-5 shadow-xs space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-lg bg-primary/15 text-primary text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+                    4
+                  </div>
+                  <div>
+                    <h2 className="text-sm font-bold text-foreground">
+                      Credenciales de acceso
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {isEditMode
+                        ? "Modificar contraseña del usuario (opcional)"
+                        : "Contraseña inicial de acceso"}
+                    </p>
+                  </div>
+                </div>
+
+                {isEditMode ? (
+                  <div className="space-y-3 pt-1">
+                    <label className="flex items-center gap-2 text-xs font-medium text-foreground cursor-pointer select-none">
+                      <input
+                        type="checkbox"
+                        checked={changePassword}
+                        onChange={(e) => setChangePassword(e.target.checked)}
+                        className="rounded text-primary border-border focus:ring-primary"
+                      />
+                      <span>Cambiar contraseña de este usuario</span>
+                    </label>
+
+                    {changePassword && (
+                      <div className="space-y-3 pt-2">
+                        <div className="space-y-1">
+                          <label className="text-xs font-medium text-foreground">
+                            Nueva contraseña <span className="text-red">*</span>
+                          </label>
+                          <div className="relative">
+                            <input
                               type={showPassword ? "text" : "password"}
                               name="password"
                               value={formData.password}
                               onChange={handleChange}
-                              required
                               placeholder="Mínimo 8 caracteres"
-                              className="h-9 text-xs"
+                              required
+                              className="w-full h-10 pl-3.5 pr-10 rounded-xl border border-border bg-background text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all shadow-xs"
                             />
-                            <InputGroupButton
+                            <button
                               type="button"
                               onClick={() => setShowPassword(!showPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
                             >
-                              {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                            </InputGroupButton>
-                          </InputGroup>
+                              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            </button>
+                          </div>
                         </div>
 
-                        <div className="space-y-1.5">
-                          <Label htmlFor="confirmPassword" className="text-xs text-muted-foreground">Confirmar Contraseña *</Label>
-                          <InputGroup>
-                            <InputGroupInput
-                              id="confirmPassword"
+                        <div className="space-y-1">
+                          <label className="text-xs font-medium text-foreground">
+                            Confirmar contraseña <span className="text-red">*</span>
+                          </label>
+                          <div className="relative">
+                            <input
                               type={showConfirmPassword ? "text" : "password"}
                               name="confirmPassword"
                               value={formData.confirmPassword}
                               onChange={handleChange}
-                              required
                               placeholder="Repite la contraseña"
-                              className="h-9 text-xs"
+                              required
+                              className="w-full h-10 pl-3.5 pr-10 rounded-xl border border-border bg-background text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all shadow-xs"
                             />
-                            <InputGroupButton
+                            <button
                               type="button"
                               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
                             >
-                              {showConfirmPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                            </InputGroupButton>
-                          </InputGroup>
+                              {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                            </button>
+                          </div>
                         </div>
                       </div>
-                      <p className="text-[10px] text-muted-foreground">Recomendado: Usar al menos 8 caracteres con letras y números.</p>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-3 pt-1">
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium text-foreground">
+                        Contraseña <span className="text-red">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          placeholder="Mínimo 8 caracteres"
+                          required
+                          className="w-full h-10 pl-3.5 pr-10 rounded-xl border border-border bg-background text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all shadow-xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
                     </div>
-                  )}
-                </CardContent>
-              </Card>
 
+                    <div className="space-y-1">
+                      <label className="text-xs font-medium text-foreground">
+                        Confirmar contraseña <span className="text-red">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showConfirmPassword ? "text" : "password"}
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          placeholder="Repite la contraseña"
+                          required
+                          className="w-full h-10 pl-3.5 pr-10 rounded-xl border border-border bg-background text-foreground text-xs placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all shadow-xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                        >
+                          {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    <p className="text-[11px] text-muted-foreground">
+                      Usa al menos 8 caracteres con letras y números.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* BOTTOM ACTION BAR */}
+          <div className="bg-card border border-border rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <Info className="w-4 h-4 text-primary shrink-0" />
+              <span>Completa los campos con <span className="text-red font-bold">*</span> para guardar.</span>
             </div>
 
-          </div>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => router.push("/users")}
+                disabled={loading}
+                className="px-4 py-2 rounded-xl text-xs font-medium border border-border bg-card hover:bg-raised text-foreground transition-colors cursor-pointer disabled:opacity-50"
+              >
+                Cancelar
+              </button>
 
-          {/* BOTTOM BUTTONS */}
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-border mt-6">
-            <Button
-              variant="outline"
-              type="button"
-              onClick={() => router.push('/users')}
-              disabled={loading}
-            >
-              Cancelar
-            </Button>
-            <Button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
-            >
-              {loading ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              ) : (
-                <Save className="w-4 h-4 mr-2" />
-              )}
-              {loading ? 'Guardando...' : isEditMode ? 'Actualizar Usuario' : 'Guardar Usuario'}
-            </Button>
+              <button
+                type="submit"
+                disabled={loading}
+                className="px-5 py-2.5 rounded-xl text-xs font-medium bg-gradient-to-r from-[#7c3aed] to-[#9333ea] hover:brightness-110 active:scale-[0.98] text-white flex items-center gap-2 shadow-md shadow-primary/20 transition-all cursor-pointer disabled:opacity-50"
+              >
+                {loading ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <Save className="w-4 h-4" />
+                )}
+                <span>
+                  {loading
+                    ? "Guardando..."
+                    : isEditMode
+                    ? "Actualizar usuario"
+                    : "Guardar usuario"}
+                </span>
+              </button>
+            </div>
           </div>
-
         </form>
       </div>
     </div>

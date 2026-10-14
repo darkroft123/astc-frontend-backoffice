@@ -165,8 +165,8 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
         {/* HEADER */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
-              <FolderKanban className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-sm">
+              <FolderKanban className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
               <h1 className="text-lg font-bold text-foreground">
@@ -197,11 +197,11 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
           <div className="space-y-6">
 
             {/* CARD 1: GENERAL INFORMATION */}
-            <Card className="border-border shadow-sm">
-              <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                <CardTitle className="text-sm">1. Datos del Proyecto</CardTitle>
-                <CardDescription className="text-xs">Nombre, descripción, estado y zona horaria</CardDescription>
-              </CardHeader>
+             <Card className="border-border shadow-sm">
+               <CardHeader className="pb-3 bg-raised border-b border-line">
+                 <CardTitle className="text-sm">1. Datos del Proyecto</CardTitle>
+                 <CardDescription className="text-xs">Nombre, descripción, estado y zona horaria</CardDescription>
+               </CardHeader>
               <CardContent className="pt-4 space-y-4">
                 <div className="space-y-1.5">
                   <Label htmlFor="projectName" className="text-xs text-muted-foreground">Nombre del Proyecto *</Label>
@@ -223,7 +223,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Detalles sobre el alcance o entregables..."
                     rows={2}
-                    className="w-full border border-border rounded-lg p-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                     className="w-full border border-border rounded-lg p-2.5 text-xs focus:outline-none focus:ring-1 focus:ring-primary"
                   />
                 </div>
 
@@ -233,7 +233,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                     <select
                       value={status}
                       onChange={(e) => setStatus(e.target.value)}
-                      className="h-9 w-full border border-border rounded-lg px-2.5 text-xs bg-background focus:outline-none focus:ring-1 focus:ring-blue-500"
+                       className="h-9 w-full border border-border rounded-lg px-2.5 text-xs bg-background focus:outline-none focus:ring-1 focus:ring-primary"
                     >
                       <option value="ACTIVE">Activo</option>
                       <option value="INACTIVE">Inactivo</option>
@@ -253,11 +253,11 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
             </Card>
 
             {/* CARD 2: DATES & VACATION POLICIES */}
-            <Card className="border-border shadow-sm">
-              <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                <CardTitle className="text-sm">2. Periodo y Políticas de Vacaciones</CardTitle>
-                <CardDescription className="text-xs">Fechas de vigencia y elegibilidad de descanso</CardDescription>
-              </CardHeader>
+             <Card className="border-border shadow-sm">
+               <CardHeader className="pb-3 bg-raised border-b border-line">
+                 <CardTitle className="text-sm">2. Periodo y Políticas de Vacaciones</CardTitle>
+                 <CardDescription className="text-xs">Fechas de vigencia y elegibilidad de descanso</CardDescription>
+               </CardHeader>
               <CardContent className="pt-4 space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1.5">
@@ -281,36 +281,36 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-zinc-100 space-y-2">
-                  <Label className="text-xs text-muted-foreground">Días de Antigüedad para Vacaciones</Label>
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="number"
-                      min={0}
-                      value={vacationEligibilityDays}
-                      onChange={(e) => setVacationEligibilityDays(Number(e.target.value) || 0)}
-                      className="h-9 text-xs w-32"
-                    />
-                    <div className="flex gap-1.5 flex-wrap">
-                      <button
-                        type="button"
-                        onClick={() => setVacationEligibilityDays(90)}
-                        className={`text-[10px] px-2 py-1 rounded-md border transition-all ${
-                          vacationEligibilityDays === 90
-                            ? 'bg-blue-50 border-blue-300 text-blue-700 font-semibold'
-                            : 'bg-background border-border text-muted-foreground hover:border-border hover:bg-muted'
-                        }`}
-                      >
+                 <div className="pt-2 border-t border-line space-y-2">
+                   <Label className="text-xs text-muted-foreground">Días de Antigüedad para Vacaciones</Label>
+                   <div className="flex items-center gap-2">
+                     <Input
+                       type="number"
+                       min={0}
+                       value={vacationEligibilityDays}
+                       onChange={(e) => setVacationEligibilityDays(Number(e.target.value) || 0)}
+                       className="h-9 text-xs w-32"
+                     />
+                     <div className="flex gap-1.5 flex-wrap">
+                       <button
+                         type="button"
+                         onClick={() => setVacationEligibilityDays(90)}
+                         className={`text-[10px] px-2 py-1 rounded-md border transition-all ${
+                           vacationEligibilityDays === 90
+                             ? 'bg-primary/10 border-primary/40 text-primary font-semibold'
+                             : 'bg-background border-border text-muted-foreground hover:border-border hover:bg-muted'
+                         }`}
+                       >
                         3 meses (90d)
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => setVacationEligibilityDays(180)}
-                        className={`text-[10px] px-2 py-1 rounded-md border transition-all ${
-                          vacationEligibilityDays === 180
-                            ? 'bg-blue-50 border-blue-300 text-blue-700 font-semibold'
-                            : 'bg-background border-border text-muted-foreground hover:border-border hover:bg-muted'
-                        }`}
+                       <button
+                         type="button"
+                         onClick={() => setVacationEligibilityDays(180)}
+                         className={`text-[10px] px-2 py-1 rounded-md border transition-all ${
+                           vacationEligibilityDays === 180
+                             ? 'bg-primary/10 border-primary/40 text-primary font-semibold'
+                             : 'bg-background border-border text-muted-foreground hover:border-border hover:bg-muted'
+                         }`}
                       >
                         6 meses (180d)
                       </button>
@@ -326,18 +326,18 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
           <div className="space-y-6">
 
             {/* CARD 3: RESPONSIBLE & TEAM MEMBERS */}
-            <Card className="border-border shadow-sm">
-              <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                <CardTitle className="text-sm">3. Responsable y Equipo</CardTitle>
-                <CardDescription className="text-xs">Jefe de proyecto y colaboradores asignados</CardDescription>
-              </CardHeader>
+             <Card className="border-border shadow-sm">
+               <CardHeader className="pb-3 bg-raised border-b border-line">
+                 <CardTitle className="text-sm">3. Responsable y Equipo</CardTitle>
+                 <CardDescription className="text-xs">Jefe de proyecto y colaboradores asignados</CardDescription>
+               </CardHeader>
               <CardContent className="pt-4 space-y-4">
                 <div className="space-y-1.5">
                   <Label className="text-xs text-muted-foreground">Project Manager Responsable</Label>
                   <select
                     value={responsibleId}
                     onChange={(e) => setResponsibleId(e.target.value)}
-                    className="h-9 w-full border border-border rounded-lg px-2.5 text-xs bg-background focus:outline-none focus:ring-1 focus:ring-blue-500"
+                     className="h-9 w-full border border-border rounded-lg px-2.5 text-xs bg-background focus:outline-none focus:ring-1 focus:ring-primary"
                   >
                     <option value="">-- Seleccionar Responsable --</option>
                     {projectManagers.map((u) => (
@@ -346,18 +346,18 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                       </option>
                     ))}
                   </select>
-                  {selectedResponsible && (
-                    <p className="text-[11px] text-blue-700 bg-blue-50 p-2 rounded-lg border border-blue-100">
-                      Asignado: <strong>{selectedResponsible.firstName} {selectedResponsible.lastName}</strong> ({selectedResponsible.email || selectedResponsible.username})
-                    </p>
-                  )}
+                   {selectedResponsible && (
+                     <p className="text-[11px] text-primary-foreground bg-primary/10 text-primary p-2 rounded-lg border border-primary/20">
+                       Asignado: <strong>{selectedResponsible.firstName} {selectedResponsible.lastName}</strong> ({selectedResponsible.email || selectedResponsible.username})
+                     </p>
+                   )}
                 </div>
 
-                <div className="space-y-1.5 pt-2 border-t border-zinc-100">
-                  <div className="flex items-center justify-between">
-                    <Label className="text-xs text-muted-foreground">Miembros del Proyecto</Label>
-                    <span className="text-[10px] text-blue-600 font-semibold">{selectedMemberIds.length} seleccionados</span>
-                  </div>
+                 <div className="space-y-1.5 pt-2 border-t border-line">
+                   <div className="flex items-center justify-between">
+                     <Label className="text-xs text-muted-foreground">Miembros del Proyecto</Label>
+                     <span className="text-[10px] text-primary font-semibold">{selectedMemberIds.length} seleccionados</span>
+                   </div>
                   <Input
                     type="text"
                     placeholder="Buscar miembros..."
@@ -367,7 +367,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                   />
                   <div className="border border-border rounded-lg p-2 max-h-40 overflow-y-auto space-y-1">
                     {filteredMembers.length === 0 ? (
-                      <p className="text-[11px] text-zinc-400 text-center py-2">No hay miembros disponibles</p>
+                       <p className="text-[11px] text-text-5 text-center py-2">No hay miembros disponibles</p>
                     ) : (
                       filteredMembers.map((u) => (
                         <label
@@ -379,7 +379,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                               type="checkbox"
                               checked={selectedMemberIds.includes(u.id)}
                               onChange={() => toggleMember(u.id)}
-                              className="rounded text-blue-600 border-zinc-300 focus:ring-blue-500"
+                               className="rounded text-primary border-line focus:ring-primary"
                             />
                             <span>{u.firstName} {u.lastName}</span>
                           </div>
@@ -393,11 +393,11 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
             </Card>
 
             {/* CARD 4: BASE SCHEDULE & TOLERANCES */}
-            <Card className="border-border shadow-sm">
-              <CardHeader className="pb-3 bg-zinc-50/50 border-b border-zinc-100">
-                <CardTitle className="text-sm">4. Horario Base y Tolerancia</CardTitle>
-                <CardDescription className="text-xs">Jornada estándar aplicable a los miembros por defecto</CardDescription>
-              </CardHeader>
+             <Card className="border-border shadow-sm">
+               <CardHeader className="pb-3 bg-raised border-b border-line">
+                 <CardTitle className="text-sm">4. Horario Base y Tolerancia</CardTitle>
+                 <CardDescription className="text-xs">Jornada estándar aplicable a los miembros por defecto</CardDescription>
+               </CardHeader>
               <CardContent className="pt-4">
                 <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
@@ -465,7 +465,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
           <Button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+             className="bg-primary hover:bg-primary/90 text-primary-foreground"
           >
             {isSubmitting ? (
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />

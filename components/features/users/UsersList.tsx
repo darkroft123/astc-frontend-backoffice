@@ -2,14 +2,12 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import FilterBar from "./FilterBar";
-import { DataTable, Column } from "@/components/DataTable";
 import { useAuthGuard } from "@/app/jwt/auth/useAuthGuard";
-
-/* ================= SERVICES ================= */
-import { listUsers, deleteUser } from "@/app/services/users.service";
+import { listUsers } from "@/app/services/users.service";
 import { getAllProjects } from "@/app/services/project.assistance.service";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { formatAvatarUrl } from "@/lib/avatar-url";
+import { Pencil, ChevronLeft, ChevronRight } from "lucide-react";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -49,23 +47,30 @@ export default function UsersList() {
     setLoading(true);
     try {
       const [userData, projectsData] = await Promise.all([
-        listUsers(token),
+        listUsers(token).catch((e) => {
+          console.error("Error listUsers in UsersList:", e);
+          return [];
+        }),
         getAllProjects(token).catch((e) => {
           console.error("Error getAllProjects in UsersList:", e);
           return [];
         }),
       ]);
 
-      const projects = projectsData || [];
+      const projects = Array.isArray(projectsData) ? projectsData : [];
+      const rawUsers = Array.isArray(userData) ? userData : (userData?.items || []);
 
       setUsers(
-        userData.map((u: any) => {
+        rawUsers.map((u: any) => {
           const userProjects = projects.filter((p: any) =>
-            p.responsibleId === u.id || (Array.isArray(p.members) && p.members.some((m: any) => (m.userId || m.id) === u.id))
+            p.responsibleId === u.id ||
+            (Array.isArray(p.members) &&
+              p.members.some((m: any) => (m.userId || m.id) === u.id))
           );
-          const projectAssigned = userProjects.length > 0
-            ? userProjects.map((p: any) => p.name).join(", ")
-            : "Sin proyecto";
+          const projectAssigned =
+            userProjects.length > 0
+              ? userProjects.map((p: any) => p.name).join(", ")
+              : "Sin proyecto";
 
           return {
             ...u,
@@ -75,26 +80,12 @@ export default function UsersList() {
         })
       );
     } catch (err) {
-      console.error("Error listUsers:", err);
+      console.error("Error loadUsers:", err);
       setUsers([]);
     } finally {
       setLoading(false);
     }
   }
-
-  /* ================= DELETE ================= */
-  const handleDelete = async (id: string) => {
-    const ok = window.confirm("¿Eliminar usuario?");
-    if (!ok || !token) return;
-
-    try {
-      await deleteUser(token, id);
-      await loadUsers();
-    } catch (err) {
-      console.error("Error deleteUser:", err);
-      alert("No se pudo eliminar usuario");
-    }
-  };
 
   /* ================= EDIT ================= */
   const handleEdit = (user: any) => {
@@ -106,230 +97,257 @@ export default function UsersList() {
     const search = searchTerm.toLowerCase();
 
     return users.filter((u) => {
+      const fullName = `${u.firstName || ""} ${u.lastName || ""}`.trim().toLowerCase();
       const matchesSearch =
         u.username?.toLowerCase().includes(search) ||
-        u.firstName?.toLowerCase().includes(search) ||
-        u.lastName?.toLowerCase().includes(search) ||
+        fullName.includes(search) ||
         u.email?.toLowerCase().includes(search) ||
         u.projectAssigned?.toLowerCase().includes(search) ||
-        (Array.isArray(u.projects) && u.projects.some((p: any) => p.name?.toLowerCase().includes(search)));
+        (Array.isArray(u.projects) &&
+          u.projects.some((p: any) => p.name?.toLowerCase().includes(search)));
 
       const matchesRole =
-        roleFilter === "all" || u.roleCode === roleFilter;
+        roleFilter === "all" ||
+        u.roleCode === roleFilter ||
+        u.roleId === roleFilter;
 
       return matchesSearch && matchesRole;
     });
   }, [users, searchTerm, roleFilter]);
 
-  /* ================= PAGINATION FIX ================= */
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filteredUsers.length / ITEMS_PER_PAGE)
-  );
-
+  /* ================= PAGINATION ================= */
+  const totalPages = Math.max(1, Math.ceil(filteredUsers.length / ITEMS_PER_PAGE));
   const safePage = Math.min(currentPage, totalPages);
-
   const startIdx = (safePage - 1) * ITEMS_PER_PAGE;
+  const paginatedUsers = filteredUsers.slice(startIdx, startIdx + ITEMS_PER_PAGE);
 
-  const paginatedUsers = filteredUsers.slice(
-    startIdx,
-    startIdx + ITEMS_PER_PAGE
-  );
-
-  /* reset page when filters change */
   useEffect(() => {
     setCurrentPage(1);
   }, [searchTerm, roleFilter]);
 
-  /* ================= COLUMNS ================= */
-  const columns: Column<any>[] = [
-    {
-      key: "user",
-      header: "Usuario",
-      render: (user) => {
-        const fullName = `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.username || "Usuario";
-        const avatarSrc = formatAvatarUrl(user.avatarUrl);
-        return (
-          <div className="flex items-center gap-3">
-            <Avatar className="h-9 w-9 border border-border shrink-0">
-              {avatarSrc && (
-                <AvatarImage src={avatarSrc} alt={fullName} className="object-cover" />
-              )}
-              <AvatarFallback className="bg-blue-100 text-blue-700 text-xs font-bold">
-                {getInitials(fullName)}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col min-w-0">
-              <span className="font-semibold text-foreground truncate">
-                {fullName}
-              </span>
-              <span className="text-xs text-muted-foreground truncate">@{user.username}</span>
-            </div>
-          </div>
-        );
-      },
-    },
-    {
-      key: "email",
-      header: "Correo",
-      hideOnMobile: true,
-      render: (user) => (
-        <span className="text-foreground">{user.email}</span>
-      ),
-    },
-    {
-      key: "phone",
-      header: "Teléfono",
-      hideOnMobile: true,
-      render: (user) => (
-        <span className="text-muted-foreground">
-          {user.phone || "Sin teléfono"}
-        </span>
-      ),
-    },
-    {
-      key: "role",
-      header: "Rol",
-      render: (user) => (
-        <span className="px-3 py-1 rounded-full text-xs font-semibold bg-primary/5 text-primary">
-          {user.roleName || "Desconocido"}
-        </span>
-      ),
-    },
-    {
-      key: "project",
-      header: "Proyecto",
-      hideOnMobile: true,
-      render: (user) => {
-        const assigned: any[] = Array.isArray(user.projects) ? user.projects : [];
-        if (assigned.length === 0) {
-          return (
-            <span className="text-xs font-medium text-zinc-400 italic">
-              Sin proyecto
-            </span>
-          );
-        }
-
-        const p = assigned[0];
-        const isPM = p.responsibleId === user.id;
-        const remainingCount = assigned.length - 1;
-        const allProjectNames = assigned.map((x: any) => x.name).join(", ");
-
-        return (
-          <div className="flex items-center gap-1.5 whitespace-nowrap">
-            <span
-              title={`${p.name}${isPM ? " (Responsable / PM)" : " (Colaborador)"}`}
-              className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-0.5 rounded-full border transition-all ${
-                isPM
-                  ? "text-violet-700 bg-violet-50 border-violet-200"
-                  : "text-blue-700 bg-blue-50 border-blue-200"
-              }`}
-            >
-              <span className="truncate max-w-[120px]">{p.name}</span>
-              {isPM && (
-                <span className="text-[9px] bg-violet-200/80 text-violet-800 px-1 rounded font-bold">
-                  PM
-                </span>
-              )}
-            </span>
-
-            {remainingCount > 0 && (
-              <span
-                title={`Proyectos asignados: ${allProjectNames}`}
-                className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-muted text-zinc-600 border border-border cursor-help transition-colors hover:bg-zinc-200"
-              >
-                +{remainingCount} más
-              </span>
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      key: "actions",
-      header: "Acciones",
-      render: (user) => (
-        <div className="flex gap-2">
-          <button
-            onClick={() => handleEdit(user)}
-            className="px-3 py-1 text-xs rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors"
-          >
-            Editar
-          </button>
-
-          <button
-            onClick={() => handleDelete(user.id)}
-            className="px-3 py-1 text-xs rounded-lg bg-destructive/10 text-destructive hover:bg-destructive/20 transition-colors"
-          >
-            Eliminar
-          </button>
-        </div>
-      ),
-    },
-  ];
-
   /* ================= LOADING ================= */
   if (!isReady) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-sm text-muted-foreground">Cargando...</p>
+      <div className="py-16 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-2">
+          <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+          <p className="text-xs text-muted-foreground">Cargando...</p>
+        </div>
       </div>
     );
   }
 
   /* ================= UI ================= */
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6 space-y-4">
+    <div className="space-y-4">
+      {/* FILTER BAR */}
+      <FilterBar
+        roleFilter={roleFilter}
+        onRoleChange={setRoleFilter}
+        searchTerm={searchTerm}
+        onSearchChange={setSearchTerm}
+      />
 
-        {/* TOOLBAR */}
-        <div className="bg-card border border-[#D0D7DE] rounded-2xl shadow-sm p-3 sm:p-4">
-          <FilterBar
-            roleFilter={roleFilter}
-            onRoleChange={setRoleFilter}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-          />
+      {/* TABLE */}
+      <div className="w-full border border-border/80 rounded-2xl bg-card shadow-xs overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm min-w-[700px] border-collapse">
+            <thead>
+              <tr className="border-b border-border/80 bg-muted/40">
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground px-5 py-3.5">
+                  USUARIO
+                </th>
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground px-5 py-3.5">
+                  CORREO
+                </th>
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground px-5 py-3.5">
+                  TELÉFONO
+                </th>
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground px-5 py-3.5">
+                  ROL
+                </th>
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground px-5 py-3.5">
+                  PROYECTO
+                </th>
+                <th className="text-right font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground px-5 py-3.5">
+                  ACCIONES
+                </th>
+              </tr>
+            </thead>
+
+            <tbody className="divide-y divide-border/60">
+              {loading ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-16 text-muted-foreground">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+                      <span className="text-xs">Cargando usuarios...</span>
+                    </div>
+                  </td>
+                </tr>
+              ) : paginatedUsers.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="text-center py-16 text-xs text-muted-foreground">
+                    Sin usuarios registrados
+                  </td>
+                </tr>
+              ) : (
+                paginatedUsers.map((u) => {
+                  const fullName =
+                    `${u.firstName || ""} ${u.lastName || ""}`.trim() ||
+                    u.username ||
+                    "Usuario";
+                  const avatarSrc = formatAvatarUrl(u.avatarUrl);
+                  const assigned: any[] = Array.isArray(u.projects) ? u.projects : [];
+                  const firstProject = assigned[0];
+                  const isPM = firstProject?.responsibleId === u.id;
+                  const remainingCount = assigned.length - 1;
+
+                  return (
+                    <tr
+                      key={u.id}
+                      className="hover:bg-primary/5 transition-colors group"
+                    >
+                      {/* USUARIO */}
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-3">
+                          <Avatar className="h-8 w-8 rounded-full border border-border/80 shrink-0">
+                            {avatarSrc && (
+                              <AvatarImage
+                                src={avatarSrc}
+                                alt={fullName}
+                                className="object-cover"
+                              />
+                            )}
+                            <AvatarFallback className="bg-primary text-white text-xs font-bold">
+                              {getInitials(fullName)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="flex flex-col min-w-0">
+                            <span className="font-semibold text-foreground text-sm leading-tight truncate">
+                              {fullName}
+                            </span>
+                            <span className="text-xs text-muted-foreground leading-tight truncate">
+                              @{u.username}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* CORREO */}
+                      <td className="px-5 py-3.5 text-xs text-foreground/90 font-normal">
+                        {u.email}
+                      </td>
+
+                      {/* TELÉFONO */}
+                      <td className="px-5 py-3.5 text-xs">
+                        {u.phone ? (
+                          <span className="font-mono font-medium text-foreground">
+                            {u.phone}
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">Sin teléfono</span>
+                        )}
+                      </td>
+
+                      {/* ROL */}
+                      <td className="px-5 py-3.5">
+                        {u.roleCode === "ADMIN" || u.roleId === "ADMIN" || u.roleName === "Administrador" ? (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                            Administrador
+                          </span>
+                        ) : u.roleCode === "PROJECT_MANAGER" || u.roleId === "PROJECT_MANAGER" || u.roleName === "Project manager" ? (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber/10 text-amber-ink border border-amber/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-amber shrink-0" />
+                            Project manager
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue/10 text-blue-ink border border-blue/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-blue shrink-0" />
+                            Team member
+                          </span>
+                        )}
+                      </td>
+
+                      {/* PROYECTO */}
+                      <td className="px-5 py-3.5">
+                        {assigned.length === 0 ? (
+                          <span className="text-xs text-muted-foreground">
+                            Sin proyecto
+                          </span>
+                        ) : (
+                          <div className="flex items-center gap-1.5 whitespace-nowrap">
+                            <span className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                              <span className="truncate max-w-[140px]">
+                                {firstProject.name}
+                              </span>
+                              {isPM && (
+                                <span className="text-[9px] font-bold bg-primary/20 text-primary px-1 rounded">
+                                  PM
+                                </span>
+                              )}
+                            </span>
+
+                            {remainingCount > 0 && (
+                              <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-muted text-muted-foreground border border-border">
+                                +{remainingCount}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </td>
+
+                      {/* ACCIONES */}
+                      <td className="px-5 py-3.5 text-right">
+                        <button
+                          type="button"
+                          onClick={() => handleEdit(u)}
+                          title="Editar usuario"
+                          className="p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors cursor-pointer inline-flex items-center justify-center"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
         </div>
+      </div>
 
-        {/* TABLE */}
-        <div>
-          <DataTable
-            data={paginatedUsers}
-            columns={columns}
-            loading={loading}
-            emptyText="Sin usuarios"
-            maxHeight="620px"
-          />
+      {/* FOOTER / PAGINATION */}
+      <div className="flex items-center justify-between px-1 pt-2">
+        <span className="text-xs text-muted-foreground font-medium">
+          {filteredUsers.length} usuarios
+        </span>
 
-          {/* PAGINATION */}
-          <div className="flex items-center justify-center gap-3 mt-4">
-            <button
-              className="px-3 py-1.5 text-sm rounded-lg border border-border bg-background text-foreground hover:bg-accent disabled:opacity-50 transition-all"
-              onClick={() =>
-                setCurrentPage((p) => Math.max(p - 1, 1))
-              }
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="h-8 w-8 rounded-lg border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-raised disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-not-allowed"
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+            disabled={currentPage === 1}
+            title="Página anterior"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
 
-            <span className="text-sm text-muted-foreground">
-              Página {currentPage} de {totalPages}
-            </span>
+          <span className="text-xs text-muted-foreground font-medium px-1">
+            Página {currentPage} de {totalPages}
+          </span>
 
-            <button
-              className="px-3 py-1.5 text-sm rounded-lg border border-border bg-background text-foreground hover:bg-accent disabled:opacity-50 transition-all"
-              onClick={() =>
-                setCurrentPage((p) =>
-                  Math.min(p + 1, totalPages)
-                )
-              }
-              disabled={currentPage === totalPages}
-            >
-              Siguiente
-            </button>
-          </div>
+          <button
+            type="button"
+            className="h-8 w-8 rounded-lg border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-raised disabled:opacity-40 transition-colors cursor-pointer disabled:cursor-not-allowed"
+            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+            disabled={currentPage === totalPages}
+            title="Página siguiente"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>

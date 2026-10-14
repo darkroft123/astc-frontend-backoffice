@@ -212,7 +212,7 @@ export function PMAttendanceView() {
         const avatarSrc = formatAvatarUrl(r.user?.avatarUrl || r.photoUrl);
         return (
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-full bg-violet-100 text-violet-700 font-bold text-xs flex items-center justify-center border border-violet-200 shrink-0 overflow-hidden">
+            <div className="w-8 h-8 rounded-full bg-primary/10 text-primary font-bold text-xs flex items-center justify-center border border-primary/20 shrink-0 overflow-hidden">
               {avatarSrc ? (
                 <img src={avatarSrc} alt={r.userName} className="w-full h-full object-cover" />
               ) : (
@@ -224,14 +224,14 @@ export function PMAttendanceView() {
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className={`text-[10px] px-1.5 py-0.2 rounded font-medium border ${
                   r.userRole === "PROJECT_MANAGER"
-                    ? "bg-violet-50 text-violet-700 border-violet-200"
+                    ? "bg-primary/10 text-primary border-primary/20"
                     : r.userRole === "ADMIN"
-                    ? "bg-amber-50 text-amber-700 border-amber-200"
-                    : "bg-blue-50 text-blue-700 border-blue-200"
+                    ? "bg-amber/10 text-amber-ink border-amber/20"
+                    : "bg-primary/10 text-primary border-primary/20"
                 }`}>
                   {r.userRole === "PROJECT_MANAGER" ? "Jefe de Proyecto" : r.userRole === "ADMIN" ? "Administrador" : "Colaborador"}
                 </span>
-                {r.user?.email && <span className="text-[10px] text-zinc-400 truncate max-w-[130px]">{r.user.email}</span>}
+                {r.user?.email && <span className="text-[10px] text-text-4 truncate max-w-[130px]">{r.user.email}</span>}
               </div>
             </div>
           </div>
@@ -243,7 +243,7 @@ export function PMAttendanceView() {
       header: "PROYECTO",
       render: (r) => (
         <span className="text-xs font-medium text-foreground flex items-center gap-1">
-          <FolderKanban className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+          <FolderKanban className="w-3.5 h-3.5 text-text-4 shrink-0" />
           {r.projectName}
         </span>
       ),
@@ -257,7 +257,7 @@ export function PMAttendanceView() {
       key: "checkIn",
       header: "ENTRADA",
       render: (r) => (
-        <span className="font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
+        <span className="font-mono text-xs font-semibold text-green-ink bg-green/10 px-2 py-0.5 rounded border border-green/20">
           {r.checkIn}
         </span>
       ),
@@ -267,7 +267,7 @@ export function PMAttendanceView() {
       header: "SALIDA",
       render: (r) => (
         <span className={`font-mono text-xs font-semibold px-2 py-0.5 rounded ${
-          r.checkOut !== "—" ? "bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/40 dark:border-amber-800 dark:text-amber-400" : "text-zinc-400 bg-background"
+          r.checkOut !== "—" ? "bg-amber/10 text-amber-ink border border-amber/20" : "text-text-4 bg-background"
         }`}>
           {r.checkOut}
         </span>
@@ -339,7 +339,7 @@ export function PMAttendanceView() {
             <div className="flex flex-wrap items-end gap-3 flex-1">
               
               <div className="flex flex-col min-w-[170px]">
-                <label className="text-[11px] font-semibold text-zinc-500 mb-1">Filtrar por Rol</label>
+                <label className="text-[11px] font-semibold text-text-4 mb-1">Filtrar por Rol</label>
                 <Select value={selectedRole} onValueChange={(val: any) => setSelectedRole(val)}>
                   <SelectTrigger className="h-9 rounded-xl border-border text-xs">
                     <SelectValue placeholder="Seleccione Rol" />
@@ -353,7 +353,7 @@ export function PMAttendanceView() {
               </div>
 
               <div className="flex flex-col min-w-[190px]">
-                <label className="text-[11px] font-semibold text-zinc-500 mb-1">Proyecto</label>
+                <label className="text-[11px] font-semibold text-text-4 mb-1">Proyecto</label>
                 <Select value={selectedProject} onValueChange={setSelectedProject}>
                   <SelectTrigger className="h-9 rounded-xl border-border text-xs">
                     <SelectValue placeholder="Todos los Proyectos" />
@@ -368,7 +368,7 @@ export function PMAttendanceView() {
               </div>
 
               <div className="flex flex-col min-w-[160px]">
-                <label className="text-[11px] font-semibold text-zinc-500 mb-1">Estado</label>
+                <label className="text-[11px] font-semibold text-text-4 mb-1">Estado</label>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger className="h-9 rounded-xl border-border text-xs">
                     <SelectValue placeholder="Todos los Estados" />
@@ -383,7 +383,7 @@ export function PMAttendanceView() {
               </div>
 
               <div className="flex flex-col min-w-[200px] flex-1">
-                <label className="text-[11px] font-semibold text-zinc-500 mb-1">Buscar</label>
+                <label className="text-[11px] font-semibold text-text-4 mb-1">Buscar</label>
                 <div className="relative">
                   <Search className="w-3.5 h-3.5 absolute left-3 top-3 text-muted-foreground" />
                   <Input
@@ -399,12 +399,12 @@ export function PMAttendanceView() {
 
             <div className="flex items-center gap-2">
               <Button variant="outline" onClick={fetchAttendance} className="border border-border h-9 px-3 rounded-xl">
-                <RefreshCw className={`w-3.5 h-3.5 text-zinc-600 ${isLoading ? "animate-spin" : ""}`} />
+                <RefreshCw className={`w-3.5 h-3.5 text-text-2 ${isLoading ? "animate-spin" : ""}`} />
                 <span className="text-xs font-semibold">Actualizar</span>
               </Button>
               <Button
                 onClick={handleExportCSV}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold gap-1.5 h-9 px-3 shadow-sm"
+                className="bg-green hover:bg-green/90 text-white rounded-xl text-xs font-bold gap-1.5 h-9 px-3 shadow-sm"
               >
                 <Download className="w-3.5 h-3.5" /> Exportar CSV
               </Button>
@@ -414,13 +414,13 @@ export function PMAttendanceView() {
 
         <div className="bg-card rounded-2xl border border-border overflow-hidden shadow-xs">
           {isLoading ? (
-            <div className="py-16 text-center text-zinc-400 text-sm">
-              <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-violet-500" />
+            <div className="py-16 text-center text-text-4 text-sm">
+              <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-2 text-primary" />
               Cargando registros de asistencia...
             </div>
           ) : filteredRows.length === 0 ? (
-            <div className="py-16 text-center text-zinc-400 text-sm">
-              <Clock className="w-8 h-8 mx-auto mb-2 text-zinc-300" />
+            <div className="py-16 text-center text-text-4 text-sm">
+              <Clock className="w-8 h-8 mx-auto mb-2 text-text-5" />
               No se encontraron registros de asistencia para los filtros seleccionados
             </div>
           ) : (
@@ -431,7 +431,7 @@ export function PMAttendanceView() {
       </div>
 
       <Dialog open={!!selectedPhotoUrl} onOpenChange={(open) => !open && setSelectedPhotoUrl(null)}>
-        <DialogContent className="max-w-md p-5 rounded-2xl">
+        <DialogContent className="max-w-md p-5 rounded-[20px]">
           {selectedPhotoUrl && (
             <div className="mt-3 rounded-2xl overflow-hidden border border-border bg-black">
               <img src={selectedPhotoUrl} alt="Foto Biométrica" className="w-full max-h-[400px] object-cover" />

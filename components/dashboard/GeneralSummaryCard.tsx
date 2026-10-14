@@ -51,15 +51,15 @@ export function GeneralSummaryCard({
                 {total > 0 ? (
                   <>
                     {tmLen > 0 && (
-                      <circle cx="50" cy="50" r={R} fill="none" stroke="#2563eb" strokeWidth="12"
+                      <circle cx="50" cy="50" r={R} fill="none" stroke="var(--blue)" strokeWidth="12"
                         strokeDasharray={`${tmLen} ${C}`} strokeDashoffset="0" strokeLinecap="butt" />
                     )}
                     {pmLen > 0 && (
-                      <circle cx="50" cy="50" r={R} fill="none" stroke="#8b5cf6" strokeWidth="12"
+                      <circle cx="50" cy="50" r={R} fill="none" stroke="var(--violet)" strokeWidth="12"
                         strokeDasharray={`${pmLen} ${C}`} strokeDashoffset={-tmLen} strokeLinecap="butt" />
                     )}
                     {adminLen > 0 && (
-                      <circle cx="50" cy="50" r={R} fill="none" stroke="#f59e0b" strokeWidth="12"
+                      <circle cx="50" cy="50" r={R} fill="none" stroke="var(--amber)" strokeWidth="12"
                         strokeDasharray={`${adminLen} ${C}`} strokeDashoffset={-(tmLen + pmLen)} strokeLinecap="butt" />
                     )}
                   </>

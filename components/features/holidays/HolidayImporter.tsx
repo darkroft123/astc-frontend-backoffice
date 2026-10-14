@@ -110,11 +110,11 @@ export function HolidayImporter({ onImport, year }: HolidayImporterProps) {
   return (
     <>
       <Button variant="outline" onClick={() => resetState(true)} className="text-muted-foreground bg-card border-border">
-        <Upload className="w-4 h-4 mr-2 text-blue-600" /> Importar Feriados
+        <Upload className="w-4 h-4 mr-2 text-primary" /> Importar Feriados
       </Button>
 
       <Dialog open={open} onOpenChange={resetState}>
-        <DialogContent className="sm:max-w-xl rounded-2xl">
+        <DialogContent className="sm:max-w-xl rounded-[20px]">
           <DialogHeader>
             <DialogTitle>Importar Feriados</DialogTitle>
             <DialogDescription>
@@ -130,7 +130,7 @@ export function HolidayImporter({ onImport, year }: HolidayImporterProps) {
               </TabsList>
               
               <TabsContent value="text" className="mt-4 space-y-4">
-                <div className="bg-blue-50/50 p-4 rounded-lg border border-blue-100 text-sm text-blue-800 space-y-2">
+                <div className="bg-primary/10 p-4 rounded-lg border border-line text-sm text-text-2 space-y-2">
                   <p className="font-semibold flex items-center gap-2">
                     <AlertCircle className="w-4 h-4" /> Formato Requerido
                   </p>
@@ -139,7 +139,7 @@ export function HolidayImporter({ onImport, year }: HolidayImporterProps) {
                     <li>El formato debe ser: <strong>AAAA-MM-DD, Nombre del feriado</strong></li>
                     <li>Se aceptan separadores como comas (<code>,</code>), guiones (<code>-</code>) o espacios.</li>
                   </ul>
-                  <div className="font-mono text-xs bg-card p-2 rounded border border-blue-200 mt-2">
+                  <div className="font-mono text-xs bg-card p-2 rounded border border-line mt-2">
                     Ejemplos válidos:<br/>
                     2026-12-25, Navidad<br/>
                     2026-01-01 - Año Nuevo<br/>
@@ -153,13 +153,13 @@ export function HolidayImporter({ onImport, year }: HolidayImporterProps) {
                   className="min-h-[150px] font-mono text-sm"
                 />
                 {error && (
-                  <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg border border-red-100">
+                  <div className="text-sm text-red-ink bg-red/10 p-3 rounded-lg border border-red/20">
                     {error}
                   </div>
                 )}
                 <div className="flex justify-end gap-2 pt-2">
                   <Button variant="outline" onClick={() => resetState(false)}>Cancelar</Button>
-                  <Button onClick={handleImportText} disabled={loading} className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button onClick={handleImportText} disabled={loading} className="bg-primary hover:bg-primary/90 text-primary-foreground">
                     {loading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : null}
                     Importar Texto
                   </Button>
@@ -182,7 +182,7 @@ export function HolidayImporter({ onImport, year }: HolidayImporterProps) {
                   />
                 </div>
                 {error && (
-                  <div className="text-sm text-red-600 bg-red-50 p-3 rounded-lg border border-red-100 mt-4">
+                  <div className="text-sm text-red-ink bg-red/10 p-3 rounded-lg border border-red/20 mt-4">
                     {error}
                   </div>
                 )}

@@ -228,7 +228,7 @@ export default function HolidayListView() {
                 label="TOTAL FERIADOS" 
                 value={totalHolidays} 
                 icon={<CalendarIcon className="w-5 h-5" />} 
-                color="violet"
+                color="blue"
               />
               <SubMetricCard 
                 label="COLECCIONES" 
@@ -246,7 +246,7 @@ export default function HolidayListView() {
 
             <div className="flex items-end gap-3 flex-wrap lg:flex-nowrap mb-6">
               <div className="flex flex-col min-w-[250px]">
-                <label className="text-[10px] text-zinc-500 mb-1">Buscar colección o fecha</label>
+                <label className="text-[10px] text-text-4 mb-1">Buscar colección o fecha</label>
                 <Input
                   placeholder="Buscar..."
                   className="h-9 text-sm"
@@ -264,7 +264,7 @@ export default function HolidayListView() {
               <h3 className="text-sm font-semibold text-foreground">Listado de Colecciones</h3>
               <div className="flex flex-wrap sm:flex-nowrap items-center gap-2">
                 <HolidayImporter onImport={handleImportHolidays} year={new Date().getFullYear()} />
-                <Button onClick={() => setIsFormOpen(true)} className="h-9 bg-violet-600 hover:bg-violet-700 text-white shadow-sm shrink-0">
+                <Button onClick={() => setIsFormOpen(true)} className="h-9 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm shrink-0">
                   <Plus className="w-4 h-4 mr-1.5" /> Nueva Colección
                 </Button>
               </div>
@@ -283,7 +283,7 @@ export default function HolidayListView() {
                       onClick={() => toggleExpand(c.id)}
                     >
                       <div className="flex items-center gap-3">
-                        <div className="p-2 bg-indigo-100 text-indigo-700 rounded-md">
+                        <div className="p-2 bg-primary/10 text-primary rounded-md">
                           <Layers className="w-5 h-5" />
                         </div>
                         <div>
@@ -292,7 +292,7 @@ export default function HolidayListView() {
                         </div>
                       </div>
                       <div className="flex items-center gap-3">
-                        <span className="text-[10px] px-2 py-1 rounded-full bg-amber-100 text-amber-700 font-medium">GLOBAL</span>
+                        <span className="text-[10px] px-2 py-1 rounded-full bg-amber/10 text-amber-ink font-medium">GLOBAL</span>
                         <Button 
                           size="sm" 
                           variant={assignedCollectionId === c.id ? "outline" : "default"}
@@ -305,7 +305,7 @@ export default function HolidayListView() {
                         <Button
                           size="sm"
                           variant="ghost"
-                          className="h-8 w-8 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                          className="h-8 w-8 p-0 text-red-ink hover:bg-red/10"
                           onClick={(e) => { e.stopPropagation(); handleDelete(c.id); }}
                         >
                           <Trash2 className="w-4 h-4" />
@@ -317,7 +317,7 @@ export default function HolidayListView() {
                     {expandedId === c.id && (
                       <div className="bg-background border-t p-4">
                         {!c.items || c.items.length === 0 ? (
-                          <p className="text-sm text-zinc-500 text-center py-4">Esta colección no tiene fechas asignadas.</p>
+                          <p className="text-sm text-text-4 text-center py-4">Esta colección no tiene fechas asignadas.</p>
                         ) : (
                           <>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
@@ -336,7 +336,7 @@ export default function HolidayListView() {
                                         <p className="text-xs text-muted-foreground">{days[dateObj.getDay()]}, {dateObj.getFullYear()}</p>
                                       </div>
                                     </div>
-                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => handleDeleteCollectionItem(item.id)} title="Eliminar fecha">
+                                    <Button size="icon" variant="ghost" className="h-8 w-8 text-red-ink opacity-0 group-hover:opacity-100 transition-opacity" onClick={() => handleDeleteCollectionItem(item.id)} title="Eliminar fecha">
                                       <Trash2 className="w-4 h-4" />
                                     </Button>
                                   </div>
@@ -361,26 +361,26 @@ export default function HolidayListView() {
         </Card>
 
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-          <DialogContent className="sm:max-w-3xl">
+          <DialogContent className="sm:max-w-3xl rounded-[20px]">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold text-foreground">Crear Colección Global</DialogTitle>
-              <DialogDescription className="text-zinc-500">
+              <DialogDescription className="text-text-4">
                 Crea una colección para agrupar múltiples feriados. Aplica a toda la organización.
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
               
-              <div className="space-y-3 bg-muted/50 p-4 rounded-lg border border-zinc-100 flex flex-col items-center">
+              <div className="space-y-3 bg-muted/50 p-4 rounded-lg border border-line flex flex-col items-center">
                 <Label className="text-foreground font-semibold mb-2">Selecciona las Fechas</Label>
                 <div className="bg-card rounded-md shadow-sm border p-2">
                   <CalendarUI mode="multiple" selected={formDates} onSelect={(dates) => setFormDates(dates as Date[])} className="rounded-md" />
                 </div>
-                <p className="text-xs text-zinc-500 mt-2 text-center">Has seleccionado {formDates.length} días.</p>
+                <p className="text-xs text-text-4 mt-2 text-center">Has seleccionado {formDates.length} días.</p>
               </div>
 
               <div className="space-y-5 flex flex-col">
                 <div className="space-y-2">
-                  <Label className="text-sm font-semibold">Nombre de la Colección <span className="text-red-500">*</span></Label>
+                  <Label className="text-sm font-semibold">Nombre de la Colección <span className="text-red-ink">*</span></Label>
                   <Input value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="Ej. Feriados Perú 2026" required />
                 </div>
 
@@ -409,7 +409,7 @@ export default function HolidayListView() {
 
                 <DialogFooter className="pt-2 mt-auto">
                   <Button type="button" variant="outline" onClick={() => setIsFormOpen(false)} disabled={isSubmitting}>Cancelar</Button>
-                  <Button type="submit" className="bg-emerald-600 hover:bg-emerald-700" disabled={isSubmitting}>
+                  <Button type="submit" className="bg-green hover:bg-green/90" disabled={isSubmitting}>
                     <Plus className="w-4 h-4 mr-1" /> {isSubmitting ? "Creando..." : "Crear Colección"}
                   </Button>
                 </DialogFooter>
@@ -420,7 +420,7 @@ export default function HolidayListView() {
 
         {/* Modal: Confirmar Asignación Global */}
         <Dialog open={!!pendingAssignment} onOpenChange={(open) => { if (!open) setPendingAssignment(null); }}>
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-md rounded-[20px]">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold">Asignar Colección Global</DialogTitle>
               <DialogDescription>
@@ -429,7 +429,7 @@ export default function HolidayListView() {
             </DialogHeader>
             <DialogFooter className="mt-4">
               <Button variant="outline" onClick={() => setPendingAssignment(null)}>Cancelar</Button>
-              <Button onClick={confirmAssignment} className="bg-violet-600 hover:bg-violet-700 text-white">
+              <Button onClick={confirmAssignment} className="bg-primary hover:bg-primary/90 text-primary-foreground">
                 Aceptar y Asignar
               </Button>
             </DialogFooter>
@@ -438,7 +438,7 @@ export default function HolidayListView() {
 
         {/* Modal: Agregar fechas a colección existente */}
         <Dialog open={!!editingCollectionId} onOpenChange={(open) => { if (!open) { setEditingCollectionId(null); setEditDates([]); setEditDateNames({}); } }}>
-          <DialogContent className="sm:max-w-3xl">
+          <DialogContent className="sm:max-w-3xl rounded-[20px]">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold">Agregar Feriados</DialogTitle>
               <DialogDescription>
@@ -478,7 +478,7 @@ export default function HolidayListView() {
                 )}
                 <DialogFooter className="pt-2 mt-auto">
                   <Button type="button" variant="outline" onClick={() => { setEditingCollectionId(null); setEditDates([]); setEditDateNames({}); }} disabled={isEditSubmitting}>Cancelar</Button>
-                  <Button onClick={handleEditAddDates} disabled={isEditSubmitting || editDates.length === 0} className="bg-blue-600 hover:bg-blue-700 text-white">
+                  <Button onClick={handleEditAddDates} disabled={isEditSubmitting || editDates.length === 0} className="bg-primary hover:bg-primary/90 text-primary-foreground">
                     <Plus className="w-4 h-4 mr-1" /> {isEditSubmitting ? "Agregando..." : `Agregar ${editDates.length} fechas`}
                   </Button>
                 </DialogFooter>

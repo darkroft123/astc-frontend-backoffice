@@ -34,17 +34,17 @@ export default function UserActionsMenu({
   return (
     <div
       ref={menuRef}
-      className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-3xl shadow-xl shadow-black/10 z-50 py-2 overflow-hidden"
+      className="absolute right-0 mt-2 w-56 bg-card border border-border rounded-3xl shadow-xl z-50 py-2 overflow-hidden"
     >
       <button
         onClick={() => {
           onEdit();
           onClose();
         }}
-        className="w-full px-5 py-3 text-left text-sm text-zinc-700 hover:bg-zinc-100 flex items-center gap-3 transition-colors group"
+        className="w-full px-5 py-3 text-left text-sm text-text-2 hover:bg-raised flex items-center gap-3 transition-colors group"
       >
-        <div className="w-8 h-8 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-blue-100 transition-colors">
-          <Edit2 size={18} className="text-zinc-500 group-hover:text-blue-600" />
+        <div className="w-8 h-8 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+          <Edit2 size={18} className="text-text-4 group-hover:text-primary" />
         </div>
         Editar Usuario
       </button>
@@ -54,29 +54,29 @@ export default function UserActionsMenu({
           onBlock();
           onClose();
         }}
-        className="w-full px-5 py-3 text-left text-sm text-zinc-700 hover:bg-zinc-100 flex items-center gap-3 transition-colors group"
+        className="w-full px-5 py-3 text-left text-sm text-text-2 hover:bg-raised flex items-center gap-3 transition-colors group"
       >
-        <div className="w-8 h-8 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-amber-100 transition-colors">
+        <div className="w-8 h-8 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-amber/10 transition-colors">
           {user.isBlocked ? (
-            <Unlock size={18} className="text-zinc-500 group-hover:text-amber-600" />
+            <Unlock size={18} className="text-text-4 group-hover:text-amber-ink" />
           ) : (
-            <Lock size={18} className="text-zinc-500 group-hover:text-amber-600" />
+            <Lock size={18} className="text-text-4 group-hover:text-amber-ink" />
           )}
         </div>
         {user.isBlocked ? 'Desbloquear Usuario' : 'Bloquear Usuario'}
       </button>
 
-      <div className="h-px bg-zinc-200 my-1 mx-2" />
+      <div className="h-px bg-line my-1 mx-2" />
 
       <button
         onClick={() => {
           onDelete();
           onClose();
         }}
-        className="w-full px-5 py-3 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-3 transition-colors group"
+        className="w-full px-5 py-3 text-left text-sm text-red-ink hover:bg-red/10 flex items-center gap-3 transition-colors group"
       >
-        <div className="w-8 h-8 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-red-100 transition-colors">
-          <Trash2 size={18} className="text-red-500" />
+        <div className="w-8 h-8 rounded-2xl bg-muted flex items-center justify-center group-hover:bg-red/10 transition-colors">
+          <Trash2 size={18} className="text-red" />
         </div>
         Eliminar Usuario
       </button>

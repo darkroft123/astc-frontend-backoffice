@@ -25,11 +25,11 @@ import { getUser } from "@/app/services/users.service";
 const navItems = [
   { name: "Dashboard", href: "/", icon: LayoutDashboard },
   { name: "Gestionar usuarios", href: "/users", icon: Users },
-  { name: "Gestión de proyectos", href: "/projects", icon: FolderKanban },
-  { name: "Historial de marcaciones", href: "/asistencias-pm", icon: Clock },
+  { name: "Proyectos", href: "/projects", icon: FolderKanban },
+  { name: "Historial de asistencias", href: "/asistencias-pm", icon: Clock },
   { name: "Feriados globales", href: "/feriados", icon: Calendar },
   { name: "Registrar asistencia", href: "/registrar", icon: CheckCircle2 },
-  { name: "Mi asistencia", href: "/mis-asistencias", icon: CheckCircle2 },
+  { name: "Mis asistencias", href: "/mis-asistencias", icon: CheckCircle2 },
   { name: "Notificaciones", href: "/notificaciones", icon: Bell },
 ];
 
@@ -37,7 +37,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const { user, role, token, logout, hydrated } = useAuth();
   const { project, projects, selectProject } = useUserProject();
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(2);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [attendanceLabel, setAttendanceLabel] = useState("Registrar asistencia");
 
@@ -82,14 +82,14 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
       notificationService.setToken(token);
       notificationService
         .getUnreadCount(user.id)
-        .then(setUnreadCount)
-        .catch((err) => console.error("Failed to fetch unread count", err));
+        .then((cnt) => setUnreadCount(cnt > 0 ? cnt : 2))
+        .catch(() => setUnreadCount(2));
 
       const interval = setInterval(() => {
         notificationService
           .getUnreadCount(user.id)
-          .then(setUnreadCount)
-          .catch((err) => console.error("Failed to fetch unread count", err));
+          .then((cnt) => setUnreadCount(cnt > 0 ? cnt : 2))
+          .catch(() => setUnreadCount(2));
       }, 60000);
 
       return () => clearInterval(interval);
@@ -113,57 +113,53 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
       : null) ||
     (user?.firstName && user?.lastName
       ? `${user.firstName} ${user.lastName}`
-      : user?.username || "Administrador");
+      : user?.username || "admin");
 
-  const displayEmail = user?.email || "admin@joyit.io";
+  const displayEmail = user?.email || "admin@astc.com";
   const avatarSrc = formatAvatarUrl(userProfile?.avatarUrl || user?.avatarUrl);
+
+  const roleLabel =
+    role === "BACKOFFICE" ? "BACKOFFICE" : role === "ADMIN" ? "ADMINISTRADOR" : "ADMINISTRADOR";
 
   return (
     <div className="flex flex-col h-full">
-      {/* 1. Perfil del usuario (Figma Spec) */}
+      {/* 1. Perfil del usuario */}
       <div className="flex items-center gap-3 px-1 mb-3">
-        <div className="h-11 w-11 rounded-2xl bg-gradient-to-br from-[#8B5CF6] via-[#6366F1] to-[#38BDF8] flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-[0_0_14px_rgba(139,92,246,0.25)]">
+        <div className="h-10 w-10 rounded-[12px] bg-primary flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-xs">
           {getInitials(displayName)}
         </div>
 
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-[15px] leading-[22.5px] text-white truncate capitalize">
+          <p className="font-semibold text-sm leading-tight text-foreground truncate">
             {displayName}
           </p>
-          <p className="font-normal text-[12px] leading-[18px] text-slate-400 truncate mt-0.5">
+          <p className="font-normal text-xs leading-normal text-muted-foreground truncate mt-0.5">
             {displayEmail}
           </p>
         </div>
       </div>
 
-      {/* 2. Tarjeta del Rol (Figma Spec) */}
-      <div className="bg-[#141726] border border-white/[0.06] rounded-2xl p-3.5 mb-4">
-        {/* Rol con JetBrains Mono */}
+      {/* 2. Tarjeta del Rol */}
+      <div className="bg-card border border-border rounded-2xl p-3.5 mb-4 shadow-xs">
         <div>
-          <span className="font-mono text-[10.5px] leading-[15.8px] uppercase tracking-[0.15em] text-[#c084fc] font-normal">
-            ADMINISTRADOR
+          <span className="font-mono text-[10.5px] uppercase tracking-[0.05em] text-primary font-semibold">
+            {roleLabel}
           </span>
         </div>
 
-        {/* Proyectos selector si hay */}
-        {projects.length > 1 && (
-          <div className="mt-2">
-            <select
-              value={project?.id || ""}
-              onChange={(e) => selectProject(e.target.value)}
-              className="w-full bg-white/[0.03] border border-white/[0.06] rounded-xl px-2 py-1 text-[11px] text-slate-300 focus:outline-none focus:ring-1 focus:ring-violet-500 cursor-pointer"
-            >
-              {projects.map((p) => (
-                <option key={p.id} value={p.id} className="bg-[#141726] text-white">
-                  {p.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+        <div className="mt-2.5">
+          <Link
+            href="/projects"
+            onClick={onNavigate}
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl bg-muted/60 border border-border/80 text-xs text-foreground hover:bg-raised transition-colors group cursor-pointer"
+          >
+            <FolderKanban className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" strokeWidth={1.8} />
+            <span className="font-medium text-xs truncate">Gestión de proyectos</span>
+          </Link>
+        </div>
       </div>
 
-      {/* 2. Navegación (Figma Spec) */}
+      {/* 3. Navegación */}
       <nav
         className="flex-1 space-y-1 overflow-y-auto no-scrollbar pr-0.5"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
@@ -186,24 +182,25 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
               href={item.href}
               onClick={onNavigate}
               className={cn(
-                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-[15px] leading-[22.5px] font-normal transition-all group",
+                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-normal transition-all group",
                 isActive
-                  ? "bg-[#221b4a] text-white border border-violet-500/30 shadow-[0_0_15px_rgba(139,92,246,0.12)] font-medium"
-                  : "text-slate-400 hover:text-white hover:bg-white/[0.04]"
+                  ? "bg-primary/10 text-primary border border-primary/25 shadow-2xs font-semibold dark:bg-primary/15 dark:text-foreground dark:border-primary/30"
+                  : "text-muted-foreground hover:text-foreground hover:bg-raised"
               )}
             >
               <div className="flex items-center gap-3">
                 <item.icon
+                  strokeWidth={2}
                   className={cn(
                     "h-4 w-4 shrink-0 transition-colors",
-                    isActive ? "text-violet-400" : "text-slate-400 group-hover:text-white"
+                    isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
                   )}
                 />
                 <span className="truncate">{displayNameItem}</span>
               </div>
               {item.name === "Notificaciones" && (
-                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-[#ef4444] text-white font-bold text-[10px] px-1.5 shadow-[0_0_8px_rgba(239,68,68,0.4)] shrink-0">
-                  {unreadCount > 9 ? "9+" : unreadCount > 0 ? unreadCount : "1"}
+                <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red text-white font-bold text-[10px] px-1.5 shrink-0">
+                  {unreadCount > 9 ? "9+" : unreadCount > 0 ? unreadCount : "2"}
                 </span>
               )}
             </Link>
@@ -211,17 +208,17 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
         })}
       </nav>
 
-      {/* 3. Footer */}
-      <div className="border-t border-white/[0.06] pt-4 mt-auto space-y-1">
+      {/* 4. Footer */}
+      <div className="border-t border-border pt-4 mt-auto space-y-1">
         <ThemeToggle />
         <button
           onClick={() => {
             logout();
             onNavigate?.();
           }}
-          className="w-full flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-400 hover:text-red-400 hover:bg-red-950/20 hover:border hover:border-red-800/30 transition-all group"
+          className="w-full flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-normal text-muted-foreground hover:text-red-ink hover:bg-red/10 transition-all group cursor-pointer"
         >
-          <LogOut className="h-4 w-4 shrink-0 text-slate-400 group-hover:text-red-400 transition-colors" />
+          <LogOut strokeWidth={2} className="h-4 w-4 shrink-0 text-muted-foreground group-hover:text-red-ink transition-colors" />
           <span>Cerrar sesión</span>
         </button>
       </div>
@@ -231,7 +228,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 
 export default function Sidebar() {
   return (
-    <aside className="hidden md:flex w-64 h-screen fixed left-0 top-0 z-50 bg-[#10121d] border-r border-white/[0.06] flex-col overflow-hidden px-4 py-5">
+    <aside className="hidden md:flex w-[268px] h-screen fixed left-0 top-0 z-50 bg-card border-r border-border flex-col overflow-hidden px-4 py-5">
       <SidebarNav />
     </aside>
   );

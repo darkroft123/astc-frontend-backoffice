@@ -50,7 +50,7 @@ export function RecentActivityCard({ users = [] }: { users?: any[] }) {
 
         <Button
           variant="ghost"
-          className="w-full mt-auto text-violet-600 hover:bg-violet-50"
+          className="w-full mt-auto text-violet hover:bg-violet/10"
           onClick={() => router.push("/pm/asistencias")}
         >
           Ver todo
