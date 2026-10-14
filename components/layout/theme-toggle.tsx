@@ -25,7 +25,7 @@ export function ThemeToggle({ className }: { className?: string }) {
       {isDark ? (
         <>
           <Sun
-            className="h-[18px] w-[18px] shrink-0 text-amber"
+            className="h-[18px] w-[18px] shrink-0 text-text-3"
             strokeWidth={2}
             strokeLinecap="round"
             strokeLinejoin="round"

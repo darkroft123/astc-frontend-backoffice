@@ -40,6 +40,52 @@ export async function POST(req: Request) {
     }
 
     // 3. Users
+    if (query.includes("createUser")) {
+      const input = body.variables?.input || {};
+      const newUser = {
+        id: `u-${Date.now()}`,
+        username: input.username || "nuevo.usuario",
+        email: input.email || "nuevo@empresa.com",
+        firstName: input.firstName || "",
+        lastName: input.lastName || "",
+        phone: input.phone || null,
+        roleId: input.roleId || "TEAM_MEMBER",
+        roleCode: input.roleId === "018f6b7a-0001-7000-8000-000000000001" ? "ADMIN" : input.roleId === "018f6b7a-0001-7000-8000-000000000002" ? "PROJECT_MANAGER" : "TEAM_MEMBER",
+        roleName: input.roleId === "018f6b7a-0001-7000-8000-000000000001" ? "Administrador" : input.roleId === "018f6b7a-0001-7000-8000-000000000002" ? "Project manager" : "Team member",
+        avatarUrl: input.avatarUrl || "",
+      };
+      MOCK_USERS_LIST.push(newUser);
+      return NextResponse.json({
+        data: {
+          createUser: newUser,
+        },
+      });
+    }
+
+    if (query.includes("editUser")) {
+      const editId = body.variables?.id;
+      const target = MOCK_USERS_LIST.find((x) => x.id === editId) || MOCK_USERS_LIST[0];
+      if (body.variables?.input && target) {
+        const inp = body.variables.input;
+        if (inp.username) target.username = inp.username;
+        if (inp.firstName !== undefined) target.firstName = inp.firstName;
+        if (inp.lastName !== undefined) target.lastName = inp.lastName;
+        if (inp.email) target.email = inp.email;
+        if (inp.phone !== undefined) target.phone = inp.phone;
+        if (inp.roleId) {
+          target.roleId = inp.roleId;
+          target.roleCode = inp.roleId === "018f6b7a-0001-7000-8000-000000000001" ? "ADMIN" : inp.roleId === "018f6b7a-0001-7000-8000-000000000002" ? "PROJECT_MANAGER" : "TEAM_MEMBER";
+          target.roleName = inp.roleId === "018f6b7a-0001-7000-8000-000000000001" ? "Administrador" : inp.roleId === "018f6b7a-0001-7000-8000-000000000002" ? "Project manager" : "Team member";
+        }
+        if (inp.avatarUrl) target.avatarUrl = inp.avatarUrl;
+      }
+      return NextResponse.json({
+        data: {
+          editUser: target,
+        },
+      });
+    }
+
     if (query.includes("listUsers") || query.includes("getUsers")) {
       return NextResponse.json({
         data: {
