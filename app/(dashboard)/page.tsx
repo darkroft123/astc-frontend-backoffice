@@ -103,15 +103,15 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="relative min-h-screen bg-background overflow-hidden pb-12">
-      {/* 🌌 AMBIENT PURPLE LIGHT IN TOP RIGHT */}
-      <div className="absolute top-[-100px] right-[-100px] w-[600px] h-[450px] bg-purple-600/15 blur-[140px] rounded-full pointer-events-none -z-0" />
-      <div className="absolute top-[50px] right-[100px] w-[350px] h-[250px] bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none -z-0" />
+      {/* 🌌 AMBIENT PURPLE LIGHT IN TOP RIGHT (250PX HIGHER) */}
+      <div className="absolute top-[-250px] right-[-100px] w-[600px] h-[450px] bg-purple-600/10 dark:bg-purple-600/20 blur-[140px] rounded-full pointer-events-none -z-0" />
+      <div className="absolute top-[-80px] right-[100px] w-[350px] h-[250px] bg-indigo-500/10 dark:bg-indigo-500/15 blur-[100px] rounded-full pointer-events-none -z-0" />
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6 z-10">
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] text-[#7c9aff] bg-[#1a2238]/80 border border-[#2b3758] px-2.5 py-0.5 rounded-full">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-[#1a2238]/80 dark:text-[#7c9aff] dark:border-[#2b3758] px-2.5 py-0.5 rounded-full">
               CONTROL GLOBAL
             </span>
             <span className="font-sans text-xs text-muted-foreground">
@@ -127,138 +127,143 @@ export default function AdminDashboardPage() {
           </p>
         </div>
 
-        {/* 2. TOP ROW: 5 SUMMARY CARDS WITH TRANSLUCENT TINTS & PROPER RATIO */}
-        <div className="flex flex-col lg:flex-row gap-3.5 items-stretch">
-          {/* CARD 1: ADMIN PROFILE CARD (WIDER & TRANSLUCENT INDIGO TINT) */}
-          <div className="w-full lg:w-[28%] shrink-0 bg-[#0e1322]/70 backdrop-blur-md border border-[#212b45] rounded-2xl p-4 shadow-sm flex flex-col justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-[13px] bg-gradient-to-br from-[#4f46e5] via-[#7c3aed] to-[#38bdf8] flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-md shadow-purple-500/20">
+        {/* 2. TOP ROW: 5 SUMMARY CARDS WITH RESPONSIVE LAYOUT & OFFICIAL FIGMA DESIGN */}
+        <div className="flex flex-col xl:flex-row gap-3.5 items-stretch">
+          {/* CARD 1: ADMIN PROFILE CARD */}
+          <div className="w-full xl:w-[280px] 2xl:w-[320px] shrink-0 bg-card border border-border dark:bg-[#0c0d18] dark:border-[#252538] rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+            <div className="flex items-center gap-3.5">
+              <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-[#38bdf8] via-[#818cf8] to-[#c084fc] flex items-center justify-center text-white font-bold text-base shrink-0 shadow-sm">
                 A
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between">
-                  <span className="font-bold text-sm text-foreground truncate">
+                  <span className="font-bold text-base text-foreground dark:text-white truncate">
                     {fullName}
                   </span>
-                  <span className="bg-[#1c243a] text-[#7c9aff] border border-[#2b3758] text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                  <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-[#181a33] dark:text-[#7d97ff] dark:border-[#2b3054] text-[10.5px] font-mono font-bold px-2.5 py-0.5 rounded-full">
                     ADMIN
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground truncate mt-0.5">
+                <p className="text-xs text-muted-foreground dark:text-[#707694] truncate mt-0.5">
                   {email}
                 </p>
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-2 mt-3 pt-2.5 border-t border-[#1f2840]/60">
-              <div className="bg-[#141b2f]/80 border border-[#222c48]/60 rounded-xl p-2.5">
-                <p className="text-[9px] font-mono uppercase text-muted-foreground font-semibold tracking-wider">
+            <div className="border-t border-border/70 dark:border-[#1e1f30] my-3.5" />
+
+            <div className="grid grid-cols-2 gap-2.5">
+              <div className="bg-muted/50 border border-border/70 dark:bg-[#080811] dark:border-[#1c1d2e] rounded-xl p-3">
+                <p className="text-[10px] font-mono uppercase text-muted-foreground dark:text-[#8b8fa8] font-semibold tracking-wider">
                   USUARIO
                 </p>
-                <p className="text-xs font-bold text-foreground truncate mt-0.5">
+                <p className="text-sm font-bold text-foreground dark:text-white truncate mt-1">
                   {fullName}
                 </p>
               </div>
-              <div className="bg-[#141b2f]/80 border border-[#222c48]/60 rounded-xl p-2.5">
-                <p className="text-[9px] font-mono uppercase text-muted-foreground font-semibold tracking-wider">
+              <div className="bg-muted/50 border border-border/70 dark:bg-[#080811] dark:border-[#1c1d2e] rounded-xl p-3">
+                <p className="text-[10px] font-mono uppercase text-muted-foreground dark:text-[#8b8fa8] font-semibold tracking-wider">
                   TELÉFONO
                 </p>
-                <p className="text-xs text-muted-foreground mt-0.5 whitespace-nowrap">
+                <p className="text-xs text-muted-foreground dark:text-[#707694] mt-1 whitespace-nowrap">
                   Sin registrar
                 </p>
               </div>
             </div>
           </div>
 
-          {/* CARD 2: JEFES DE PROYECTO (TRANSLUCENT AMBER TINT) */}
-          <div
-            onClick={() => router.push("/users")}
-            className="flex-1 min-w-[140px] bg-[#16120b]/70 backdrop-blur-md border border-[#382b16] hover:border-amber/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#261d0f] border border-[#4a371a] flex items-center justify-center shrink-0">
-              <UserCheck className="w-4 h-4 text-amber-400" />
+          {/* CARDS 2-5: RESPONSIVE METRIC CARDS (2-COL ON MOBILE, 4-COL ON TABLET/DESKTOP) */}
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:flex xl:flex-1 gap-3.5 w-full">
+            {/* CARD 2: JEFES DE PROYECTO */}
+            <div
+              onClick={() => router.push("/users")}
+              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-amber-500/40 dark:bg-[#16120b]/70 dark:backdrop-blur-md dark:border-[#382b16] dark:hover:border-amber-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
+            >
+              <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:bg-[#261d0f] dark:border-[#4a371a] dark:text-amber-400 flex items-center justify-center shrink-0">
+                <UserCheck className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mt-2.5">
+                  Jefes de proyecto
+                </p>
+                <p className="text-3xl font-bold text-foreground mt-1">
+                  {pmsCount}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Project managers
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs text-amber-400 font-medium mt-2.5">
-                Jefes de proyecto
-              </p>
-              <p className="text-3xl font-bold text-foreground mt-1">
-                {pmsCount}
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
-                Project managers
-              </p>
-            </div>
-          </div>
 
-          {/* CARD 3: TRABAJADORES (TRANSLUCENT EMERALD TINT) */}
-          <div
-            onClick={() => router.push("/users")}
-            className="flex-1 min-w-[140px] bg-[#0a1713]/70 backdrop-blur-md border border-[#16382b] hover:border-emerald-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#112920] border border-[#1c4737] flex items-center justify-center shrink-0">
-              <Users className="w-4 h-4 text-emerald-400" />
+            {/* CARD 3: TRABAJADORES */}
+            <div
+              onClick={() => router.push("/users")}
+              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-emerald-500/40 dark:bg-[#0a1713]/70 dark:backdrop-blur-md dark:border-[#16382b] dark:hover:border-emerald-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
+            >
+              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:bg-[#112920] dark:border-[#1c4737] dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <Users className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-2.5">
+                  Trabajadores
+                </p>
+                <p className="text-3xl font-bold text-foreground mt-1">
+                  {teamMembersCount}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Personal de campo
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs text-emerald-400 font-medium mt-2.5">
-                Trabajadores
-              </p>
-              <p className="text-3xl font-bold text-foreground mt-1">
-                {teamMembersCount}
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
-                Personal de campo
-              </p>
-            </div>
-          </div>
 
-          {/* CARD 4: USUARIOS (TRANSLUCENT BLUE TINT) */}
-          <div
-            onClick={() => router.push("/users")}
-            className="flex-1 min-w-[140px] bg-[#0c1322]/70 backdrop-blur-md border border-[#1a2b4a] hover:border-blue-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#14223b] border border-[#213760] flex items-center justify-center shrink-0">
-              <Users className="w-4 h-4 text-blue-400" />
+            {/* CARD 4: USUARIOS */}
+            <div
+              onClick={() => router.push("/users")}
+              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-blue-500/40 dark:bg-[#0c1322]/70 dark:backdrop-blur-md dark:border-[#1a2b4a] dark:hover:border-blue-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
+            >
+              <div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:bg-[#14223b] dark:border-[#213760] dark:text-blue-400 flex items-center justify-center shrink-0">
+                <Users className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mt-2.5">
+                  Usuarios
+                </p>
+                <p className="text-3xl font-bold text-foreground mt-1">
+                  {totalUsers}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  En el sistema
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-xs text-blue-400 font-medium mt-2.5">
-                Usuarios
-              </p>
-              <p className="text-3xl font-bold text-foreground mt-1">
-                {totalUsers}
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
-                En el sistema
-              </p>
-            </div>
-          </div>
 
-          {/* CARD 5: PROYECTOS (TRANSLUCENT PURPLE TINT) */}
-          <div
-            onClick={() => router.push("/projects")}
-            className="flex-1 min-w-[140px] bg-[#130d22]/70 backdrop-blur-md border border-[#311c50] hover:border-purple-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
-          >
-            <div className="w-8 h-8 rounded-xl bg-[#23153d] border border-[#44236e] flex items-center justify-center shrink-0">
-              <FolderKanban className="w-4 h-4 text-purple-400" />
-            </div>
-            <div>
-              <p className="text-xs text-purple-400 font-medium mt-2.5">
-                Proyectos
-              </p>
-              <p className="text-3xl font-bold text-foreground mt-1">
-                {totalProjects}
-              </p>
-              <p className="text-[11px] text-muted-foreground mt-0.5">
-                de {totalProjects} totales
-              </p>
+            {/* CARD 5: PROYECTOS */}
+            <div
+              onClick={() => router.push("/projects")}
+              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-purple-500/40 dark:bg-[#130d22]/70 dark:backdrop-blur-md dark:border-[#311c50] dark:hover:border-purple-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
+            >
+              <div className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:bg-[#23153d] dark:border-[#44236e] dark:text-purple-400 flex items-center justify-center shrink-0">
+                <FolderKanban className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mt-2.5">
+                  Proyectos
+                </p>
+                <p className="text-3xl font-bold text-foreground mt-1">
+                  {totalProjects}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  de {totalProjects} totales
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
         {/* 3. MIDDLE ROW: TWO CHARTS */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* DONUT: ESTRUCTURA DE LA ORGANIZACIÓN (WITH SEPARATED RING SLICES) */}
-          <div className="lg:col-span-6 bg-[#0e1322]/70 backdrop-blur-md border border-[#212b45] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          {/* DONUT: ESTRUCTURA DE LA ORGANIZACIÓN */}
+          <div className="lg:col-span-6 bg-card border border-border dark:bg-[#0e1322]/70 dark:backdrop-blur-md dark:border-[#212b45] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-sm font-bold text-foreground">
@@ -268,7 +273,7 @@ export default function AdminDashboardPage() {
                   Consolidado de roles, colaboradores y proyectos
                 </p>
               </div>
-              <span className="bg-[#1c243a] text-[#7c9aff] border border-[#2b3758] text-xs px-2.5 py-0.5 rounded-full font-medium">
+              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-[#1c243a] dark:text-[#7c9aff] dark:border-[#2b3758] text-xs px-2.5 py-0.5 rounded-full font-medium">
                 {totalProjects} proyectos
               </span>
             </div>
@@ -355,9 +360,9 @@ export default function AdminDashboardPage() {
                   </span>
                 </div>
 
-                <div className="pt-3 border-t border-[#1f2840]/60 flex items-center justify-between text-xs">
+                <div className="pt-3 border-t border-border/80 dark:border-[#1f2840]/60 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <FolderKanban className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <FolderKanban className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
                     <span className="text-muted-foreground">Proyectos activos</span>
                   </div>
                   <span className="font-bold text-foreground font-mono">
@@ -369,7 +374,7 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* BAR CHART: RESUMEN DE RECURSOS */}
-          <div className="lg:col-span-6 bg-[#0e1322]/70 backdrop-blur-md border border-[#212b45] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-6 bg-card border border-border dark:bg-[#0e1322]/70 dark:backdrop-blur-md dark:border-[#212b45] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-sm font-bold text-foreground">
@@ -379,7 +384,7 @@ export default function AdminDashboardPage() {
                   Distribución de entidades del sistema
                 </p>
               </div>
-              <span className="bg-[#1c243a] text-[#7c9aff] border border-[#2b3758] text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase">
+              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-[#1c243a] dark:text-[#7c9aff] dark:border-[#2b3758] text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase">
                 GLOBAL
               </span>
             </div>
@@ -388,10 +393,10 @@ export default function AdminDashboardPage() {
             <div className="py-4">
               <div className="relative h-44 w-full flex items-end justify-between px-4 pb-6 pt-6">
                 {/* Y-Axis dashed grid lines */}
-                <div className="absolute inset-x-0 bottom-6 border-b border-[#212b45]" />
-                <div className="absolute inset-x-0 bottom-[68px] border-b border-[#212b45]/60 border-dashed" />
-                <div className="absolute inset-x-0 bottom-[114px] border-b border-[#212b45]/60 border-dashed" />
-                <div className="absolute inset-x-0 top-4 border-b border-[#212b45]/60 border-dashed" />
+                <div className="absolute inset-x-0 bottom-6 border-b border-border dark:border-[#212b45]" />
+                <div className="absolute inset-x-0 bottom-[68px] border-b border-border/60 dark:border-[#212b45]/60 border-dashed" />
+                <div className="absolute inset-x-0 bottom-[114px] border-b border-border/60 dark:border-[#212b45]/60 border-dashed" />
+                <div className="absolute inset-x-0 top-4 border-b border-border/60 dark:border-[#212b45]/60 border-dashed" />
 
                 {/* Y-Axis numbers */}
                 <span className="absolute left-0 bottom-5 text-[10px] font-mono text-muted-foreground">0</span>
@@ -455,7 +460,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* 4. BOTTOM ROW: ACCIONES RÁPIDAS */}
-        <div className="bg-[#0e1322]/70 backdrop-blur-md border border-[#212b45] rounded-2xl p-5 shadow-sm space-y-3">
+        <div className="bg-card border border-border dark:bg-[#0e1322]/70 dark:backdrop-blur-md dark:border-[#212b45] rounded-2xl p-5 shadow-sm space-y-3">
           <div>
             <h2 className="text-sm font-bold text-foreground">
               Acciones rápidas
@@ -480,7 +485,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/users")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#141b2f]/80 hover:bg-[#1a233d] border border-[#222c48]/80 text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-[#141b2f]/80 dark:hover:bg-[#1a233d] dark:border-[#222c48]/80 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
             >
               <Users size={16} className="text-muted-foreground" />
               <span>Gestión de usuarios</span>
@@ -490,7 +495,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/projects")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#141b2f]/80 hover:bg-[#1a233d] border border-[#222c48]/80 text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-[#141b2f]/80 dark:hover:bg-[#1a233d] dark:border-[#222c48]/80 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
             >
               <Briefcase size={16} className="text-muted-foreground" />
               <span>Proyectos</span>
@@ -500,7 +505,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/feriados")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#141b2f]/80 hover:bg-[#1a233d] border border-[#222c48]/80 text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-[#141b2f]/80 dark:hover:bg-[#1a233d] dark:border-[#222c48]/80 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
             >
               <Calendar size={16} className="text-muted-foreground" />
               <span>Feriados globales</span>
@@ -510,7 +515,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/mis-asistencias")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-[#141b2f]/80 hover:bg-[#1a233d] border border-[#222c48]/80 text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-[#141b2f]/80 dark:hover:bg-[#1a233d] dark:border-[#222c48]/80 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
             >
               <Clock size={16} className="text-muted-foreground" />
               <span>Mis asistencias</span>

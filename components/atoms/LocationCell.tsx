@@ -7,23 +7,37 @@ export function LocationCell({
   lng,
   latitude,
   longitude,
+  locationName,
 }: {
   lat?: number | null;
   lng?: number | null;
   latitude?: number | null;
   longitude?: number | null;
+  locationName?: string | null;
 }) {
-  const [district, setDistrict] = useState<string | null>(null);
+  const [district, setDistrict] = useState<string | null>(locationName || null);
   const effectiveLat = lat ?? latitude;
   const effectiveLng = lng ?? longitude;
 
   useEffect(() => {
+    if (locationName) {
+      setDistrict(locationName);
+      return;
+    }
     if (effectiveLat != null && effectiveLng != null) {
       getDistrictFromCoords(effectiveLat, effectiveLng).then(setDistrict);
     }
-  }, [effectiveLat, effectiveLng]);
+  }, [effectiveLat, effectiveLng, locationName]);
 
   if (effectiveLat == null || effectiveLng == null) {
+    if (locationName) {
+      return (
+        <span className="inline-flex items-center gap-1.5 text-blue-500 dark:text-blue-400 text-xs">
+          <MapPin className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 shrink-0" />
+          <span className="truncate max-w-[140px]">{locationName}</span>
+        </span>
+      );
+    }
     return <span className="text-muted-foreground">-</span>;
   }
 
@@ -34,11 +48,11 @@ export function LocationCell({
       href={mapsUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1 text-link font-medium hover:underline text-xs"
+      className="inline-flex items-center gap-1.5 text-blue-500 dark:text-blue-400 font-normal hover:underline text-xs"
       title={`Coordenadas: ${effectiveLat}, ${effectiveLng} (Ver en Google Maps)`}
     >
-      <MapPin className="w-3.5 h-3.5 text-link shrink-0" />
-      <span className="truncate max-w-[140px]">{district || "Cargando..."}</span>
+      <MapPin className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 shrink-0" />
+      <span className="truncate max-w-[140px]">{district || locationName || "Condevilla Señor"}</span>
     </a>
   );
 }

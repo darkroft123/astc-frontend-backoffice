@@ -5,6 +5,7 @@ import {
   MOCK_USERS_LIST,
   MOCK_ATTENDANCES_LIST,
   MOCK_DASHBOARD_BACKOFFICE,
+  MOCK_NOTIFICATIONS,
 } from "@/lib/mock-data";
 
 export async function POST(req: Request) {
@@ -106,9 +107,70 @@ export async function POST(req: Request) {
 
     // 4. Notifications
     if (query.includes("getUnreadNotificationsCount") || query.includes("unread")) {
+      const count = MOCK_NOTIFICATIONS.filter((n) => !n.read).length;
       return NextResponse.json({
         data: {
-          getUnreadNotificationsCount: 2,
+          getUnreadNotificationsCount: count,
+        },
+      });
+    }
+
+    if (
+      query.includes("getallnotifications") ||
+      query.includes("getNotificationsByCategory") ||
+      query.includes("getNotifications")
+    ) {
+      const page = body.variables?.page || 1;
+      const size = body.variables?.size || 10;
+      const start = (page - 1) * size;
+      const paged = MOCK_NOTIFICATIONS.slice(start, start + size);
+      return NextResponse.json({
+        data: {
+          getallnotifications: {
+            page,
+            size,
+            total: MOCK_NOTIFICATIONS.length,
+            items: paged,
+          },
+          getNotificationsByCategory: {
+            page,
+            size,
+            total: MOCK_NOTIFICATIONS.length,
+            items: paged,
+          },
+        },
+      });
+    }
+
+    if (query.includes("markAllAsRead") || query.includes("markAllRead")) {
+      MOCK_NOTIFICATIONS.forEach((n) => {
+        n.read = true;
+      });
+      return NextResponse.json({
+        data: {
+          markAllAsRead: true,
+        },
+      });
+    }
+
+    if (query.includes("markAsRead")) {
+      const nid = body.variables?.notificationId || body.variables?.id;
+      const item = MOCK_NOTIFICATIONS.find((n) => n.id === nid);
+      if (item) item.read = true;
+      return NextResponse.json({
+        data: {
+          markAsRead: true,
+        },
+      });
+    }
+
+    if (query.includes("deleteNotification")) {
+      const nid = body.variables?.notificationId || body.variables?.id;
+      const idx = MOCK_NOTIFICATIONS.findIndex((n) => n.id === nid);
+      if (idx !== -1) MOCK_NOTIFICATIONS.splice(idx, 1);
+      return NextResponse.json({
+        data: {
+          deleteNotification: true,
         },
       });
     }
@@ -130,6 +192,12 @@ export async function POST(req: Request) {
       return NextResponse.json({
         data: {
           listAttendance: {
+            items: MOCK_ATTENDANCES_LIST,
+            page: 1,
+            size: 20,
+            total: MOCK_ATTENDANCES_LIST.length,
+          },
+          listTeamAttendance: {
             items: MOCK_ATTENDANCES_LIST,
             page: 1,
             size: 20,

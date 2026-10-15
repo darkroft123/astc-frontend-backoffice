@@ -405,8 +405,12 @@ export default function CreateUserPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6">
+    <div className="relative min-h-screen bg-background overflow-hidden pb-12">
+      {/* 🌌 AMBIENT PURPLE LIGHT IN TOP RIGHT (250PX HIGHER) */}
+      <div className="absolute top-[-250px] right-[-100px] w-[600px] h-[450px] bg-purple-600/10 dark:bg-purple-600/20 blur-[140px] rounded-full pointer-events-none -z-0" />
+      <div className="absolute top-[-80px] right-[100px] w-[350px] h-[250px] bg-indigo-500/10 dark:bg-indigo-500/15 blur-[100px] rounded-full pointer-events-none -z-0" />
+
+      <div className="relative max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6 z-10">
         {/* HEADER */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

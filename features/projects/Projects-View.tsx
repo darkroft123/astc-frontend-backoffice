@@ -2,34 +2,32 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/jwt/auth/auth.provider";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { SubMetricCard } from "@/components/dashboard/SubMetricCard";
 import {
-  FolderKanban, Users, Pencil, Trash2, ChevronLeft, ChevronRight, RefreshCw } from "lucide-react";
-import { DataTable, Column } from "@/components/DataTable";
-import PageHeader from "@/components/layout/page-header";
-import { getAllProjects } from "@/app/services/project.assistance.service";
+  Folder,
+  Check,
+  Ban,
+  Search,
+  Filter,
+  RefreshCw,
+  PlusSquare,
+  Users,
+  Pencil,
+  Trash2,
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+} from "lucide-react";
+import { getAllProjects, deleteProject } from "@/app/services/project.assistance.service";
 import type { Project } from "@/components/types/dashboard";
-
-import {
-  graphqlRequest,
-  deleteProject,
-} from "@/app/services/project.assistance.service";
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import DeleteProjectModal from "@/components/features/projects/DeleteProjectModal";
 
-/* ===================== VIEW ===================== */
-
-export function ProjectsManagementView({ context = "PM" }: { context?: "ADMIN" | "PM" }) {
-
+export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN" | "PM" }) {
   const router = useRouter();
   const { token, hydrated } = useAuth();
   const isAdmin = context === "ADMIN";
@@ -42,383 +40,374 @@ export function ProjectsManagementView({ context = "PM" }: { context?: "ADMIN" |
   const [search, setSearch] = useState("");
   const [estadoFilter, setEstadoFilter] = useState("all");
 
-
-  /* ===================== FETCH PROJECTS ===================== */
-async function fetchProjects() {
-  if (!hydrated || !token) return;
-
-  setIsLoading(true);
-
-  try {
-    const data = await getAllProjects(token);
-
-    const sorted = [...(data ?? [])].sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() -
-        new Date(a.createdAt).getTime()
-    );
-
-    setProjects(sorted);
-  } catch (err) {
-    console.error("? Error fetching projects:", err);
-  } finally {
-    setIsLoading(false);
-  }
-}
-  /* ===================== DELETE ===================== */
-
-async function handleDeleteConfirm() {
-  try {
-    if (!token || !projectToDelete) return;
-
-    console.log("DELETE:", projectToDelete.id);
-
-    const result = await deleteProject(token, projectToDelete.id);
-
-    console.log("RESULT:", result);
-
-    setProjectToDelete(null);
-    await fetchProjects();
-  } catch (err) {
-    console.error("? Delete error:", err);
-  }
-}
-
-  
-/* ===================== INIT ===================== */
-
-    useEffect(() => {
-      fetchProjects();
-    }, [hydrated, token]);
-
-    useEffect(() => {
-      setPage(1);
-    }, [search, estadoFilter]);
-
-    
-  /* ===================== FILTERS ===================== */
-
-      const filteredProjects = useMemo(() => {
-        return projects.filter((p) => {
-          const matchesSearch =
-            p.name.toLowerCase().includes(search.toLowerCase()) ||
-            p.id.toLowerCase().includes(search.toLowerCase());
-
-          const matchesEstado =
-            estadoFilter === "all" || p.status === estadoFilter;
-
-          return matchesSearch && matchesEstado;
-        });
-      }, [projects, search, estadoFilter]);
-
-      const totalProjects = filteredProjects.length;
-
-      const activeProjects = filteredProjects.filter(
-        (p) => p.status === "ACTIVE"
-      ).length;
-
-      const inactiveProjects = filteredProjects.filter(
-        (p) => p.status === "INACTIVE"
-      ).length;
-
-      const pageSize = 5;
-
-      const totalPages = Math.max(
-        1,
-        Math.ceil(filteredProjects.length / pageSize)
+  async function fetchProjects() {
+    if (!hydrated || !token) return;
+    setIsLoading(true);
+    try {
+      const data = await getAllProjects(token);
+      const sorted = [...(data ?? [])].sort(
+        (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
       );
+      setProjects(sorted);
+    } catch (err) {
+      console.error("Error fetching projects:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
-      useEffect(() => {
-        if (page > totalPages) {
-          setPage(totalPages);
-        }
-      }, [page, totalPages]);
+  async function handleDeleteConfirm() {
+    try {
+      if (!token || !projectToDelete) return;
+      await deleteProject(token, projectToDelete.id);
+      setProjectToDelete(null);
+      await fetchProjects();
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  }
 
-      const paginatedProjects = useMemo(() => {
-        const start = (page - 1) * pageSize;
+  useEffect(() => {
+    fetchProjects();
+  }, [hydrated, token]);
 
-        return filteredProjects.slice(
-          start,
-          start + pageSize
-        );
-      }, [filteredProjects, page]);
+  useEffect(() => {
+    setPage(1);
+  }, [search, estadoFilter]);
 
-      /* ===================== COLUMNS ===================== */
+  const filteredProjects = useMemo(() => {
+    return projects.filter((p) => {
+      const matchesSearch =
+        p.name.toLowerCase().includes(search.toLowerCase()) ||
+        p.id.toLowerCase().includes(search.toLowerCase());
+      const matchesEstado = estadoFilter === "all" || p.status === estadoFilter;
+      return matchesSearch && matchesEstado;
+    });
+  }, [projects, search, estadoFilter]);
 
-    const columns: Column<Project>[] = [
-      {
-        key: "name",
-        header: "PROYECTO",
-        render: (r) => (
-          <div>
-            <p className="font-medium text-foreground">{r.name}</p>
-             <p className="text-xs text-text-4 mt-0.5">{r.id}</p>
+  const totalProjects = filteredProjects.length;
+  const activeProjects = filteredProjects.filter((p) => p.status === "ACTIVE").length;
+  const inactiveProjects = filteredProjects.filter((p) => p.status === "INACTIVE").length;
+
+  const pageSize = 10;
+  const totalPages = Math.max(1, Math.ceil(filteredProjects.length / pageSize));
+
+  const paginatedProjects = useMemo(() => {
+    const start = (page - 1) * pageSize;
+    return filteredProjects.slice(start, start + pageSize);
+  }, [filteredProjects, page, pageSize]);
+
+  const formatDate = (dateStr?: string | null) => {
+    if (!dateStr) return "-";
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      const day = String(d.getDate()).padStart(2, "0");
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const year = String(d.getFullYear()).slice(-2);
+      return `${day}/${month}/${year}`;
+    } catch {
+      return dateStr;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <div className="max-w-7xl mx-auto px-4 py-6 md:px-8 space-y-6">
+        {/* HEADER */}
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[11px] font-semibold tracking-wider px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500 dark:text-blue-400 border border-blue-500/20 uppercase">
+              CONTROL GLOBAL
+            </span>
+            <span className="text-xs text-muted-foreground">• Panel administrativo</span>
           </div>
-        ),
-      },
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">Gestión de proyectos</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Administración de proyectos, configuración y asignación de recursos del sistema.
+          </p>
+        </div>
 
-      {
-        key: "startDate",
-        header: "INICIO",
-        hideOnMobile: true,
-        render: (r) =>
-          r.startDate
-            ? new Date(r.startDate).toLocaleDateString("es-PE", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit",
-              })
-            : "-",
-      },
-
-      {
-        key: "endDate",
-        header: "FIN",
-        hideOnMobile: true,
-        render: (r) =>
-          r.endDate
-            ? new Date(r.endDate).toLocaleDateString("es-PE", {
-                day: "2-digit",
-                month: "2-digit",
-                year: "2-digit",
-              })
-            : "-",
-      },
-
-      {
-        key: "status",
-        header: "ESTADO",
-        render: (r) => <ProjectStatusBadge status={r.status} />,
-      },
-
-      {
-        key: "assignedUser",
-        header: "RESPONSABLE",
-        hideOnMobile: true,
-        render: (r: any) => {
-          const responsibleMember = r.members?.find((m: any) => m.role === "PROJECT_MANAGER") || r.members?.[0];
-          if (!responsibleMember || !responsibleMember.user) return <span className="text-text-4 text-xs">-</span>;
-          const u = responsibleMember.user;
-          return (
-            <div>
-              <p className="font-medium text-foreground text-xs">
-                {u.firstName} {u.lastName}
-              </p>
-              <p className="text-[10px] text-muted-foreground">
-                @{u.username}
-              </p>
+        {/* 3 METRIC CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {/* Card 1: Total */}
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-[#0c0d16]/90 border-slate-200/80 dark:border-[#1e2030] shadow-xs">
+            <div className="flex items-center justify-between">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-[#161726] border border-slate-200 dark:border-[#222438] text-muted-foreground">
+                <Folder className="w-4 h-4" />
+              </div>
+              <span className="text-xs text-muted-foreground">Total</span>
             </div>
-          );
-        }
-      },
-
-      {
-        key: "actions",
-        header: "ACCIONES",
-        render: (r) => (
-          <div className="flex flex-wrap gap-2">
-            {isAdmin && (
-              <>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => router.push(`/projects/edit/${r.id}`)}
-                >
-                  <Pencil className="w-3.5 h-3.5 mr-1.5" />
-                  Editar
-                </Button>
-                <Button
-                  size="sm"
-                  variant="destructive"
-                  onClick={() => setProjectToDelete(r)}
-                >
-                  <Trash2 className="w-3.5 h-3.5 mr-1.5" />
-                  Eliminar
-                </Button>
-              </>
-            )}
-            <Button
-              size="sm"
-              className="bg-primary hover:bg-primary/90"
-              onClick={() => setSelectedProjectForMembers(r)}
-            >
-              <Users className="w-3.5 h-3.5 mr-1.5" />
-              Miembros
-            </Button>
+            <span className="text-2xl font-bold text-foreground">{totalProjects}</span>
           </div>
-        ),
-      },
-    ];
 
-  /* ===================== UI ===================== */
-return (
-  <div className="min-h-screen bg-background">
-    <div className="max-w-7xl mx-auto px-4 py-4">
-
-      {/* HEADER */}
-      <PageHeader
-          categoryTag={{ badge: "CONTROL GLOBAL", text: "Panel Administrativo" }}
-          title="Gestión de Proyectos"
-        description="Administración de proyectos, configuración y asignación de recursos del sistema"
-        showPeriodSelector={false}
-      />
-
-      {/* CARD */}
-      <Card>
-        <CardContent className="p-4">
-
-          {/* TOOLBAR */}
-          <div className="flex flex-wrap items-center gap-3 mb-4">
-
-            {/* METRICS */}
-            <div className="flex gap-2">
-              <SubMetricCard label="TOTAL" value={totalProjects} />
-              <SubMetricCard label="ACTIVOS" value={activeProjects} color="green" />
-              <SubMetricCard label="INACTIVOS" value={inactiveProjects} color="red" />
+          {/* Card 2: Activos */}
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-[#ecfdf5] dark:bg-[#0b1614]/90 border-emerald-200/70 dark:border-[#14382c] shadow-xs">
+            <div className="flex items-center justify-between">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-500/15 border border-emerald-500/25 text-emerald-500 dark:text-emerald-400">
+                <Check className="w-4 h-4" />
+              </div>
+              <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Activos</span>
             </div>
+            <span className="text-2xl font-bold text-foreground">{activeProjects}</span>
+          </div>
 
-            {/* SEARCH */}
+          {/* Card 3: Inactivos */}
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-[#fef2f2] dark:bg-[#180e14]/90 border-rose-200/70 dark:border-[#381622] shadow-xs">
+            <div className="flex items-center justify-between">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-rose-500/15 border border-rose-500/25 text-rose-500 dark:text-rose-400">
+                <Ban className="w-4 h-4" />
+              </div>
+              <span className="text-xs text-rose-600 dark:text-rose-400 font-medium">Inactivos</span>
+            </div>
+            <span className="text-2xl font-bold text-foreground">{inactiveProjects}</span>
+          </div>
+        </div>
+
+        {/* FILTER & ACTIONS BAR */}
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="relative flex-1 min-w-[280px]">
+            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input
-              className="border border-border px-3 h-9 rounded-lg text-sm w-full sm:w-auto sm:min-w-[200px] focus:border-primary outline-none transition-all"
               placeholder="Buscar por nombre o ID..."
+              className="w-full pl-9 pr-4 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-purple-500"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
+          </div>
 
-            {/* STATE */}
+          <div className="relative">
+            <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <select
-              className="border border-border px-3 h-9 rounded-lg text-sm focus:border-primary outline-none"
+              className="appearance-none pl-9 pr-8 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm text-foreground focus:outline-none cursor-pointer"
               value={estadoFilter}
               onChange={(e) => setEstadoFilter(e.target.value)}
             >
-              <option value="all">Todos</option>
+              <option value="all">Todos los estados</option>
               <option value="ACTIVE">Activos</option>
               <option value="INACTIVE">Inactivos</option>
             </select>
-
-            {/* ACTIONS */}
-            <div className="flex gap-2 ml-auto">
-
-              {isAdmin && (
-                <Button
-                  onClick={() => router.push("/projects/create")}
-                  className="h-9 bg-primary hover:bg-primary/90"
-                >
-                  <FolderKanban className="w-4 h-4 mr-1.5" />
-                  Crear Proyecto
-                </Button>
-              )}
-
-              <Button
-                onClick={fetchProjects}
-                variant="ghost"
-                className="h-9 border border-line-2 bg-card text-text-2 hover:bg-raised"
-              >
-                <RefreshCw className="w-4 h-4" />
-                Actualizar
-              </Button>
-
-            </div>
-
+            <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           </div>
 
-          <DataTable
-          data={paginatedProjects}
-          columns={columns}
-          loading={isLoading}
-          emptyText="No hay proyectos"
-        />
+          <button
+            onClick={fetchProjects}
+            className="flex items-center gap-2 px-4 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-[#141524] transition-colors"
+          >
+            <RefreshCw className={`w-4 h-4 text-muted-foreground ${isLoading ? "animate-spin" : ""}`} />
+            Actualizar
+          </button>
 
-       <div className="flex flex-col sm:flex-row items-center justify-between gap-2 mt-4">
+          {isAdmin && (
+            <button
+              onClick={() => router.push("/projects/create")}
+              className="flex items-center gap-2 px-5 h-10 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-95 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
+            >
+              <PlusSquare className="w-4 h-4" />
+              Crear proyecto
+            </button>
+          )}
+        </div>
 
-            <span className="text-sm text-text-4 order-2 sm:order-1">
-              Página {page} de {totalPages}
+        {/* PROJECTS TABLE */}
+        <div className="rounded-2xl border border-slate-200/80 dark:border-[#171825] bg-white dark:bg-[#0b0c14] overflow-hidden shadow-xs">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-slate-100 dark:border-[#171825] bg-slate-50/50 dark:bg-transparent">
+                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    PROYECTO
+                  </th>
+                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    INICIO
+                  </th>
+                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    FIN
+                  </th>
+                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    ESTADO
+                  </th>
+                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                    RESPONSABLE
+                  </th>
+                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider text-right">
+                    ACCIONES
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-[#171825]/60">
+                {paginatedProjects.length === 0 ? (
+                  <tr>
+                    <td colSpan={6} className="py-12 text-center text-sm text-muted-foreground">
+                      No hay proyectos para mostrar
+                    </td>
+                  </tr>
+                ) : (
+                  paginatedProjects.map((p) => {
+                    const responsibleMember =
+                      p.members?.find((m: any) => m.role === "PROJECT_MANAGER") || p.members?.[0];
+                    const u = (p as any).responsible || responsibleMember?.user || {
+                      username: "jefeproyecto-x",
+                      firstName: "jefeproyecto-x",
+                      lastName: "",
+                    };
+
+                    return (
+                      <tr
+                        key={p.id}
+                        className="hover:bg-slate-50/60 dark:hover:bg-[#121320]/50 transition-colors"
+                      >
+                        <td className="py-3.5 px-5">
+                          <p className="font-semibold text-sm text-foreground">{p.name}</p>
+                          <p className="text-xs text-muted-foreground font-mono mt-0.5">{p.id}</p>
+                        </td>
+                        <td className="py-3.5 px-5 text-sm font-mono text-foreground">
+                          {formatDate(p.startDate)}
+                        </td>
+                        <td className="py-3.5 px-5 text-sm font-mono text-foreground">
+                          {formatDate(p.endDate)}
+                        </td>
+                        <td className="py-3.5 px-5">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            {p.status === "ACTIVE"
+                              ? "Activo"
+                              : p.status === "INACTIVE"
+                              ? "Inactivo"
+                              : p.status}
+                          </span>
+                        </td>
+                        <td className="py-3.5 px-5">
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                              {((u.firstName?.[0] || u.username?.[0] || "J") as string).toUpperCase()}
+                            </div>
+                            <div>
+                              <p className="text-xs font-semibold text-foreground">
+                                {u.firstName ? `${u.firstName} ${u.lastName || ""}`.trim() : u.username}
+                              </p>
+                              <p className="text-[11px] text-muted-foreground">@{u.username}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="py-3.5 px-5 text-right">
+                          <div className="flex items-center gap-2 justify-end">
+                            <button
+                              onClick={() => setSelectedProjectForMembers(p)}
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#121320] text-xs font-medium text-foreground hover:bg-slate-50 dark:hover:bg-[#1a1b2d] transition-colors"
+                            >
+                              <Users className="w-3.5 h-3.5 text-muted-foreground" />
+                              Miembros
+                            </button>
+                            {isAdmin && (
+                              <>
+                                <button
+                                  onClick={() => router.push(`/projects/edit/${p.id}`)}
+                                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-slate-100 dark:hover:bg-[#1a1b2d] transition-colors"
+                                  title="Editar proyecto"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => setProjectToDelete(p)}
+                                  className="p-1.5 rounded-lg text-rose-500 hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors"
+                                  title="Eliminar proyecto"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
+
+          {/* PAGINATION / FOOTER */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 dark:border-[#171825] bg-slate-50/30 dark:bg-transparent">
+            <span className="text-xs text-muted-foreground">
+              {totalProjects} {totalProjects === 1 ? "proyecto" : "proyectos"}
             </span>
 
-            <div className="flex gap-2 order-1 sm:order-2">
-              <Button
-                variant="outline"
+            <div className="flex items-center gap-2">
+              <button
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="h-9 px-3"
+                className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1e2030] text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
-              </Button>
-
-              <Button
-                variant="outline"
+              </button>
+              <span className="text-xs text-muted-foreground">
+                Página {page} de {totalPages}
+              </span>
+              <button
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
-                className="h-9 px-3"
+                className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1e2030] text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
-              </Button>
+              </button>
             </div>
-
           </div>
-        </CardContent>
-      </Card>
+        </div>
 
-      <Dialog open={!!selectedProjectForMembers} onOpenChange={(open) => !open && setSelectedProjectForMembers(null)}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Miembros de {selectedProjectForMembers?.name}</DialogTitle>
-          </DialogHeader>
-          <div className="py-4">
-            {selectedProjectForMembers?.members && selectedProjectForMembers.members.length > 0 ? (
-              <div className="space-y-3">
-                {selectedProjectForMembers.members.map((m: any, idx: number) => {
-                  const u = m.user;
-                  return (
-                    <div key={idx} className="flex justify-between items-center p-2.5 bg-muted/50 border rounded-lg">
-                      <div>
-                        <p className="font-semibold text-foreground text-sm">
-                          {u ? `${u.firstName} ${u.lastName}` : "Colaborador"}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          @{u?.username || m.userId}
-                        </p>
+        {/* MODAL MIEMBROS */}
+        <Dialog
+          open={!!selectedProjectForMembers}
+          onOpenChange={(open) => !open && setSelectedProjectForMembers(null)}
+        >
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Miembros de {selectedProjectForMembers?.name}</DialogTitle>
+            </DialogHeader>
+            <div className="py-4">
+              {selectedProjectForMembers?.members && selectedProjectForMembers.members.length > 0 ? (
+                <div className="space-y-3">
+                  {selectedProjectForMembers.members.map((m: any, idx: number) => {
+                    const u = m.user;
+                    return (
+                      <div
+                        key={idx}
+                        className="flex justify-between items-center p-2.5 bg-muted/50 border rounded-lg"
+                      >
+                        <div>
+                          <p className="font-semibold text-foreground text-sm">
+                            {u ? `${u.firstName || ""} ${u.lastName || ""}`.trim() || u.username : "Colaborador"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            @{u?.username || m.userId}
+                          </p>
+                        </div>
+                        <span className="text-xs bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-medium">
+                          {m.role || "TEAM_MEMBER"}
+                        </span>
                       </div>
-                      <span className="text-xs bg-primary/10 text-violet-ink px-2.5 py-0.5 rounded-full font-medium">
-                        {m.role || "TEAM_MEMBER"}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            ) : (
-              <p className="text-sm text-text-4 text-center py-4">No hay miembros asignados a este proyecto.</p>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  No hay miembros asignados a este proyecto.
+                </p>
+              )}
+            </div>
+          </DialogContent>
+        </Dialog>
 
-      {projectToDelete && (
-        <DeleteProjectModal
-          projectName={projectToDelete.name}
-          projectId={projectToDelete.id}
-          onConfirm={handleDeleteConfirm}
-          onCancel={() => setProjectToDelete(null)}
-        />
-      )}
-
+        {/* DELETE MODAL */}
+        {projectToDelete && (
+          <DeleteProjectModal
+            projectName={projectToDelete.name}
+            projectId={projectToDelete.id}
+            onConfirm={handleDeleteConfirm}
+            onCancel={() => setProjectToDelete(null)}
+          />
+        )}
+      </div>
     </div>
-  </div>
-);
-}
-
-/* ================= BADGE ================= */
-
-function ProjectStatusBadge({ status }: { status: string }) {
-  return (
-    <span
-      className={`px-2 py-1 text-xs rounded-full ${
-        status === "ACTIVE"
-          ? "bg-green/10 text-green-ink border border-green/20"
-          : "bg-red/10 text-red-ink border border-red/20"
-      }`}
-    >
-      {status === "ACTIVE" ? "Activo" : status === "INACTIVE" ? "Inactivo" : status === "COMPLETED" ? "Completado" : status}
-    </span>
   );
 }
