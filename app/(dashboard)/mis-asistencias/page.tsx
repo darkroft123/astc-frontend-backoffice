@@ -248,7 +248,7 @@ export default function AttendanceHistoryPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-muted/50 py-4 flex flex-col">
+    <div className="min-h-screen bg-transparent py-4 flex flex-col">
       <div className="max-w-7xl mx-auto px-4 w-full flex-1 flex flex-col space-y-4">
         <PageHeader
           title="Historial de Asistencia"

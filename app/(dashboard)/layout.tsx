@@ -14,9 +14,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <SidebarNav onNavigate={() => {}} />
         </MobileSidebar>
         <main className="flex-1 min-h-screen md:ml-[268px] bg-background overflow-x-hidden overflow-y-auto pb-6 md:pb-0 relative">
-          {/* Ambient light for all screens in dark mode (-250px top) */}
-          <div className="absolute top-[-250px] right-[-100px] w-[600px] h-[450px] bg-purple-600/10 dark:bg-purple-600/20 blur-[140px] rounded-full pointer-events-none hidden dark:block z-0" />
-          <div className="absolute top-[-80px] right-[100px] w-[350px] h-[250px] bg-indigo-500/10 dark:bg-indigo-500/15 blur-[100px] rounded-full pointer-events-none hidden dark:block z-0" />
+          {/* Ambient light for all screens in dark mode (Figma official position) */}
+          <div className="fixed top-[-40px] right-[-40px] w-[600px] h-[600px] bg-gradient-to-br from-purple-600/30 via-indigo-600/20 to-transparent blur-[130px] rounded-full pointer-events-none hidden dark:block z-0" />
+          <div className="fixed top-[60px] right-[80px] w-[350px] h-[350px] bg-cyan-400/15 blur-[100px] rounded-full pointer-events-none hidden dark:block z-0" />
 
           <div className="absolute top-4 right-4 z-50"><NotificationBell /></div>
           <div className="md:hidden p-4"><HamburgerButton /></div>

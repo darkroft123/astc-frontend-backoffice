@@ -8,7 +8,7 @@ export default function UsersPage() {
   const router = useRouter();
 
   return (
-    <div className="relative min-h-screen bg-background pb-12">
+    <div className="relative min-h-screen bg-transparent pb-12">
       <div className="relative max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6 z-10">
         {/* HEADER */}
         <div>
