@@ -19,6 +19,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async redirects() {
+    return [
+      {
+        source: '/mis-asistencias',
+        destination: '/asistencias-pm',
+        permanent: false,
+      },
+    ];
+  },
 }
 
 export default nextConfig

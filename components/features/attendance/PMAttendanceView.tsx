@@ -48,7 +48,10 @@ const PERIOD_TABS: { id: Period; label: string; icon?: boolean }[] = [
 ];
 
 export function PMAttendanceView() {
-  const { token } = useAuth();
+  const { user, role, token } = useAuth();
+  const userRoleStr = (typeof role === "string" ? role : (user?.role as any)?.code || (user?.role as any) || "").toUpperCase();
+  const isViewerAdmin = userRoleStr !== "PROJECT_MANAGER" && userRoleStr !== "TEAM_MEMBER";
+
   const [isLoading, setIsLoading] = useState(false);
   const [rawAttendances, setRawAttendances] = useState<any[]>([]);
 
@@ -58,7 +61,7 @@ export function PMAttendanceView() {
 
   const [activePeriod, setActivePeriod] = useState<Period>("month");
   const [selectedProject, setSelectedProject] = useState("all");
-  const [selectedRole, setSelectedRole] = useState<"ALL" | "PROJECT_MANAGER" | "TEAM_MEMBER">("ALL");
+  const [selectedRole, setSelectedRole] = useState<"ALL" | "ADMIN" | "PROJECT_MANAGER" | "TEAM_MEMBER">("ALL");
   const [statusFilter, setStatusFilter] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPhotoUrl, setSelectedPhotoUrl] = useState<string | null>(null);
