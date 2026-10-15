@@ -181,8 +181,10 @@ export async function POST(req: Request) {
       return NextResponse.json({
         data: {
           getTodayAttendance: {
-            checkIn: null,
-            checkOut: null,
+            id: "att-today-admin-01",
+            checkIn: "08:52:00",
+            checkOut: "09:07:00",
+            status: "EARLY",
           },
         },
       });
