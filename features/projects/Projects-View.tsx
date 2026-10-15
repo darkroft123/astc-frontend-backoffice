@@ -11,6 +11,7 @@ import {
   RefreshCw,
   PlusSquare,
   Users,
+  Eye,
   Pencil,
   Trash2,
   ChevronLeft,
@@ -26,6 +27,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import DeleteProjectModal from "@/components/features/projects/DeleteProjectModal";
+import ProjectDetailModal from "@/components/dashboard/projects/ProjectDetailModal";
 
 export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN" | "PM" }) {
   const router = useRouter();
@@ -304,8 +306,8 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                               onClick={() => setSelectedProjectForMembers(p)}
                               className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-raised bg-white dark:bg-surface text-xs font-medium text-foreground hover:bg-slate-50 dark:hover:bg-raised transition-colors"
                             >
-                              <Users className="w-3.5 h-3.5 text-muted-foreground" />
-                              Miembros
+                              <Eye className="w-3.5 h-3.5 text-muted-foreground" />
+                              Ver detalle
                             </button>
                             {isAdmin && (
                               <>
@@ -363,53 +365,15 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           </div>
         </div>
 
-        {/* MODAL MIEMBROS */}
-        <Dialog
-          open={!!selectedProjectForMembers}
-          onOpenChange={(open) => !open && setSelectedProjectForMembers(null)}
-        >
-          <DialogContent className="sm:max-w-md">
-            <DialogHeader>
-              <DialogTitle>Miembros de {selectedProjectForMembers?.name}</DialogTitle>
-            </DialogHeader>
-            <div className="py-4">
-              {selectedProjectForMembers?.members && selectedProjectForMembers.members.length > 0 ? (
-                <div className="space-y-3">
-                  {selectedProjectForMembers.members.map((m: any, idx: number) => {
-                    const u = m.user;
-                    return (
-                      <div
-                        key={idx}
-                        className="flex justify-between items-center p-2.5 bg-muted/50 border rounded-lg"
-                      >
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
-                            {((u?.firstName?.[0] || u?.username?.[0] || "C") as string).toUpperCase()}
-                          </div>
-                          <div>
-                            <p className="font-semibold text-foreground text-sm">
-                              {u ? `${u.firstName || ""} ${u.lastName || ""}`.trim() || u.username : "Colaborador"}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              @{u?.username || m.userId}
-                            </p>
-                          </div>
-                        </div>
-                        <span className="text-xs bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-medium">
-                          {m.role || "TEAM_MEMBER"}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  No hay miembros asignados a este proyecto.
-                </p>
-              )}
-            </div>
-          </DialogContent>
-        </Dialog>
+        {/* MODAL PROYECTO DETALLE */}
+        {selectedProjectForMembers && (
+          <ProjectDetailModal
+            project={selectedProjectForMembers}
+            token={token}
+            onClose={() => setSelectedProjectForMembers(null)}
+            onRefresh={fetchProjects}
+          />
+        )}
 
         {/* DELETE MODAL */}
         {projectToDelete && (
