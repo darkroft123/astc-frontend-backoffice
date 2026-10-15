@@ -107,7 +107,7 @@ export default function AdminDashboardPage() {
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-[#1a2238]/80 dark:text-[#7c9aff] dark:border-[#2b3758] px-2.5 py-0.5 rounded-full">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 px-2.5 py-0.5 rounded-full">
               CONTROL GLOBAL
             </span>
             <span className="font-sans text-xs text-muted-foreground">
@@ -126,9 +126,9 @@ export default function AdminDashboardPage() {
         {/* 2. TOP ROW: 5 SUMMARY CARDS WITH RESPONSIVE LAYOUT & OFFICIAL FIGMA DESIGN */}
         <div className="flex flex-col xl:flex-row gap-3.5 items-stretch">
           {/* CARD 1: ADMIN PROFILE CARD */}
-          <div className="w-full xl:w-[280px] 2xl:w-[320px] shrink-0 bg-card border border-border dark:bg-[#0c0d18] dark:border-[#252538] rounded-2xl p-4 shadow-sm flex flex-col justify-between">
+          <div className="w-full xl:w-[280px] 2xl:w-[320px] shrink-0 bg-card border border-border dark:bg-sidebar dark:border-field rounded-2xl p-4 shadow-sm flex flex-col justify-between">
             <div className="flex items-center gap-3.5">
-              <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-[#38bdf8] via-[#818cf8] to-[#c084fc] flex items-center justify-center text-white font-bold text-base shrink-0 shadow-sm">
+              <div className="w-12 h-12 rounded-[var(--radius-kpi)] bg-avatar-gradient flex items-center justify-center text-white font-bold text-base shrink-0 shadow-sm">
                 A
               </div>
               <div className="min-w-0 flex-1">
@@ -136,32 +136,32 @@ export default function AdminDashboardPage() {
                   <span className="font-bold text-base text-foreground dark:text-white truncate">
                     {fullName}
                   </span>
-                  <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-[#181a33] dark:text-[#7d97ff] dark:border-[#2b3054] text-[10.5px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                  <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7d97ff] dark:border-violet/20 text-[10.5px] font-mono font-bold px-2.5 py-0.5 rounded-full">
                     ADMIN
                   </span>
                 </div>
-                <p className="text-xs text-muted-foreground dark:text-[#707694] truncate mt-0.5">
+                <p className="text-xs text-muted-foreground dark:text-text-5 truncate mt-0.5">
                   {email}
                 </p>
               </div>
             </div>
 
-            <div className="border-t border-border/70 dark:border-[#1e1f30] my-3.5" />
+            <div className="border-t border-border/70 dark:border-raised my-3.5" />
 
             <div className="grid grid-cols-2 gap-2.5">
-              <div className="bg-muted/50 border border-border/70 dark:bg-[#080811] dark:border-[#1c1d2e] rounded-xl p-3">
-                <p className="text-[10px] font-mono uppercase text-muted-foreground dark:text-[#8b8fa8] font-semibold tracking-wider">
+              <div className="bg-muted/50 border border-border/70 dark:bg-background dark:border-raised rounded-xl p-3">
+                <p className="text-[10px] font-mono uppercase text-muted-foreground dark:text-text-4 font-semibold tracking-wider">
                   USUARIO
                 </p>
                 <p className="text-sm font-bold text-foreground dark:text-white truncate mt-1">
                   {fullName}
                 </p>
               </div>
-              <div className="bg-muted/50 border border-border/70 dark:bg-[#080811] dark:border-[#1c1d2e] rounded-xl p-3">
-                <p className="text-[10px] font-mono uppercase text-muted-foreground dark:text-[#8b8fa8] font-semibold tracking-wider">
+              <div className="bg-muted/50 border border-border/70 dark:bg-background dark:border-raised rounded-xl p-3">
+                <p className="text-[10px] font-mono uppercase text-muted-foreground dark:text-text-4 font-semibold tracking-wider">
                   TELÉFONO
                 </p>
-                <p className="text-xs text-muted-foreground dark:text-[#707694] mt-1 whitespace-nowrap">
+                <p className="text-xs text-muted-foreground dark:text-text-5 mt-1 whitespace-nowrap">
                   Sin registrar
                 </p>
               </div>
@@ -173,13 +173,13 @@ export default function AdminDashboardPage() {
             {/* CARD 2: JEFES DE PROYECTO */}
             <div
               onClick={() => router.push("/users")}
-              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-amber-500/40 dark:bg-[#16120b]/70 dark:backdrop-blur-md dark:border-[#382b16] dark:hover:border-amber-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
+              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-amber/40 dark:bg-amber/10 dark:backdrop-blur-md dark:border-amber/20 dark:hover:border-amber/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
             >
-              <div className="w-8 h-8 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:bg-[#261d0f] dark:border-[#4a371a] dark:text-amber-400 flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-amber/10 border border-amber/20 text-amber-ink dark:bg-amber/10 dark:border-amber/20 dark:text-amber flex items-center justify-center shrink-0">
                 <UserCheck className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs text-amber-600 dark:text-amber-400 font-medium mt-2.5">
+                <p className="text-xs text-amber-ink dark:text-amber font-medium mt-2.5">
                   Jefes de proyecto
                 </p>
                 <p className="text-3xl font-bold text-foreground mt-1">
@@ -194,13 +194,13 @@ export default function AdminDashboardPage() {
             {/* CARD 3: TRABAJADORES */}
             <div
               onClick={() => router.push("/users")}
-              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-emerald-500/40 dark:bg-[#0a1713]/70 dark:backdrop-blur-md dark:border-[#16382b] dark:hover:border-emerald-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
+              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-green/40 dark:bg-green/10 dark:backdrop-blur-md dark:border-green/20 dark:hover:border-green/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
             >
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:bg-[#112920] dark:border-[#1c4737] dark:text-emerald-400 flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-green/10 border border-green/20 text-green-ink dark:bg-green/15 dark:border-green/20 dark:text-green flex items-center justify-center shrink-0">
                 <Users className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium mt-2.5">
+                <p className="text-xs text-green-ink dark:text-green font-medium mt-2.5">
                   Trabajadores
                 </p>
                 <p className="text-3xl font-bold text-foreground mt-1">
@@ -215,13 +215,13 @@ export default function AdminDashboardPage() {
             {/* CARD 4: USUARIOS */}
             <div
               onClick={() => router.push("/users")}
-              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-blue-500/40 dark:bg-[#0c1322]/70 dark:backdrop-blur-md dark:border-[#1a2b4a] dark:hover:border-blue-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
+              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-blue/40 dark:bg-blue/10 dark:backdrop-blur-md dark:border-blue/20 dark:hover:border-blue/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
             >
-              <div className="w-8 h-8 rounded-xl bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:bg-[#14223b] dark:border-[#213760] dark:text-blue-400 flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-blue/10 border border-blue/20 text-blue dark:bg-blue/10 dark:border-blue/20 dark:text-blue flex items-center justify-center shrink-0">
                 <Users className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mt-2.5">
+                <p className="text-xs text-blue dark:text-blue font-medium mt-2.5">
                   Usuarios
                 </p>
                 <p className="text-3xl font-bold text-foreground mt-1">
@@ -236,13 +236,13 @@ export default function AdminDashboardPage() {
             {/* CARD 5: PROYECTOS */}
             <div
               onClick={() => router.push("/projects")}
-              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-purple-500/40 dark:bg-[#130d22]/70 dark:backdrop-blur-md dark:border-[#311c50] dark:hover:border-purple-500/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
+              className="xl:flex-1 min-w-0 bg-card border border-border hover:border-violet/40 dark:bg-violet/10 dark:backdrop-blur-md dark:border-violet/20 dark:hover:border-violet/60 rounded-2xl p-4 shadow-sm flex flex-col justify-between cursor-pointer transition-colors group"
             >
-              <div className="w-8 h-8 rounded-xl bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:bg-[#23153d] dark:border-[#44236e] dark:text-purple-400 flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 rounded-xl bg-violet/10 border border-violet/20 text-violet-ink dark:bg-violet/10 dark:border-violet/20 dark:text-violet flex items-center justify-center shrink-0">
                 <FolderKanban className="w-4 h-4" />
               </div>
               <div>
-                <p className="text-xs text-purple-600 dark:text-purple-400 font-medium mt-2.5">
+                <p className="text-xs text-violet-ink dark:text-violet font-medium mt-2.5">
                   Proyectos
                 </p>
                 <p className="text-3xl font-bold text-foreground mt-1">
@@ -259,7 +259,7 @@ export default function AdminDashboardPage() {
         {/* 3. MIDDLE ROW: TWO CHARTS */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* DONUT: ESTRUCTURA DE LA ORGANIZACIÓN */}
-          <div className="lg:col-span-6 bg-card border border-border dark:bg-[#0e1322]/70 dark:backdrop-blur-md dark:border-[#212b45] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-6 bg-card border border-border dark:bg-blue/10 dark:backdrop-blur-md dark:border-blue/20 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-sm font-bold text-foreground">
@@ -269,7 +269,7 @@ export default function AdminDashboardPage() {
                   Consolidado de roles, colaboradores y proyectos
                 </p>
               </div>
-              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-[#1c243a] dark:text-[#7c9aff] dark:border-[#2b3758] text-xs px-2.5 py-0.5 rounded-full font-medium">
+              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 text-xs px-2.5 py-0.5 rounded-full font-medium">
                 {totalProjects} proyectos
               </span>
             </div>
@@ -306,7 +306,7 @@ export default function AdminDashboardPage() {
                     cy="70"
                     r={R}
                     fill="none"
-                    stroke="#f59e0b"
+                    stroke="var(--amber)"
                     strokeWidth="18"
                     strokeDasharray={`${adminArc} ${C}`}
                     strokeDashoffset={-(teamArc + GAP + pmArc + GAP)}
@@ -328,7 +328,7 @@ export default function AdminDashboardPage() {
               <div className="space-y-3 min-w-[200px]">
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shrink-0" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue shrink-0" />
                     <span className="text-muted-foreground">Team members</span>
                   </div>
                   <span className="font-semibold text-foreground font-mono">
@@ -338,7 +338,7 @@ export default function AdminDashboardPage() {
 
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-purple-500 shrink-0" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-violet shrink-0" />
                     <span className="text-muted-foreground">Project managers</span>
                   </div>
                   <span className="font-semibold text-foreground font-mono">
@@ -348,7 +348,7 @@ export default function AdminDashboardPage() {
 
                 <div className="flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber shrink-0" />
                     <span className="text-muted-foreground">Administradores</span>
                   </div>
                   <span className="font-semibold text-foreground font-mono">
@@ -358,7 +358,7 @@ export default function AdminDashboardPage() {
 
                 <div className="pt-3 border-t border-border/80 dark:border-[#1f2840]/60 flex items-center justify-between text-xs">
                   <div className="flex items-center gap-2">
-                    <FolderKanban className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+                    <FolderKanban className="w-3.5 h-3.5 text-green shrink-0" />
                     <span className="text-muted-foreground">Proyectos activos</span>
                   </div>
                   <span className="font-bold text-foreground font-mono">
@@ -370,7 +370,7 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* BAR CHART: RESUMEN DE RECURSOS */}
-          <div className="lg:col-span-6 bg-card border border-border dark:bg-[#0e1322]/70 dark:backdrop-blur-md dark:border-[#212b45] rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-6 bg-card border border-border dark:bg-blue/10 dark:backdrop-blur-md dark:border-blue/20 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
                 <h2 className="text-sm font-bold text-foreground">
@@ -380,7 +380,7 @@ export default function AdminDashboardPage() {
                   Distribución de entidades del sistema
                 </p>
               </div>
-              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-[#1c243a] dark:text-[#7c9aff] dark:border-[#2b3758] text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase">
+              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase">
                 GLOBAL
               </span>
             </div>
@@ -389,10 +389,10 @@ export default function AdminDashboardPage() {
             <div className="py-4">
               <div className="relative h-44 w-full flex items-end justify-between px-4 pb-6 pt-6">
                 {/* Y-Axis dashed grid lines */}
-                <div className="absolute inset-x-0 bottom-6 border-b border-border dark:border-[#212b45]" />
-                <div className="absolute inset-x-0 bottom-[68px] border-b border-border/60 dark:border-[#212b45]/60 border-dashed" />
-                <div className="absolute inset-x-0 bottom-[114px] border-b border-border/60 dark:border-[#212b45]/60 border-dashed" />
-                <div className="absolute inset-x-0 top-4 border-b border-border/60 dark:border-[#212b45]/60 border-dashed" />
+                <div className="absolute inset-x-0 bottom-6 border-b border-border dark:border-blue/20" />
+                <div className="absolute inset-x-0 bottom-[68px] border-b border-border/60 dark:border-blue/20 border-dashed" />
+                <div className="absolute inset-x-0 bottom-[114px] border-b border-border/60 dark:border-blue/20 border-dashed" />
+                <div className="absolute inset-x-0 top-4 border-b border-border/60 dark:border-blue/20 border-dashed" />
 
                 {/* Y-Axis numbers */}
                 <span className="absolute left-0 bottom-5 text-[10px] font-mono text-muted-foreground">0</span>
@@ -407,7 +407,7 @@ export default function AdminDashboardPage() {
                     <span className="text-xs font-bold text-foreground font-mono">5</span>
                     <div
                       style={{ height: `${(5 / 6) * 110}px` }}
-                      className="w-full bg-[#3b82f6] rounded-t-lg transition-all shadow-sm"
+                      className="w-full bg-blue rounded-t-lg transition-all shadow-sm"
                     />
                     <span className="text-[11px] text-muted-foreground text-center truncate mt-1">
                       Usuarios
@@ -419,7 +419,7 @@ export default function AdminDashboardPage() {
                     <span className="text-xs font-bold text-foreground font-mono">3</span>
                     <div
                       style={{ height: `${(3 / 6) * 110}px` }}
-                      className="w-full bg-[#10b981] rounded-t-lg transition-all shadow-sm"
+                      className="w-full bg-green rounded-t-lg transition-all shadow-sm"
                     />
                     <span className="text-[11px] text-muted-foreground text-center truncate mt-1">
                       Trabajadores
@@ -431,7 +431,7 @@ export default function AdminDashboardPage() {
                     <span className="text-xs font-bold text-foreground font-mono">1</span>
                     <div
                       style={{ height: `${(1 / 6) * 110}px` }}
-                      className="w-full bg-[#f59e0b] rounded-t-lg transition-all shadow-sm"
+                      className="w-full bg-amber rounded-t-lg transition-all shadow-sm"
                     />
                     <span className="text-[11px] text-muted-foreground text-center truncate mt-1">
                       Jefes de proyecto
@@ -443,7 +443,7 @@ export default function AdminDashboardPage() {
                     <span className="text-xs font-bold text-foreground font-mono">3</span>
                     <div
                       style={{ height: `${(3 / 6) * 110}px` }}
-                      className="w-full bg-[#a855f7] rounded-t-lg transition-all shadow-sm"
+                      className="w-full bg-violet rounded-t-lg transition-all shadow-sm"
                     />
                     <span className="text-[11px] text-muted-foreground text-center truncate mt-1">
                       Proyectos
@@ -456,7 +456,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* 4. BOTTOM ROW: ACCIONES RÁPIDAS */}
-        <div className="bg-card border border-border dark:bg-[#0e1322]/70 dark:backdrop-blur-md dark:border-[#212b45] rounded-2xl p-5 shadow-sm space-y-3">
+        <div className="bg-card border border-border dark:bg-blue/10 dark:backdrop-blur-md dark:border-blue/20 rounded-2xl p-5 shadow-sm space-y-3">
           <div>
             <h2 className="text-sm font-bold text-foreground">
               Acciones rápidas
@@ -471,7 +471,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/registrar")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-gradient-to-r from-[#4f46e5] via-[#7c3aed] to-[#38bdf8] hover:brightness-110 active:scale-[0.98] text-white font-medium text-xs transition-all shadow-lg shadow-purple-500/25 cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white font-medium text-xs transition-all shadow-lg shadow-purple-500/25 cursor-pointer"
             >
               <ScanFace size={16} strokeWidth={2.2} />
               <span>Marcar asistencia</span>
@@ -481,7 +481,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/users")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-[#141b2f]/80 dark:hover:bg-[#1a233d] dark:border-[#222c48]/80 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
             >
               <Users size={16} className="text-muted-foreground" />
               <span>Gestión de usuarios</span>
@@ -491,7 +491,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/projects")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-[#141b2f]/80 dark:hover:bg-[#1a233d] dark:border-[#222c48]/80 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
             >
               <Briefcase size={16} className="text-muted-foreground" />
               <span>Proyectos</span>
@@ -501,7 +501,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/feriados")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-[#141b2f]/80 dark:hover:bg-[#1a233d] dark:border-[#222c48]/80 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
             >
               <Calendar size={16} className="text-muted-foreground" />
               <span>Feriados globales</span>
@@ -511,7 +511,7 @@ export default function AdminDashboardPage() {
             <button
               type="button"
               onClick={() => router.push("/mis-asistencias")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-[#141b2f]/80 dark:hover:bg-[#1a233d] dark:border-[#222c48]/80 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
             >
               <Clock size={16} className="text-muted-foreground" />
               <span>Mis asistencias</span>

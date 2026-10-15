@@ -16,7 +16,7 @@ export default function DeleteConfirmModal({
 }: DeleteConfirmModalProps) {
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50">
-      <div className="bg-card border border-border rounded-[20px] shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+      <div className="bg-card border border-border rounded-[var(--radius-modal)] shadow-2xl max-w-md w-full mx-4 overflow-hidden">
         <div className="p-8">
           <div className="flex items-start gap-5">
             {/* Icon */}

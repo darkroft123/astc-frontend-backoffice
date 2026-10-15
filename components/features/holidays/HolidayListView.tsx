@@ -215,7 +215,7 @@ export default function HolidayListView() {
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-[#181a2e] dark:text-[#7d97ff] dark:border-[#2b3054] px-2.5 py-0.5 rounded-full">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7d97ff] dark:border-violet/20 px-2.5 py-0.5 rounded-full">
               CONTROL GLOBAL
             </span>
             <span className="font-sans text-xs text-muted-foreground">
@@ -225,7 +225,7 @@ export default function HolidayListView() {
           <h1 className="text-[26px] font-bold text-foreground dark:text-white tracking-tight leading-tight">
             Colecciones globales de feriados
           </h1>
-          <p className="text-xs text-muted-foreground dark:text-[#8f96ae] mt-1">
+          <p className="text-xs text-muted-foreground dark:text-text-4 mt-1">
             Agrupa y administra feriados en colecciones que aplican a todos los proyectos.
           </p>
         </div>
@@ -233,12 +233,12 @@ export default function HolidayListView() {
         {/* 2. KPI CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Card 1: Total feriados */}
-          <div className="bg-[#f4f0ff] border border-[#e4dcf7] dark:bg-[#151226]/80 dark:border-[#2a1e4a] rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
+          <div className="bg-violet/10 border border-violet/20 dark:bg-violet/10 dark:border-violet/20 rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-[#e6dcff] text-[#7c3aed] dark:bg-[#281b4d] dark:text-[#c084fc] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-violet/20 text-violet-ink dark:bg-violet/10 dark:text-[#c084fc] flex items-center justify-center">
                 <CalendarIcon className="w-4 h-4" />
               </div>
-              <span className="font-sans text-[11px] text-muted-foreground dark:text-[#8f96ae] font-normal">
+              <span className="font-sans text-[11px] text-muted-foreground dark:text-text-4 font-normal">
                 Total feriados
               </span>
             </div>
@@ -250,12 +250,12 @@ export default function HolidayListView() {
           </div>
 
           {/* Card 2: Colecciones */}
-          <div className="bg-[#eaf8f2] border border-[#c8eedc] dark:bg-[#0c1815]/80 dark:border-[#173a2b] rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
+          <div className="bg-green/10 border border-green/20 dark:bg-green/10 dark:border-green/20 rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-[#c8f0dc] text-[#059669] dark:bg-[#133626] dark:text-[#34d399] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-green/20 text-[#059669] dark:bg-green/20 dark:text-green flex items-center justify-center">
                 <Layers className="w-4 h-4" />
               </div>
-              <span className="font-sans text-[11px] text-muted-foreground dark:text-[#8f96ae] font-normal">
+              <span className="font-sans text-[11px] text-muted-foreground dark:text-text-4 font-normal">
                 Colecciones
               </span>
             </div>
@@ -267,12 +267,12 @@ export default function HolidayListView() {
           </div>
 
           {/* Card 3: Días próximos */}
-          <div className="bg-[#fdf6e9] border border-[#f8e4c3] dark:bg-[#1b160d]/80 dark:border-[#3d2e16] rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
+          <div className="bg-amber/10 border border-amber/20 dark:bg-amber/10 dark:border-amber/20 rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-[#fae7be] text-[#d97706] dark:bg-[#3a2810] dark:text-[#fbbf24] flex items-center justify-center">
+              <div className="w-8 h-8 rounded-xl bg-amber/20 text-amber dark:bg-amber/20 dark:text-amber flex items-center justify-center">
                 <Sun className="w-4 h-4" />
               </div>
-              <span className="font-sans text-[11px] text-muted-foreground dark:text-[#8f96ae] font-normal">
+              <span className="font-sans text-[11px] text-muted-foreground dark:text-text-4 font-normal">
                 Días próximos
               </span>
             </div>
@@ -286,7 +286,7 @@ export default function HolidayListView() {
 
         {/* 3. SEARCH & REFRESH BAR */}
         <div>
-          <label className="text-[11px] text-muted-foreground dark:text-[#8f96ae] mb-1.5 block">
+          <label className="text-[11px] text-muted-foreground dark:text-text-4 mb-1.5 block">
             Buscar colección o fecha
           </label>
           <div className="flex items-center gap-2">
@@ -295,7 +295,7 @@ export default function HolidayListView() {
               <input
                 type="text"
                 placeholder="Nombre, feriado o mes (ej. dic)..."
-                className="w-full h-10 pl-9 pr-4 text-xs rounded-xl bg-card border border-border dark:bg-[#0e1222] dark:border-[#1d2238] dark:text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/40"
+                className="w-full h-10 pl-9 pr-4 text-xs rounded-xl bg-card border border-border dark:bg-surface dark:border-violet/10 dark:text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/40"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -303,7 +303,7 @@ export default function HolidayListView() {
             <button
               onClick={fetchCollections}
               title="Actualizar"
-              className="w-10 h-10 rounded-xl border border-border bg-card dark:bg-[#0e1222] dark:border-[#1d2238] flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0"
+              className="w-10 h-10 rounded-xl border border-border bg-card dark:bg-surface dark:border-violet/10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0"
             >
               <RotateCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
@@ -319,7 +319,7 @@ export default function HolidayListView() {
             <HolidayImporter onImport={handleImportHolidays} year={new Date().getFullYear()} />
             <button
               onClick={() => setIsFormOpen(true)}
-              className="h-9 px-4 rounded-xl text-xs font-semibold bg-gradient-to-r from-[#6366f1] to-[#a855f7] hover:brightness-110 active:scale-[0.98] text-white flex items-center gap-1.5 shadow-sm shadow-purple-500/20 transition-all cursor-pointer"
+              className="h-9 px-4 rounded-xl text-xs font-semibold bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center gap-1.5 shadow-sm shadow-purple-500/20 transition-all cursor-pointer"
             >
               <Plus className="w-4 h-4" /> Nueva colección
             </button>
@@ -329,14 +329,14 @@ export default function HolidayListView() {
         {/* 5. LIST OF COLLECTIONS */}
         <div className="space-y-3">
           {filteredCollections.length === 0 ? (
-            <div className="p-8 text-center text-muted-foreground bg-card dark:bg-[#0e1222]/60 border border-dashed border-border dark:border-[#1d2238] rounded-2xl text-xs">
+            <div className="p-8 text-center text-muted-foreground bg-card dark:bg-surface/60 border border-dashed border-border dark:border-violet/10 rounded-2xl text-xs">
               {searchQuery ? "No se encontraron colecciones." : "No hay colecciones creadas."}
             </div>
           ) : (
             filteredCollections.map((c) => (
               <div
                 key={c.id}
-                className="bg-card dark:bg-[#0e1222]/80 border border-border/80 dark:border-[#1a2138] rounded-2xl overflow-hidden shadow-xs hover:border-[#2d385e] transition-colors"
+                className="bg-card dark:bg-surface/80 border border-border/80 dark:border-[#1a2138] rounded-2xl overflow-hidden shadow-xs hover:border-[#2d385e] transition-colors"
               >
                 <div
                   className="p-4 flex items-center justify-between cursor-pointer group"
@@ -344,14 +344,14 @@ export default function HolidayListView() {
                 >
                   {/* Left Info */}
                   <div className="flex items-center gap-3.5 min-w-0">
-                    <div className="w-11 h-11 rounded-xl bg-[#f4effe] dark:bg-[#1e1738] border border-[#e4d8fb] dark:border-[#352361] text-[#8b5cf6] dark:text-[#c084fc] flex items-center justify-center shrink-0">
+                    <div className="w-11 h-11 rounded-xl bg-violet/10 dark:bg-violet/10 border border-violet/20 dark:border-violet/20 text-[#8b5cf6] dark:text-[#c084fc] flex items-center justify-center shrink-0">
                       <Layers className="w-5 h-5" />
                     </div>
                     <div className="min-w-0">
                       <h3 className="font-bold text-sm text-foreground dark:text-white truncate">
                         {c.name}
                       </h3>
-                      <p className="text-xs text-muted-foreground dark:text-[#707694] mt-0.5 flex items-center gap-1.5">
+                      <p className="text-xs text-muted-foreground dark:text-text-5 mt-0.5 flex items-center gap-1.5">
                         <span>{c.items?.length || 0} feriados</span>
                         <span>•</span>
                         <span>
@@ -363,7 +363,7 @@ export default function HolidayListView() {
 
                   {/* Right Actions */}
                   <div className="flex items-center gap-3 shrink-0">
-                    <span className="font-mono text-[9.5px] font-bold px-2 py-0.5 rounded bg-[#fef8ea] text-[#d97706] border border-[#f8e4b7] dark:bg-[#241c0e] dark:text-[#fbbf24] dark:border-[#443314] uppercase tracking-wider">
+                    <span className="font-mono text-[9.5px] font-bold px-2 py-0.5 rounded bg-amber/10 text-amber border border-amber/20 dark:bg-amber/15 dark:text-amber dark:border-amber/20 uppercase tracking-wider">
                       GLOBAL
                     </span>
 
@@ -372,7 +372,7 @@ export default function HolidayListView() {
                         e.stopPropagation();
                         setPendingAssignment(c.id);
                       }}
-                      className="h-8 px-3 rounded-xl border border-gray-200 dark:border-[#262f4e] bg-white dark:bg-[#12162a] hover:bg-gray-50 dark:hover:bg-[#1a203c] text-xs font-medium text-foreground dark:text-[#c8cddc] flex items-center gap-1.5 transition-colors cursor-pointer"
+                      className="h-8 px-3 rounded-xl border border-gray-200 dark:border-[#262f4e] bg-white dark:bg-surface hover:bg-gray-50 dark:hover:bg-raised text-xs font-medium text-foreground dark:text-text-2 flex items-center gap-1.5 transition-colors cursor-pointer"
                     >
                       <Folder className="w-3.5 h-3.5 text-muted-foreground" />
                       <span>{assignedCollectionId === c.id ? "Asignado" : "Asignar"}</span>
@@ -384,12 +384,12 @@ export default function HolidayListView() {
                         handleDelete(c.id);
                       }}
                       title="Eliminar colección"
-                      className="p-1.5 text-muted-foreground hover:text-red-500 dark:text-[#707694] dark:hover:text-red-400 transition-colors cursor-pointer"
+                      className="p-1.5 text-muted-foreground hover:text-red dark:text-text-5 dark:hover:text-red-ink transition-colors cursor-pointer"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
 
-                    <div className="text-muted-foreground dark:text-[#707694] group-hover:translate-x-0.5 transition-transform">
+                    <div className="text-muted-foreground dark:text-text-5 group-hover:translate-x-0.5 transition-transform">
                       {expandedId === c.id ? (
                         <ChevronDown className="w-4 h-4" />
                       ) : (
@@ -401,7 +401,7 @@ export default function HolidayListView() {
 
                 {/* Expanded Details */}
                 {expandedId === c.id && (
-                  <div className="bg-muted/10 dark:bg-[#090b14] border-t border-border/60 dark:border-[#1a2138] p-4">
+                  <div className="bg-muted/10 dark:bg-background border-t border-border/60 dark:border-[#1a2138] p-4">
                     {!c.items || c.items.length === 0 ? (
                       <p className="text-xs text-muted-foreground text-center py-4">
                         Esta colección no tiene fechas asignadas.
@@ -415,10 +415,10 @@ export default function HolidayListView() {
                             return (
                               <div
                                 key={item.id}
-                                className="flex items-center justify-between p-3 bg-card dark:bg-[#0e1222] border border-border dark:border-[#1d2238] rounded-xl shadow-2xs group"
+                                className="flex items-center justify-between p-3 bg-card dark:bg-surface border border-border dark:border-violet/10 rounded-xl shadow-2xs group"
                               >
                                 <div className="flex items-center gap-3">
-                                  <div className="flex flex-col items-center justify-center bg-muted dark:bg-[#181d33] rounded-lg p-2 min-w-[48px]">
+                                  <div className="flex flex-col items-center justify-center bg-muted dark:bg-raised rounded-lg p-2 min-w-[48px]">
                                     <span className="text-[10px] text-muted-foreground uppercase font-medium">
                                       {format(dateObj, "MMM", { locale: es })}
                                     </span>
@@ -438,7 +438,7 @@ export default function HolidayListView() {
                                 <Button
                                   size="icon"
                                   variant="ghost"
-                                  className="h-7 w-7 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+                                  className="h-7 w-7 text-red opacity-0 group-hover:opacity-100 transition-opacity"
                                   onClick={() => handleDeleteCollectionItem(item.id)}
                                   title="Eliminar fecha"
                                 >
@@ -473,7 +473,7 @@ export default function HolidayListView() {
       </div>
 
         <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-          <DialogContent className="sm:max-w-3xl rounded-[20px]">
+          <DialogContent className="sm:max-w-3xl rounded-[var(--radius-modal)]">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold text-foreground">Crear Colección Global</DialogTitle>
               <DialogDescription className="text-text-4">
@@ -532,7 +532,7 @@ export default function HolidayListView() {
 
         {/* Modal: Confirmar Asignación Global */}
         <Dialog open={!!pendingAssignment} onOpenChange={(open) => { if (!open) setPendingAssignment(null); }}>
-          <DialogContent className="sm:max-w-md rounded-[20px]">
+          <DialogContent className="sm:max-w-md rounded-[var(--radius-modal)]">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold">Asignar Colección Global</DialogTitle>
               <DialogDescription>
@@ -550,7 +550,7 @@ export default function HolidayListView() {
 
         {/* Modal: Agregar fechas a colección existente */}
         <Dialog open={!!editingCollectionId} onOpenChange={(open) => { if (!open) { setEditingCollectionId(null); setEditDates([]); setEditDateNames({}); } }}>
-          <DialogContent className="sm:max-w-3xl rounded-[20px]">
+          <DialogContent className="sm:max-w-3xl rounded-[var(--radius-modal)]">
             <DialogHeader>
               <DialogTitle className="text-xl font-bold">Agregar Feriados</DialogTitle>
               <DialogDescription>

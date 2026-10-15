@@ -124,7 +124,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
     <div className="flex flex-col h-full">
       {/* 1. Perfil del usuario */}
       <div className="flex items-center gap-3 px-1 mb-3">
-        <div className="h-10 w-10 rounded-[13px] bg-gradient-to-br from-[#38bdf8] via-[#818cf8] to-[#c084fc] flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-md shadow-purple-500/10">
+        <div className="h-10 w-10 rounded-[13px] bg-avatar-gradient flex items-center justify-center text-white font-bold text-sm shrink-0 shadow-md shadow-purple-500/10">
           {getInitials(displayName)}
         </div>
 
@@ -139,7 +139,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
       </div>
 
       {/* 2. Tarjeta del Rol */}
-      <div className="bg-card border border-border dark:bg-[#0c0d16] dark:border-[#1d1f2e] rounded-2xl p-3.5 mb-4 shadow-xs">
+      <div className="bg-card border border-border dark:bg-sidebar dark:border-raised rounded-2xl p-3.5 mb-4 shadow-xs">
         <div>
           <span className="font-mono text-[10.5px] uppercase tracking-[0.05em] text-primary dark:text-[#7c9aff] font-semibold">
             {roleLabel}
@@ -150,7 +150,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
           <Link
             href="/projects"
             onClick={onNavigate}
-            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl bg-muted/60 border border-border/80 dark:bg-[#111320] dark:border-[#1f2133] text-xs text-foreground hover:bg-muted dark:hover:bg-[#171a2b] transition-colors group cursor-pointer"
+            className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl bg-muted/60 border border-border/80 dark:bg-surface dark:border-raised text-xs text-foreground hover:bg-muted dark:hover:bg-raised transition-colors group cursor-pointer"
           >
             <FolderKanban className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" strokeWidth={1.8} />
             <span className="font-medium text-xs truncate">Gestión de proyectos</span>
@@ -183,8 +183,8 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
               className={cn(
                 "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-normal transition-all group",
                 isActive
-                  ? "bg-primary/10 text-primary border border-primary/25 shadow-2xs font-semibold dark:bg-[#1a1429] dark:text-[#c084fc] dark:border-[#3b2355]"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60 dark:hover:bg-[#121422]"
+                  ? "bg-primary/10 text-primary border border-primary/25 shadow-2xs font-semibold dark:bg-violet/10 dark:text-[#c084fc] dark:border-violet/20"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/60 dark:hover:bg-surface"
               )}
             >
               <div className="flex items-center gap-3">
@@ -208,7 +208,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
       </nav>
 
       {/* 4. Footer */}
-      <div className="border-t border-border dark:border-[#171825] pt-4 mt-auto space-y-1">
+      <div className="border-t border-border dark:border-surface pt-4 mt-auto space-y-1">
         <ThemeToggle />
         <button
           onClick={() => {
@@ -227,7 +227,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
 
 export default function Sidebar() {
   return (
-    <aside className="hidden md:flex w-[268px] h-screen fixed left-0 top-0 z-50 bg-card dark:bg-[#07080e] border-r border-border dark:border-[#171825] flex-col overflow-hidden px-4 py-5">
+    <aside className="hidden md:flex w-[268px] h-screen fixed left-0 top-0 z-50 bg-card dark:bg-background border-r border-border dark:border-surface flex-col overflow-hidden px-4 py-5">
       <SidebarNav />
     </aside>
   );

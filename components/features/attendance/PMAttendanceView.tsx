@@ -228,7 +228,7 @@ export function PMAttendanceView() {
         {/* HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-[#1a2238]/80 dark:text-[#7c9aff] dark:border-[#2b3758] px-2.5 py-0.5 rounded-full">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 px-2.5 py-0.5 rounded-full">
               CONTROL GLOBAL
             </span>
             <span className="font-sans text-xs text-muted-foreground">
@@ -245,7 +245,7 @@ export function PMAttendanceView() {
 
         {/* PERIOD / DATE SELECTOR BAR */}
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-[#121320] border border-slate-200/60 dark:border-[#1e2030] overflow-x-auto">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-surface border border-slate-200/60 dark:border-raised overflow-x-auto">
             {PERIOD_TABS.map((tab) => {
               const isActive = activePeriod === tab.id;
               return (
@@ -254,7 +254,7 @@ export function PMAttendanceView() {
                   onClick={() => setActivePeriod(tab.id)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
                     isActive
-                      ? "bg-white dark:bg-[#1a1b2d] text-foreground dark:text-white shadow-xs border border-slate-200/80 dark:border-[#2e3048] font-semibold"
+                      ? "bg-white dark:bg-raised text-foreground dark:text-white shadow-xs border border-slate-200/80 dark:border-[#2e3048] font-semibold"
                       : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
@@ -265,7 +265,7 @@ export function PMAttendanceView() {
             })}
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-xs font-mono text-blue-500 dark:text-blue-400 shadow-xs">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-xs font-mono text-blue dark:text-blue shadow-xs">
             <Calendar className="w-3.5 h-3.5" />
             <span>01/09/2026 → 03/09/2026</span>
           </div>
@@ -274,9 +274,9 @@ export function PMAttendanceView() {
         {/* 4 METRIC CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Card 1: Total registros */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-[#0c0d16]/90 border-slate-200/80 dark:border-[#1e2030] shadow-xs">
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-sidebar/90 border-slate-200/80 dark:border-raised shadow-xs">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-[#161726] border border-slate-200 dark:border-[#222438] text-muted-foreground">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-surface border border-slate-200 dark:border-field text-muted-foreground">
                 <Clock className="w-4 h-4" />
               </div>
               <span className="text-xs text-muted-foreground">Total registros</span>
@@ -285,40 +285,40 @@ export function PMAttendanceView() {
           </div>
 
           {/* Card 2: Presentes */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-[#ecfdf5] dark:bg-[#0b1614]/90 border-emerald-200/70 dark:border-[#14382c] shadow-xs">
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-green/10 dark:bg-green/10 border-green/20 dark:border-green/20 shadow-xs">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-500/15 border border-emerald-500/25 text-emerald-500 dark:text-emerald-400">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green/15 border border-green/25 text-green dark:text-green">
                 <CheckCircle2 className="w-4 h-4" />
               </div>
-              <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Presentes</span>
+              <span className="text-xs text-green-ink dark:text-green font-medium">Presentes</span>
             </div>
             <span className="text-2xl font-bold text-foreground">{metrics.onTime}</span>
           </div>
 
           {/* Card 3: Faltas / tardanzas */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-[#fef2f2] dark:bg-[#180e14]/90 border-rose-200/70 dark:border-[#381622] shadow-xs">
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-red/10 dark:bg-red/10 border-red/20 dark:border-red/20 shadow-xs">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-rose-500/15 border border-rose-500/25 text-rose-500 dark:text-rose-400">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-red/15 border border-red/25 text-red dark:text-red">
                 <XCircle className="w-4 h-4" />
               </div>
-              <span className="text-xs text-rose-600 dark:text-rose-400 font-medium">Faltas / tardanzas</span>
+              <span className="text-xs text-red-ink dark:text-red font-medium">Faltas / tardanzas</span>
             </div>
             <span className="text-2xl font-bold text-foreground">{metrics.late + metrics.absences}</span>
           </div>
 
           {/* Card 4: % asistencia */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-[#0c0d16]/90 border-slate-200/80 dark:border-[#1e2030] shadow-xs">
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-sidebar/90 border-slate-200/80 dark:border-raised shadow-xs">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue-500/10 border border-blue-500/20 text-blue-500">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue/10 border border-blue/20 text-blue">
                 <TrendingUp className="w-4 h-4" />
               </div>
               <span className="text-xs text-muted-foreground">% asistencia</span>
             </div>
             <div>
               <span className="text-2xl font-bold text-foreground">{metrics.rate}%</span>
-              <div className="w-full h-1.5 rounded-full bg-slate-100 dark:bg-[#1a1b2d] mt-2 overflow-hidden">
+              <div className="w-full h-1.5 rounded-full bg-slate-100 dark:bg-raised mt-2 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-purple-500 to-cyan-400"
+                  className="h-full rounded-full bg-gradient-to-r from-violet to-cyan"
                   style={{ width: `${Math.min(100, Math.max(0, metrics.rate))}%` }}
                 />
               </div>
@@ -332,7 +332,7 @@ export function PMAttendanceView() {
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input
               placeholder="Colaborador o proyecto..."
-              className="w-full pl-9 pr-4 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-purple-500"
+              className="w-full pl-9 pr-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-violet"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -340,7 +340,7 @@ export function PMAttendanceView() {
 
           <div className="relative min-w-[140px]">
             <select
-              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm text-foreground focus:outline-none cursor-pointer"
+              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
               value={selectedRole}
               onChange={(e: any) => setSelectedRole(e.target.value)}
             >
@@ -354,7 +354,7 @@ export function PMAttendanceView() {
 
           <div className="relative min-w-[170px]">
             <select
-              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm text-foreground focus:outline-none cursor-pointer"
+              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
               value={selectedProject}
               onChange={(e) => setSelectedProject(e.target.value)}
             >
@@ -370,7 +370,7 @@ export function PMAttendanceView() {
 
           <div className="relative min-w-[150px]">
             <select
-              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm text-foreground focus:outline-none cursor-pointer"
+              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -384,7 +384,7 @@ export function PMAttendanceView() {
 
           <button
             onClick={fetchAttendance}
-            className="flex items-center gap-2 px-4 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-[#141524] transition-colors"
+            className="flex items-center gap-2 px-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-surface transition-colors"
           >
             <RefreshCw className={`w-4 h-4 text-muted-foreground ${isLoading ? "animate-spin" : ""}`} />
             Actualizar
@@ -392,7 +392,7 @@ export function PMAttendanceView() {
 
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-2 px-4 h-10 rounded-xl text-sm font-medium border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 h-10 rounded-xl text-sm font-medium border border-green/30 text-green-ink dark:text-green bg-green/10 hover:bg-green/20 transition-colors cursor-pointer"
           >
             <Download className="w-4 h-4" />
             Exportar CSV
@@ -400,35 +400,35 @@ export function PMAttendanceView() {
         </div>
 
         {/* ATTENDANCE TABLE */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-[#171825] bg-white dark:bg-[#0b0c14] overflow-hidden shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 dark:border-surface bg-white dark:bg-background overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-border/80 dark:border-[#171825] bg-muted/30 dark:bg-transparent">
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                <tr className="border-b border-border/80 dark:border-surface bg-muted/30 dark:bg-transparent">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     COLABORADOR
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     PROYECTO
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     FECHA
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     ENTRADA
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     SALIDA
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     ESTADO
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     UBICACIÓN GPS
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/60 dark:divide-[#171825]/60">
+              <tbody className="divide-y divide-border/60 dark:divide-surface/60">
                 {paginatedRows.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="py-12 text-center text-sm text-muted-foreground">
@@ -451,15 +451,15 @@ export function PMAttendanceView() {
                     return (
                       <tr
                         key={r.id}
-                        className={`border-b border-border/40 dark:border-[#1a1e30] transition-colors ${
+                        className={`border-b border-border/40 dark:border-raised transition-colors ${
                           index % 2 === 0
-                            ? "bg-muted/30 dark:bg-[#121626]/50 hover:bg-muted/50 dark:hover:bg-[#181d33]/60"
-                            : "bg-transparent hover:bg-muted/20 dark:hover:bg-[#121626]/40"
+                            ? "bg-muted/30 dark:bg-surface/50 hover:bg-muted/50 dark:hover:bg-raised/60"
+                            : "bg-transparent hover:bg-muted/20 dark:hover:bg-surface/40"
                         }`}
                       >
                         <td className="py-3.5 px-5">
                           <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#38bdf8] via-[#818cf8] to-[#c084fc] flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+                            <div className="w-8 h-8 rounded-full bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
                               {initials}
                             </div>
                             <div>
@@ -468,10 +468,10 @@ export function PMAttendanceView() {
                                 <span
                                   className={`text-[10px] px-1.5 py-0.5 rounded font-medium border ${
                                     isAdmin
-                                      ? "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20"
+                                      ? "bg-violet/10 text-violet-ink dark:text-violet border-violet/20"
                                       : isPm
-                                      ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
-                                      : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20"
+                                      ? "bg-amber/10 text-amber-ink dark:text-amber border-amber/20"
+                                      : "bg-blue/10 text-blue dark:text-blue border-blue/20"
                                   }`}
                                 >
                                   {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Colaborador"}
@@ -529,7 +529,7 @@ export function PMAttendanceView() {
           </div>
 
           {/* FOOTER */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 dark:border-[#171825] bg-slate-50/30 dark:bg-transparent">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 dark:border-surface bg-slate-50/30 dark:bg-transparent">
             <span className="text-xs text-muted-foreground">
               {filteredRows.length} {filteredRows.length === 1 ? "registro" : "registros"}
             </span>
@@ -538,7 +538,7 @@ export function PMAttendanceView() {
               <button
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1e2030] text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
+                className="p-1.5 rounded-lg border border-slate-200 dark:border-raised text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -548,7 +548,7 @@ export function PMAttendanceView() {
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1e2030] text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
+                className="p-1.5 rounded-lg border border-slate-200 dark:border-raised text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>

@@ -13,7 +13,7 @@ export default function UsersPage() {
         {/* HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-[#181a2e] dark:text-[#7d97ff] dark:border-[#2b3054] px-2.5 py-0.5 rounded-full">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7d97ff] dark:border-violet/20 px-2.5 py-0.5 rounded-full">
               CONTROL GLOBAL
             </span>
             <span className="font-sans text-xs text-muted-foreground">

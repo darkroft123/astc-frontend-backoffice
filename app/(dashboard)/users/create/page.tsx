@@ -884,7 +884,7 @@ export default function CreateUserPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2.5 rounded-xl text-xs font-medium bg-gradient-to-r from-[#7c3aed] to-[#9333ea] hover:brightness-110 active:scale-[0.98] text-white flex items-center gap-2 shadow-md shadow-primary/20 transition-all cursor-pointer disabled:opacity-50"
+                className="px-5 py-2.5 rounded-xl text-xs font-medium bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center gap-2 shadow-md shadow-primary/20 transition-all cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

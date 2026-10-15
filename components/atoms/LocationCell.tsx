@@ -32,8 +32,8 @@ export function LocationCell({
   if (effectiveLat == null || effectiveLng == null) {
     if (locationName) {
       return (
-        <span className="inline-flex items-center gap-1.5 text-blue-500 dark:text-blue-400 text-xs">
-          <MapPin className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 shrink-0" />
+        <span className="inline-flex items-center gap-1.5 text-blue dark:text-blue text-xs">
+          <MapPin className="w-3.5 h-3.5 text-blue dark:text-blue shrink-0" />
           <span className="truncate max-w-[140px]">{locationName}</span>
         </span>
       );
@@ -48,10 +48,10 @@ export function LocationCell({
       href={mapsUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="inline-flex items-center gap-1.5 text-blue-500 dark:text-blue-400 font-normal hover:underline text-xs"
+      className="inline-flex items-center gap-1.5 text-blue dark:text-blue font-normal hover:underline text-xs"
       title={`Coordenadas: ${effectiveLat}, ${effectiveLng} (Ver en Google Maps)`}
     >
-      <MapPin className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 shrink-0" />
+      <MapPin className="w-3.5 h-3.5 text-blue dark:text-blue shrink-0" />
       <span className="truncate max-w-[140px]">{district || locationName || "Condevilla Señor"}</span>
     </a>
   );

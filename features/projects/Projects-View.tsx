@@ -117,7 +117,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
         {/* HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-[#1a2238]/80 dark:text-[#7c9aff] dark:border-[#2b3758] px-2.5 py-0.5 rounded-full">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 px-2.5 py-0.5 rounded-full">
               CONTROL GLOBAL
             </span>
             <span className="font-sans text-xs text-muted-foreground">
@@ -135,9 +135,9 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
         {/* 3 METRIC CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Card 1: Total */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-[#0c0d16]/90 border-slate-200/80 dark:border-[#1e2030] shadow-xs">
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-sidebar/90 border-slate-200/80 dark:border-raised shadow-xs">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-[#161726] border border-slate-200 dark:border-[#222438] text-muted-foreground">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-surface border border-slate-200 dark:border-field text-muted-foreground">
                 <Folder className="w-4 h-4" />
               </div>
               <span className="text-xs text-muted-foreground">Total</span>
@@ -146,23 +146,23 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           </div>
 
           {/* Card 2: Activos */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-[#ecfdf5] dark:bg-[#0b1614]/90 border-emerald-200/70 dark:border-[#14382c] shadow-xs">
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-green/10 dark:bg-green/10 border-green/20 dark:border-green/20 shadow-xs">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-emerald-500/15 border border-emerald-500/25 text-emerald-500 dark:text-emerald-400">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green/15 border border-green/25 text-green dark:text-green">
                 <Check className="w-4 h-4" />
               </div>
-              <span className="text-xs text-emerald-600 dark:text-emerald-400 font-medium">Activos</span>
+              <span className="text-xs text-green-ink dark:text-green font-medium">Activos</span>
             </div>
             <span className="text-2xl font-bold text-foreground">{activeProjects}</span>
           </div>
 
           {/* Card 3: Inactivos */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-[#fef2f2] dark:bg-[#180e14]/90 border-rose-200/70 dark:border-[#381622] shadow-xs">
+          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-red/10 dark:bg-red/10 border-red/20 dark:border-red/20 shadow-xs">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-rose-500/15 border border-rose-500/25 text-rose-500 dark:text-rose-400">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-red/15 border border-red/25 text-red dark:text-red">
                 <Ban className="w-4 h-4" />
               </div>
-              <span className="text-xs text-rose-600 dark:text-rose-400 font-medium">Inactivos</span>
+              <span className="text-xs text-red-ink dark:text-red font-medium">Inactivos</span>
             </div>
             <span className="text-2xl font-bold text-foreground">{inactiveProjects}</span>
           </div>
@@ -174,7 +174,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input
               placeholder="Buscar por nombre o ID..."
-              className="w-full pl-9 pr-4 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-purple-500"
+              className="w-full pl-9 pr-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-violet"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -183,7 +183,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           <div className="relative">
             <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <select
-              className="appearance-none pl-9 pr-8 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm text-foreground focus:outline-none cursor-pointer"
+              className="appearance-none pl-9 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
               value={estadoFilter}
               onChange={(e) => setEstadoFilter(e.target.value)}
             >
@@ -196,7 +196,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
 
           <button
             onClick={fetchProjects}
-            className="flex items-center gap-2 px-4 h-10 rounded-xl border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#0c0d16] text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-[#141524] transition-colors"
+            className="flex items-center gap-2 px-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-surface transition-colors"
           >
             <RefreshCw className={`w-4 h-4 text-muted-foreground ${isLoading ? "animate-spin" : ""}`} />
             Actualizar
@@ -205,7 +205,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           {isAdmin && (
             <button
               onClick={() => router.push("/projects/create")}
-              className="flex items-center gap-2 px-5 h-10 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:opacity-95 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
+              className="flex items-center gap-2 px-5 h-10 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-blue via-indigo-600 to-violet hover:opacity-95 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
             >
               <PlusSquare className="w-4 h-4" />
               Crear proyecto
@@ -214,32 +214,32 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
         </div>
 
         {/* PROJECTS TABLE */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-[#171825] bg-white dark:bg-[#0b0c14] overflow-hidden shadow-xs">
+        <div className="rounded-2xl border border-slate-200/80 dark:border-surface bg-white dark:bg-background overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-border/80 dark:border-[#171825] bg-muted/30 dark:bg-transparent">
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                <tr className="border-b border-border/80 dark:border-surface bg-muted/30 dark:bg-transparent">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     PROYECTO
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     INICIO
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     FIN
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     ESTADO
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     RESPONSABLE
                   </th>
-                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] text-right">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5 text-right">
                     ACCIONES
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border/60 dark:divide-[#171825]/60">
+              <tbody className="divide-y divide-border/60 dark:divide-surface/60">
                 {paginatedProjects.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-12 text-center text-sm text-muted-foreground">
@@ -259,10 +259,10 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                     return (
                       <tr
                         key={p.id}
-                        className={`border-b border-border/40 dark:border-[#1a1e30] transition-colors ${
+                        className={`border-b border-border/40 dark:border-raised transition-colors ${
                           index % 2 === 0
-                            ? "bg-muted/30 dark:bg-[#121626]/50 hover:bg-muted/50 dark:hover:bg-[#181d33]/60"
-                            : "bg-transparent hover:bg-muted/20 dark:hover:bg-[#121626]/40"
+                            ? "bg-muted/30 dark:bg-surface/50 hover:bg-muted/50 dark:hover:bg-raised/60"
+                            : "bg-transparent hover:bg-muted/20 dark:hover:bg-surface/40"
                         }`}
                       >
                         <td className="py-3.5 px-5">
@@ -276,8 +276,8 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                           {formatDate(p.endDate)}
                         </td>
                         <td className="py-3.5 px-5">
-                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green/10 text-green-ink dark:text-green border border-green/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-green" />
                             {p.status === "ACTIVE"
                               ? "Activo"
                               : p.status === "INACTIVE"
@@ -287,7 +287,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                         </td>
                         <td className="py-3.5 px-5">
                           <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#38bdf8] via-[#818cf8] to-[#c084fc] flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+                            <div className="w-8 h-8 rounded-full bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
                               {((u.firstName?.[0] || u.username?.[0] || "J") as string).toUpperCase()}
                             </div>
                             <div>
@@ -302,7 +302,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                           <div className="flex items-center gap-2 justify-end">
                             <button
                               onClick={() => setSelectedProjectForMembers(p)}
-                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-[#1e2030] bg-white dark:bg-[#121320] text-xs font-medium text-foreground hover:bg-slate-50 dark:hover:bg-[#1a1b2d] transition-colors"
+                              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-raised bg-white dark:bg-surface text-xs font-medium text-foreground hover:bg-slate-50 dark:hover:bg-raised transition-colors"
                             >
                               <Users className="w-3.5 h-3.5 text-muted-foreground" />
                               Miembros
@@ -311,14 +311,14 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                               <>
                                 <button
                                   onClick={() => router.push(`/projects/edit/${p.id}`)}
-                                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-slate-100 dark:hover:bg-[#1a1b2d] transition-colors"
+                                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-slate-100 dark:hover:bg-raised transition-colors"
                                   title="Editar proyecto"
                                 >
                                   <Pencil className="w-3.5 h-3.5" />
                                 </button>
                                 <button
                                   onClick={() => setProjectToDelete(p)}
-                                  className="p-1.5 rounded-lg text-rose-500 hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20 transition-colors"
+                                  className="p-1.5 rounded-lg text-red hover:text-red-ink hover:bg-red/10 dark:hover:bg-red/15 transition-colors"
                                   title="Eliminar proyecto"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -336,7 +336,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           </div>
 
           {/* PAGINATION / FOOTER */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 dark:border-[#171825] bg-slate-50/30 dark:bg-transparent">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 dark:border-surface bg-slate-50/30 dark:bg-transparent">
             <span className="text-xs text-muted-foreground">
               {totalProjects} {totalProjects === 1 ? "proyecto" : "proyectos"}
             </span>
@@ -345,7 +345,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
               <button
                 disabled={page <= 1}
                 onClick={() => setPage((p) => p - 1)}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1e2030] text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
+                className="p-1.5 rounded-lg border border-slate-200 dark:border-raised text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -355,7 +355,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
               <button
                 disabled={page >= totalPages}
                 onClick={() => setPage((p) => p + 1)}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-[#1e2030] text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
+                className="p-1.5 rounded-lg border border-slate-200 dark:border-raised text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -383,7 +383,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                         className="flex justify-between items-center p-2.5 bg-muted/50 border rounded-lg"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#38bdf8] via-[#818cf8] to-[#c084fc] flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+                          <div className="w-8 h-8 rounded-full bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
                             {((u?.firstName?.[0] || u?.username?.[0] || "C") as string).toUpperCase()}
                           </div>
                           <div>

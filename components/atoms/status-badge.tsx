@@ -31,13 +31,13 @@ const statusStyles: Record<string, string> = {
   CHECKED_OUT:
     "bg-green/10 text-green-ink border-green/20",
   ASISTENCIA:
-    "bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border-emerald-500/20",
+    "bg-green/10 text-green dark:text-green border-green/20",
   PRESENTE:
-    "bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border-emerald-500/20",
+    "bg-green/10 text-green dark:text-green border-green/20",
   FALTA:
-    "bg-rose-500/10 text-rose-500 dark:text-rose-400 border-rose-500/20",
+    "bg-red/10 text-red dark:text-red border-red/20",
   TARDE:
-    "bg-amber-500/10 text-amber-500 dark:text-amber-400 border-amber-500/20",
+    "bg-amber/10 text-amber dark:text-amber border-amber/20",
   PENDING:
     "bg-amber/10 text-amber-ink border-amber/20",
   SUBMITTED:
@@ -45,9 +45,9 @@ const statusStyles: Record<string, string> = {
   OBSERVATION:
     "bg-amber/10 text-amber-ink border-amber/20",
   APPROVED:
-    "bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border-emerald-500/20",
+    "bg-green/10 text-green dark:text-green border-green/20",
   REJECTED:
-    "bg-rose-500/10 text-rose-500 dark:text-rose-400 border-rose-500/20",
+    "bg-red/10 text-red dark:text-red border-red/20",
   JUSTIFICADO:
     "bg-primary/10 text-primary border-primary/20",
   VACACIONES:
@@ -101,7 +101,7 @@ export function StatusBadge({ status, className }: StatusBadgeProps) {
       <span
         className={cn(
           "w-1.5 h-1.5 rounded-full mr-1.5",
-          isGreen ? "bg-emerald-500" : isRed ? "bg-rose-500" : isAmber ? "bg-amber-500" : "bg-primary"
+          isGreen ? "bg-green" : isRed ? "bg-red" : isAmber ? "bg-amber" : "bg-primary"
         )}
       />
       {label}

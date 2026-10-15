@@ -114,7 +114,7 @@ export function HolidayImporter({ onImport, year }: HolidayImporterProps) {
       </Button>
 
       <Dialog open={open} onOpenChange={resetState}>
-        <DialogContent className="sm:max-w-xl rounded-[20px]">
+        <DialogContent className="sm:max-w-xl rounded-[var(--radius-modal)]">
           <DialogHeader>
             <DialogTitle>Importar Feriados</DialogTitle>
             <DialogDescription>

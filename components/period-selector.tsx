@@ -201,7 +201,7 @@ export default function PeriodSelector({
           <SelectTrigger className="w-full bg-background border border-border rounded-2xl h-[44px] px-4 text-sm font-semibold shadow-sm [&>svg]:text-muted-foreground">
             <SelectValue placeholder="Seleccionar período" />
           </SelectTrigger>
-          <SelectContent className="rounded-[14px] border border-line-2 shadow-xl">
+          <SelectContent className="rounded-[var(--radius-kpi)] border border-line-2 shadow-xl">
             {periodOptions.map((p) => (
               <SelectItem
                 key={p.key}
