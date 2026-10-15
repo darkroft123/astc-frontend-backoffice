@@ -146,6 +146,32 @@ export const MOCK_DASHBOARD_BACKOFFICE = {
 
 export const MOCK_ATTENDANCES_LIST = [
   {
+    id: "att-0",
+    userId: "u-1",
+    user: {
+      id: "u-1",
+      firstName: "Admin",
+      lastName: "Principal",
+      username: "admin",
+      email: "admin@astc.com",
+      roleCode: "ADMIN",
+      role: "ADMIN",
+    },
+    projectId: null,
+    projectName: "Control Global",
+    project: {
+      id: "global",
+      name: "Control Global",
+    },
+    date: "2026-09-03",
+    checkIn: "08:00",
+    checkOut: "17:00",
+    status: "ASISTENCIA",
+    latitude: -12.0298,
+    longitude: -77.0678,
+    locationName: "Condevilla Señor",
+  },
+  {
     id: "att-1",
     userId: "u-2",
     user: {

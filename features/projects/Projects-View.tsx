@@ -247,7 +247,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                     </td>
                   </tr>
                 ) : (
-                  paginatedProjects.map((p) => {
+                  paginatedProjects.map((p, index) => {
                     const responsibleMember =
                       p.members?.find((m: any) => m.role === "PROJECT_MANAGER") || p.members?.[0];
                     const u = (p as any).responsible || responsibleMember?.user || {
@@ -259,7 +259,11 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                     return (
                       <tr
                         key={p.id}
-                        className="hover:bg-slate-50/60 dark:hover:bg-[#121320]/50 transition-colors"
+                        className={`border-b border-border/40 dark:border-[#1a1e30] transition-colors ${
+                          index % 2 === 0
+                            ? "bg-muted/30 dark:bg-[#121626]/50 hover:bg-muted/50 dark:hover:bg-[#181d33]/60"
+                            : "bg-transparent hover:bg-muted/20 dark:hover:bg-[#121626]/40"
+                        }`}
                       >
                         <td className="py-3.5 px-5">
                           <p className="font-semibold text-sm text-foreground">{p.name}</p>

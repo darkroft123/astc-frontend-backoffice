@@ -9,7 +9,7 @@ export default function UsersPage() {
 
   return (
     <div className="relative min-h-screen bg-transparent pb-12">
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6 z-10">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 z-10">
         {/* HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">

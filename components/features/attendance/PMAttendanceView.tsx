@@ -342,6 +342,7 @@ export function PMAttendanceView() {
               onChange={(e: any) => setSelectedRole(e.target.value)}
             >
               <option value="ALL">Todos los roles</option>
+              <option value="ADMIN">Administrador</option>
               <option value="PROJECT_MANAGER">Jefes de proyecto</option>
               <option value="TEAM_MEMBER">Colaboradores</option>
             </select>
@@ -432,17 +433,26 @@ export function PMAttendanceView() {
                     </td>
                   </tr>
                 ) : (
-                  paginatedRows.map((r) => {
+                  paginatedRows.map((r, index) => {
                     const initials =
                       ((r.user?.firstName?.[0] || "") + (r.user?.lastName?.[0] || "") ||
                         r.userName?.[0] ||
                         "C").toUpperCase();
-                    const isPm = r.userRole === "PROJECT_MANAGER";
+                    const isAdmin =
+                      r.userRole === "ADMIN" ||
+                      r.user?.roleCode === "ADMIN" ||
+                      r.user?.role === "ADMIN" ||
+                      r.userName?.toLowerCase().includes("admin");
+                    const isPm = !isAdmin && (r.userRole === "PROJECT_MANAGER" || r.user?.roleCode === "PROJECT_MANAGER");
 
                     return (
                       <tr
                         key={r.id}
-                        className="hover:bg-slate-50/60 dark:hover:bg-[#121320]/50 transition-colors"
+                        className={`border-b border-border/40 dark:border-[#1a1e30] transition-colors ${
+                          index % 2 === 0
+                            ? "bg-muted/30 dark:bg-[#121626]/50 hover:bg-muted/50 dark:hover:bg-[#181d33]/60"
+                            : "bg-transparent hover:bg-muted/20 dark:hover:bg-[#121626]/40"
+                        }`}
                       >
                         <td className="py-3.5 px-5">
                           <div className="flex items-center gap-2.5">
@@ -453,13 +463,15 @@ export function PMAttendanceView() {
                               <p className="font-semibold text-sm text-foreground">{r.userName}</p>
                               <div className="flex items-center gap-1.5 mt-0.5">
                                 <span
-                                  className={`text-[10px] px-1.5 py-0.2 rounded font-medium border ${
-                                    isPm
+                                  className={`text-[10px] px-1.5 py-0.5 rounded font-medium border ${
+                                    isAdmin
+                                      ? "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20"
+                                      : isPm
                                       ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
                                       : "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20"
                                   }`}
                                 >
-                                  {isPm ? "Jefe de proyecto" : "Colaborador"}
+                                  {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Colaborador"}
                                 </span>
                                 {r.user?.email && (
                                   <span className="text-[11px] text-muted-foreground truncate max-w-[150px]">

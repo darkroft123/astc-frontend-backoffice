@@ -29,7 +29,6 @@ const navItems = [
   { name: "Historial de asistencias", href: "/asistencias-pm", icon: Clock },
   { name: "Feriados globales", href: "/feriados", icon: Calendar },
   { name: "Registrar asistencia", href: "/registrar", icon: CheckCircle2 },
-  { name: "Mis asistencias", href: "/mis-asistencias", icon: CheckCircle2 },
   { name: "Notificaciones", href: "/notificaciones", icon: Bell },
 ];
 

@@ -150,26 +150,26 @@ export default function UsersList() {
 
       {/* TABLE */}
       <div className="w-full border border-border bg-card dark:bg-[#0b0c16]/70 dark:border-[#1c1e2e] rounded-2xl shadow-xs overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm min-w-[720px] border-collapse">
+        <div className="w-full overflow-x-auto">
+          <table className="w-full text-sm border-collapse">
             <thead>
               <tr className="border-b border-border/80 dark:border-[#1c1e2e] bg-muted/30 dark:bg-[#0e101d]/60">
-                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-5 py-3.5">
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-4 py-3.5">
                   USUARIO
                 </th>
-                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-5 py-3.5">
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-4 py-3.5">
                   CORREO
                 </th>
-                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-5 py-3.5">
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-4 py-3.5">
                   TELÉFONO
                 </th>
-                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-5 py-3.5">
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-4 py-3.5">
                   ROL
                 </th>
-                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-5 py-3.5">
+                <th className="text-left font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-4 py-3.5">
                   PROYECTO
                 </th>
-                <th className="text-right font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-5 py-3.5">
+                <th className="text-right font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494] px-4 py-3.5">
                   ACCIONES
                 </th>
               </tr>
@@ -213,7 +213,7 @@ export default function UsersList() {
                       }`}
                     >
                       {/* USUARIO */}
-                      <td className="px-5 py-3.5 whitespace-nowrap">
+                      <td className="px-4 py-3.5 whitespace-nowrap">
                         <div className="flex items-center gap-3">
                           <Avatar className="h-8 w-8 rounded-full shrink-0 shadow-2xs">
                             {avatarSrc && (
@@ -239,12 +239,12 @@ export default function UsersList() {
                       </td>
 
                       {/* CORREO */}
-                      <td className="px-5 py-3.5 text-xs text-muted-foreground dark:text-[#9ca3af] font-normal whitespace-nowrap">
+                      <td className="px-4 py-3.5 text-xs text-muted-foreground dark:text-[#9ca3af] font-normal whitespace-nowrap">
                         {u.email}
                       </td>
 
                       {/* TELÉFONO */}
-                      <td className="px-5 py-3.5 text-xs whitespace-nowrap">
+                      <td className="px-4 py-3.5 text-xs whitespace-nowrap">
                         {u.phone ? (
                           <span className="font-mono font-medium text-foreground dark:text-[#c8cddc] whitespace-nowrap">
                             {u.phone}
@@ -257,7 +257,7 @@ export default function UsersList() {
                       </td>
 
                       {/* ROL */}
-                      <td className="px-5 py-3.5 whitespace-nowrap">
+                      <td className="px-4 py-3.5 whitespace-nowrap">
                         {u.roleCode === "ADMIN" || u.roleId === "ADMIN" || u.roleName === "Administrador" ? (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-500/10 text-purple-600 border border-purple-500/20 dark:bg-[#241538] dark:text-[#c084fc] dark:border-[#3b2058] whitespace-nowrap">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#a855f7] shrink-0" />
@@ -277,7 +277,7 @@ export default function UsersList() {
                       </td>
 
                       {/* PROYECTO */}
-                      <td className="px-5 py-3.5 whitespace-nowrap">
+                      <td className="px-4 py-3.5 whitespace-nowrap">
                         {assigned.length === 0 ? (
                           <span className="text-xs text-muted-foreground dark:text-[#5a607f] whitespace-nowrap">
                             Sin proyecto
@@ -305,7 +305,7 @@ export default function UsersList() {
                       </td>
 
                       {/* ACCIONES */}
-                      <td className="px-5 py-3.5 text-right whitespace-nowrap">
+                      <td className="px-4 py-3.5 text-right whitespace-nowrap">
                         <button
                           type="button"
                           onClick={() => handleEdit(u)}
