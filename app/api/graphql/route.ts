@@ -6,6 +6,7 @@ import {
   MOCK_ATTENDANCES_LIST,
   MOCK_DASHBOARD_BACKOFFICE,
   MOCK_NOTIFICATIONS,
+  MOCK_COLLECTIONS,
 } from "@/lib/mock-data";
 
 export async function POST(req: Request) {
@@ -203,6 +204,67 @@ export async function POST(req: Request) {
             size: 20,
             total: MOCK_ATTENDANCES_LIST.length,
           },
+        },
+      });
+    }
+
+    // 7. Global Collections
+    if (query.includes("getGlobalCollections") || query.includes("listCollections")) {
+      return NextResponse.json({
+        data: {
+          getGlobalCollections: MOCK_COLLECTIONS,
+          listCollections: MOCK_COLLECTIONS,
+        },
+      });
+    }
+
+    if (query.includes("createCollection")) {
+      const input = body.variables?.input || {};
+      const newCol = {
+        id: `col-${Date.now()}`,
+        name: input.name || "Nueva Colección",
+        scope: "GLOBAL",
+        createdAt: new Date().toISOString(),
+        items: Array.isArray(input.items)
+          ? input.items.map((it: any, idx: number) => ({
+              id: `ci-${Date.now()}-${idx}`,
+              collectionId: `col-${Date.now()}`,
+              date: it.date,
+              name: it.name || "Feriado",
+            }))
+          : [],
+      };
+      MOCK_COLLECTIONS.unshift(newCol);
+      return NextResponse.json({
+        data: {
+          createCollection: newCol,
+        },
+      });
+    }
+
+    if (query.includes("deleteCollection")) {
+      const id = body.variables?.id;
+      const idx = MOCK_COLLECTIONS.findIndex((c) => c.id === id);
+      if (idx !== -1) MOCK_COLLECTIONS.splice(idx, 1);
+      return NextResponse.json({
+        data: {
+          deleteCollection: true,
+        },
+      });
+    }
+
+    if (query.includes("getAdminSetting")) {
+      return NextResponse.json({
+        data: {
+          getAdminSetting: "col-1",
+        },
+      });
+    }
+
+    if (query.includes("updateAdminSetting")) {
+      return NextResponse.json({
+        data: {
+          updateAdminSetting: true,
         },
       });
     }

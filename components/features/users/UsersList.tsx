@@ -192,7 +192,7 @@ export default function UsersList() {
                   </td>
                 </tr>
               ) : (
-                paginatedUsers.map((u) => {
+                paginatedUsers.map((u, index) => {
                   const fullName =
                     `${u.firstName || ""} ${u.lastName || ""}`.trim() ||
                     u.username ||
@@ -203,20 +203,17 @@ export default function UsersList() {
                   const isPM = firstProject?.responsibleId === u.id;
                   const remainingCount = assigned.length - 1;
 
-                  const fallbackBg =
-                    u.roleCode === "ADMIN" || u.roleId === "ADMIN"
-                      ? "bg-[#705cf6]"
-                      : u.roleCode === "PROJECT_MANAGER" || u.roleId === "PROJECT_MANAGER"
-                      ? "bg-[#7c3aed]"
-                      : "bg-[#6366f1]";
-
                   return (
                     <tr
                       key={u.id}
-                      className="hover:bg-muted/30 dark:hover:bg-[#121422]/60 transition-colors group"
+                      className={`border-b border-border/40 dark:border-[#1a1e30] transition-colors group ${
+                        index % 2 === 0
+                          ? "bg-muted/30 dark:bg-[#121626]/50 hover:bg-muted/50 dark:hover:bg-[#181d33]/60"
+                          : "bg-transparent hover:bg-muted/20 dark:hover:bg-[#121626]/40"
+                      }`}
                     >
                       {/* USUARIO */}
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5 whitespace-nowrap">
                         <div className="flex items-center gap-3">
                           <Avatar className="h-8 w-8 rounded-full shrink-0 shadow-2xs">
                             {avatarSrc && (
@@ -242,37 +239,37 @@ export default function UsersList() {
                       </td>
 
                       {/* CORREO */}
-                      <td className="px-5 py-3.5 text-xs text-muted-foreground dark:text-[#9ca3af] font-normal">
+                      <td className="px-5 py-3.5 text-xs text-muted-foreground dark:text-[#9ca3af] font-normal whitespace-nowrap">
                         {u.email}
                       </td>
 
                       {/* TELÉFONO */}
-                      <td className="px-5 py-3.5 text-xs">
+                      <td className="px-5 py-3.5 text-xs whitespace-nowrap">
                         {u.phone ? (
-                          <span className="font-mono font-medium text-foreground dark:text-[#c8cddc]">
+                          <span className="font-mono font-medium text-foreground dark:text-[#c8cddc] whitespace-nowrap">
                             {u.phone}
                           </span>
                         ) : (
-                          <span className="text-muted-foreground dark:text-[#5a607f]">
+                          <span className="text-muted-foreground dark:text-[#5a607f] whitespace-nowrap">
                             Sin teléfono
                           </span>
                         )}
                       </td>
 
                       {/* ROL */}
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5 whitespace-nowrap">
                         {u.roleCode === "ADMIN" || u.roleId === "ADMIN" || u.roleName === "Administrador" ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-500/10 text-purple-600 border border-purple-500/20 dark:bg-[#241538] dark:text-[#c084fc] dark:border-[#3b2058]">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-purple-500/10 text-purple-600 border border-purple-500/20 dark:bg-[#241538] dark:text-[#c084fc] dark:border-[#3b2058] whitespace-nowrap">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#a855f7] shrink-0" />
                             Administrador
                           </span>
                         ) : u.roleCode === "PROJECT_MANAGER" || u.roleId === "PROJECT_MANAGER" || u.roleName === "Project manager" ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600 border border-amber-500/20 dark:bg-[#2a2010] dark:text-[#fbbf24] dark:border-[#4a3715]">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-600 border border-amber-500/20 dark:bg-[#2a2010] dark:text-[#fbbf24] dark:border-[#4a3715] whitespace-nowrap">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] shrink-0" />
                             Project manager
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-600 border border-blue-500/20 dark:bg-[#131d38] dark:text-[#60a5fa] dark:border-[#1e2f58]">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue-500/10 text-blue-600 border border-blue-500/20 dark:bg-[#131d38] dark:text-[#60a5fa] dark:border-[#1e2f58] whitespace-nowrap">
                             <span className="w-1.5 h-1.5 rounded-full bg-[#3b82f6] shrink-0" />
                             Team member
                           </span>
@@ -280,15 +277,15 @@ export default function UsersList() {
                       </td>
 
                       {/* PROYECTO */}
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5 whitespace-nowrap">
                         {assigned.length === 0 ? (
-                          <span className="text-xs text-muted-foreground dark:text-[#5a607f]">
+                          <span className="text-xs text-muted-foreground dark:text-[#5a607f] whitespace-nowrap">
                             Sin proyecto
                           </span>
                         ) : (
                           <div className="flex items-center gap-1.5 whitespace-nowrap">
-                            <span className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-lg bg-purple-500/10 text-purple-600 border border-purple-500/20 dark:bg-[#251538] dark:text-[#c084fc] dark:border-[#3d1f5c]">
-                              <span className="truncate max-w-[140px]">
+                            <span className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-lg bg-purple-500/10 text-purple-600 border border-purple-500/20 dark:bg-[#251538] dark:text-[#c084fc] dark:border-[#3d1f5c] whitespace-nowrap">
+                              <span className="truncate max-w-[160px]">
                                 {firstProject.name}
                               </span>
                               {isPM && (
@@ -308,7 +305,7 @@ export default function UsersList() {
                       </td>
 
                       {/* ACCIONES */}
-                      <td className="px-5 py-3.5 text-right">
+                      <td className="px-5 py-3.5 text-right whitespace-nowrap">
                         <button
                           type="button"
                           onClick={() => handleEdit(u)}

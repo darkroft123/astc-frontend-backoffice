@@ -16,22 +16,6 @@ export const MOCK_ADMIN_USER = {
 
 export const MOCK_PROJECTS = [
   {
-    id: "7f5e5a17-ecd2-4005-a1c6-d9977c0ce8e7",
-    name: "gestion de asistencia",
-    code: "G-ASIST",
-    startDate: "2026-08-26",
-    endDate: "2026-08-30",
-    status: "ACTIVE",
-    workStartTime: "08:00:00",
-    workEndTime: "17:00:00",
-    graceMinutes: 10,
-    timezone: "America/Lima",
-    responsibleId: "u-5",
-    responsible: { username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" },
-    members: [{ role: "PROJECT_MANAGER", user: { username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" } }],
-    createdAt: "2026-08-26T10:00:00Z",
-  },
-  {
     id: "74d45c3c-1b0b-4b52-8623-31be01fccb78",
     name: "proyecto testeo",
     code: "TESTEO",
@@ -43,9 +27,28 @@ export const MOCK_PROJECTS = [
     graceMinutes: 10,
     timezone: "America/Lima",
     responsibleId: "u-5",
-    responsible: { username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" },
-    members: [{ role: "PROJECT_MANAGER", user: { username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" } }],
+    responsible: { id: "u-5", username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" },
+    members: [{ role: "PROJECT_MANAGER", userId: "u-5", user: { id: "u-5", username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" } }],
     createdAt: "2026-08-03T10:00:00Z",
+  },
+  {
+    id: "7f5e5a17-ecd2-4005-a1c6-d9977c0ce8e7",
+    name: "gestion de asistencia",
+    code: "G-ASIST",
+    startDate: "2026-08-26",
+    endDate: "2026-08-30",
+    status: "ACTIVE",
+    workStartTime: "08:00:00",
+    workEndTime: "17:00:00",
+    graceMinutes: 10,
+    timezone: "America/Lima",
+    responsibleId: "u-5",
+    responsible: { id: "u-5", username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" },
+    members: [
+      { role: "PROJECT_MANAGER", userId: "u-5", user: { id: "u-5", username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" } },
+      { role: "TEAM_MEMBER", userId: "u-1", user: { id: "u-1", username: "carlos123", firstName: "carlos", lastName: "mamani" } },
+    ],
+    createdAt: "2026-08-26T10:00:00Z",
   },
   {
     id: "2454b982-751d-43d2-938a-3ddb890168e1",
@@ -59,8 +62,12 @@ export const MOCK_PROJECTS = [
     graceMinutes: 10,
     timezone: "America/Lima",
     responsibleId: "u-5",
-    responsible: { username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" },
-    members: [{ role: "PROJECT_MANAGER", user: { username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" } }],
+    responsible: { id: "u-5", username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" },
+    members: [
+      { role: "PROJECT_MANAGER", userId: "u-5", user: { id: "u-5", username: "jefeproyecto-x", firstName: "jefeproyecto-x", lastName: "" } },
+      { role: "TEAM_MEMBER", userId: "u-2", user: { id: "u-2", username: "carlos", firstName: "carlos", lastName: "mamani" } },
+      { role: "TEAM_MEMBER", userId: "u-4", user: { id: "u-4", username: "user-carlos", firstName: "user-carlos", lastName: "" } },
+    ],
     createdAt: "2026-08-09T10:00:00Z",
   },
 ];
@@ -277,4 +284,42 @@ export const MOCK_NOTIFICATIONS = [
     createdAt: `2026-09-02T0${Math.max(1, 7 - (i % 6))}:00:00.000Z`,
   })),
 ];
+
+export const MOCK_COLLECTIONS = [
+  {
+    id: "col-1",
+    name: "feriados2",
+    scope: "GLOBAL",
+    createdAt: "2026-08-28T10:00:00Z",
+    items: [
+      { id: "ci-1", collectionId: "col-1", date: "2026-12-25", name: "Navidad" },
+      { id: "ci-2", collectionId: "col-1", date: "2026-10-08", name: "Combate de Angamos" },
+      { id: "ci-3", collectionId: "col-1", date: "2026-11-01", name: "Día de Todos los Santos" },
+      { id: "ci-4", collectionId: "col-1", date: "2026-12-08", name: "Inmaculada Concepción" },
+    ],
+  },
+  {
+    id: "col-2",
+    name: "reretesteo",
+    scope: "GLOBAL",
+    createdAt: "2026-08-28T11:00:00Z",
+    items: [
+      { id: "ci-5", collectionId: "col-2", date: "2026-07-28", name: "Fiestas Patrias" },
+      { id: "ci-6", collectionId: "col-2", date: "2026-07-29", name: "Fiestas Patrias" },
+      { id: "ci-7", collectionId: "col-2", date: "2026-08-30", name: "Santa Rosa de Lima" },
+    ],
+  },
+  {
+    id: "col-3",
+    name: "feriados",
+    scope: "GLOBAL",
+    createdAt: "2026-08-26T12:00:00Z",
+    items: [
+      { id: "ci-8", collectionId: "col-3", date: "2026-01-01", name: "Año Nuevo" },
+      { id: "ci-9", collectionId: "col-3", date: "2026-05-01", name: "Día del Trabajo" },
+      { id: "ci-10", collectionId: "col-3", date: "2026-06-29", name: "San Pedro y San Pablo" },
+    ],
+  },
+];
+
 
