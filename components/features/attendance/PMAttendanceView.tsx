@@ -220,18 +220,22 @@ export function PMAttendanceView() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-7xl mx-auto px-4 py-6 md:px-8 space-y-6">
         {/* HEADER */}
         <div>
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-[11px] font-semibold tracking-wider px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-500 dark:text-blue-400 border border-blue-500/20 uppercase">
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-[#1a2238]/80 dark:text-[#7c9aff] dark:border-[#2b3758] px-2.5 py-0.5 rounded-full">
               CONTROL GLOBAL
             </span>
-            <span className="text-xs text-muted-foreground">• Panel administrativo</span>
+            <span className="font-sans text-xs text-muted-foreground">
+              · Panel administrativo
+            </span>
           </div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Historial de asistencias</h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <h1 className="text-[26px] font-bold text-foreground tracking-tight leading-tight">
+            Historial de asistencias
+          </h1>
+          <p className="text-xs text-muted-foreground mt-1">
             Auditoría y control de asistencias de jefes de proyecto y colaboradores en todos los proyectos.
           </p>
         </div>
@@ -396,31 +400,31 @@ export function PMAttendanceView() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-100 dark:border-[#171825] bg-slate-50/50 dark:bg-transparent">
-                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                <tr className="border-b border-border/80 dark:border-[#171825] bg-muted/30 dark:bg-transparent">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
                     COLABORADOR
                   </th>
-                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
                     PROYECTO
                   </th>
-                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
                     FECHA
                   </th>
-                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
                     ENTRADA
                   </th>
-                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
                     SALIDA
                   </th>
-                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
                     ESTADO
                   </th>
-                  <th className="py-3 px-5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-[#6e7494]">
                     UBICACIÓN GPS
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-[#171825]/60">
+              <tbody className="divide-y divide-border/60 dark:divide-[#171825]/60">
                 {paginatedRows.length === 0 ? (
                   <tr>
                     <td colSpan={7} className="py-12 text-center text-sm text-muted-foreground">
@@ -442,7 +446,7 @@ export function PMAttendanceView() {
                       >
                         <td className="py-3.5 px-5">
                           <div className="flex items-center gap-2.5">
-                            <div className="w-7 h-7 rounded-full bg-purple-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#38bdf8] via-[#818cf8] to-[#c084fc] flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
                               {initials}
                             </div>
                             <div>

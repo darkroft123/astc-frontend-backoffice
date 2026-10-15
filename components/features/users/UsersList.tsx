@@ -226,7 +226,7 @@ export default function UsersList() {
                                 className="object-cover"
                               />
                             )}
-                            <AvatarFallback className={`${fallbackBg} text-white text-xs font-bold`}>
+                            <AvatarFallback className="bg-gradient-to-br from-[#38bdf8] via-[#818cf8] to-[#c084fc] text-white text-xs font-bold">
                               {getInitials(fullName)}
                             </AvatarFallback>
                           </Avatar>
