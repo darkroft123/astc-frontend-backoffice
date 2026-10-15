@@ -295,7 +295,7 @@ export default function AdminDashboardPage() {
                     cy="70"
                     r={R}
                     fill="none"
-                    stroke="#a855f7"
+                    stroke="var(--violet)"
                     strokeWidth="18"
                     strokeDasharray={`${pmArc} ${C}`}
                     strokeDashoffset={-(teamArc + GAP)}
