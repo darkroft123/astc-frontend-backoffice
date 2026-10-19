@@ -18,7 +18,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { getAllProjects, deleteProject } from "@/app/services/project.assistance.service";
-import type { Project } from "@/components/types/dashboard";
+type Project = any;
 import {
   Dialog,
   DialogContent,
@@ -132,8 +132,10 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           </p>
         </div>
 
-        {/* 3 METRIC CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* MASTER CARD CONTAINER (MATCHING SVG SPEC) */}
+        <div className="rounded-2xl border border-border/80 bg-card dark:bg-sidebar/70 p-6 space-y-6 shadow-sm">
+          {/* 3 METRIC CARDS */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {/* Card 1: Total */}
           <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-sidebar/90 border-slate-200/80 dark:border-raised shadow-xs">
             <div className="flex items-center justify-between">
@@ -362,6 +364,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
             </div>
           </div>
         </div>
+      </div>
 
         {/* MODAL MIEMBROS */}
         <Dialog

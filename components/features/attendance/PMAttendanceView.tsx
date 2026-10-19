@@ -22,8 +22,8 @@ import {
   getAllUsers,
   listTeamAttendance,
   exportAttendance,
-  User,
 } from "@/app/services/project.assistance.service";
+type User = any;
 import { LocationCell } from "@/components/atoms/LocationCell";
 
 type Period =

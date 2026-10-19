@@ -263,7 +263,7 @@ export default function ScheduleForm({
   const selectedProject = projects.find((p) => p.id === selectedProjectId);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-transparent">
       <div className="max-w-5xl mx-auto px-4 py-4">
 
         <div className="flex items-center justify-between gap-2 mb-6">
