@@ -8,9 +8,17 @@ import { usePathname } from "next/navigation";
 
 import { MobileHeader } from "@/components/layout/MobileHeader";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+
+  // On creation or edition pages, the page itself renders its own mobile header (<- Back + Notification Bell)
+  // and the Figma design excludes the global MobileHeader and MobileBottomNav.
+  const isCreateOrEdit =
+    pathname?.startsWith("/users/create") ||
+    pathname?.startsWith("/projects/create") ||
+    pathname?.includes("/projects/edit");
 
   return (
     <div className="flex min-h-screen w-full">
@@ -20,19 +28,24 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <SidebarNav onNavigate={() => {}} />
         </MobileSidebar>
         <div className="flex-1 min-w-0 md:ml-[268px] flex flex-col min-h-screen relative overflow-x-hidden bg-background">
-          {/* Mobile Top Header */}
-          <MobileHeader />
+          {/* Mobile Top Header (Hidden on creation/edit screens) */}
+          {!isCreateOrEdit && <MobileHeader />}
 
-          {/* Ambient light for all screens in dark mode (50px higher, 100px left) */}
-          <div className="absolute top-[-300px] right-0 w-[600px] h-[450px] bg-violet/10 dark:bg-violet/20 blur-[140px] rounded-full pointer-events-none hidden dark:block z-0" />
-          <div className="absolute top-[-130px] right-[200px] w-[350px] h-[250px] bg-indigo-500/10 dark:bg-indigo-500/15 blur-[100px] rounded-full pointer-events-none hidden dark:block z-0" />
+          {/* Ambient light for all screens in dark mode (desktop only, to prevent purple glow on mobile screens) */}
+          <div className="absolute top-[-300px] right-0 w-[600px] h-[450px] bg-violet/10 dark:bg-violet/20 blur-[140px] rounded-full pointer-events-none hidden md:dark:block z-0" />
+          <div className="absolute top-[-130px] right-[200px] w-[350px] h-[250px] bg-indigo-500/10 dark:bg-indigo-500/15 blur-[100px] rounded-full pointer-events-none hidden md:dark:block z-0" />
 
-          <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 bg-transparent pb-24 md:pb-6 relative z-10">
+          <main
+            className={cn(
+              "flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 bg-transparent relative z-10",
+              isCreateOrEdit ? "pb-6" : "pb-24 md:pb-6"
+            )}
+          >
             {children}
           </main>
 
-          {/* Mobile Bottom Navigation */}
-          <MobileBottomNav />
+          {/* Mobile Bottom Navigation (Hidden on creation/edit screens) */}
+          {!isCreateOrEdit && <MobileBottomNav />}
         </div>
       </MobileSidebarProvider>
     </div>

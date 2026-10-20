@@ -16,7 +16,14 @@ import {
   ChevronRight,
   ChevronDown,
 } from "lucide-react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectTrigger,
@@ -40,10 +47,9 @@ type Period =
   | "3months"
   | "6months"
   | "9months"
-  | "total"
-  | "custom";
+  | "total";
 
-const PERIOD_TABS: { id: Period; label: string; icon?: boolean }[] = [
+const PERIOD_TABS: { id: Period; label: string }[] = [
   { id: "today", label: "Hoy" },
   { id: "thisweek", label: "Esta semana" },
   { id: "month", label: "Este mes" },
@@ -51,7 +57,6 @@ const PERIOD_TABS: { id: Period; label: string; icon?: boolean }[] = [
   { id: "6months", label: "6 meses" },
   { id: "9months", label: "9 meses" },
   { id: "total", label: "Total" },
-  { id: "custom", label: "Personalizado", icon: true },
 ];
 
 export function PMAttendanceView() {
@@ -67,6 +72,25 @@ export function PMAttendanceView() {
   const [userMap, setUserMap] = useState<Record<string, User>>({});
 
   const [activePeriod, setActivePeriod] = useState<Period>("month");
+  const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+  const [customRange, setCustomRange] = useState({
+    start: "2026-09-01",
+    end: "2026-09-03",
+  });
+  const [tempStart, setTempStart] = useState("2026-09-01");
+  const [tempEnd, setTempEnd] = useState("2026-09-03");
+
+  const dateRangeDisplay = useMemo(() => {
+    const formatIso = (iso: string) => {
+      try {
+        const parts = iso.split("-");
+        if (parts.length === 3) return `${parts[2]}/${parts[1]}/${parts[0]}`;
+      } catch {}
+      return iso;
+    };
+    return `${formatIso(customRange.start)} → ${formatIso(customRange.end)}`;
+  }, [customRange]);
+
   const [selectedProject, setSelectedProject] = useState("all");
   const [selectedRole, setSelectedRole] = useState<"ALL" | "ADMIN" | "PROJECT_MANAGER" | "TEAM_MEMBER">("ALL");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -251,81 +275,180 @@ export function PMAttendanceView() {
         </div>
 
         {/* PERIOD / DATE SELECTOR BAR */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-surface border border-slate-200/60 dark:border-raised overflow-x-auto">
+        {/* MOBILE VIEW (MATCHING Figma dark-historial de asistencia.svg & light-historial de asistencia.svg) */}
+        <div className="md:hidden space-y-2.5">
+          {/* 2-row Period tabs container */}
+          <div className="p-2 sm:p-2.5 rounded-2xl bg-slate-100 dark:bg-[#0D101D] border border-slate-200/60 dark:border-[#1E2338]">
+            {/* Row 1: 4 tabs */}
+            <div className="grid grid-cols-4 gap-1 text-center">
+              {PERIOD_TABS.slice(0, 4).map((tab) => {
+                const isActive = activePeriod === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActivePeriod(tab.id)}
+                    className={`py-1.5 px-1 rounded-xl text-xs transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-white dark:bg-[#1E243A] text-foreground dark:text-white font-semibold shadow-xs border border-slate-200/80 dark:border-[#2e3048]"
+                        : "text-muted-foreground hover:text-foreground dark:text-[#7C849E] dark:hover:text-white font-medium"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Row 2: 3 tabs */}
+            <div className="grid grid-cols-3 gap-1 text-center mt-1.5 max-w-[280px]">
+              {PERIOD_TABS.slice(4).map((tab) => {
+                const isActive = activePeriod === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    onClick={() => setActivePeriod(tab.id)}
+                    className={`py-1.5 px-1 rounded-xl text-xs transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-white dark:bg-[#1E243A] text-foreground dark:text-white font-semibold shadow-xs border border-slate-200/80 dark:border-[#2e3048]"
+                        : "text-muted-foreground hover:text-foreground dark:text-[#7C849E] dark:hover:text-white font-medium"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Date range & Calendar button row */}
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-11 px-3 rounded-2xl bg-[#EEF2FC]/70 dark:bg-[#101322] border border-[#D5DEF7] dark:border-[#1E243A] flex items-center justify-center gap-2 text-xs font-mono text-blue dark:text-[#5B82F6]">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>{dateRangeDisplay}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setTempStart(customRange.start);
+                setTempEnd(customRange.end);
+                setIsCalendarOpen(true);
+              }}
+              className="w-11 h-11 rounded-2xl bg-white dark:bg-[#151928] border border-slate-200 dark:border-[#232A40] flex items-center justify-center text-muted-foreground dark:text-[#8F98B2] hover:text-foreground dark:hover:text-white shadow-xs transition-colors cursor-pointer shrink-0"
+              aria-label="Abrir selector de fecha"
+            >
+              <Calendar className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* DESKTOP VIEW (hidden md:flex) */}
+        <div className="hidden md:flex items-center justify-between gap-3">
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-[#0D101D] border border-slate-200/60 dark:border-[#1E2338]">
             {PERIOD_TABS.map((tab) => {
               const isActive = activePeriod === tab.id;
               return (
                 <button
                   key={tab.id}
+                  type="button"
                   onClick={() => setActivePeriod(tab.id)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
                     isActive
-                      ? "bg-white dark:bg-raised text-foreground dark:text-white shadow-xs border border-slate-200/80 dark:border-[#2e3048] font-semibold"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "bg-white dark:bg-[#1E243A] text-foreground dark:text-white shadow-xs border border-slate-200/80 dark:border-[#2e3048] font-semibold"
+                      : "text-muted-foreground hover:text-foreground dark:text-[#7C849E] dark:hover:text-white"
                   }`}
                 >
-                  {tab.icon && <Calendar className="w-3.5 h-3.5" />}
                   {tab.label}
                 </button>
               );
             })}
           </div>
 
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-xs font-mono text-blue dark:text-blue shadow-xs">
-            <Calendar className="w-3.5 h-3.5" />
-            <span>01/09/2026 → 03/09/2026</span>
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#1E243A] bg-white dark:bg-[#101322] text-xs font-mono text-blue dark:text-[#5B82F6] shadow-xs">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>{dateRangeDisplay}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setTempStart(customRange.start);
+                setTempEnd(customRange.end);
+                setIsCalendarOpen(true);
+              }}
+              className="w-9 h-9 rounded-xl bg-white dark:bg-[#151928] border border-slate-200 dark:border-[#232A40] flex items-center justify-center text-muted-foreground dark:text-[#8F98B2] hover:text-foreground dark:hover:text-white shadow-xs transition-colors cursor-pointer"
+              aria-label="Abrir selector de fecha"
+            >
+              <Calendar className="w-4 h-4" />
+            </button>
           </div>
         </div>
 
         {/* 4 METRIC CARDS */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {/* Card 1: Total registros */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-sidebar/90 border-slate-200/80 dark:border-raised shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-surface border border-slate-200 dark:border-field text-muted-foreground">
-                <Clock className="w-4 h-4" />
+          <div className="rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between min-h-[104px] border bg-white dark:bg-[#101322] border-slate-200/80 dark:border-[#1E2335] shadow-xs">
+            <div className="flex items-center justify-between gap-1.5">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-[#171B2D] border border-slate-200/60 dark:border-[#232942] text-muted-foreground shrink-0">
+                <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="text-xs text-muted-foreground">Total registros</span>
+              <span className="text-[11px] sm:text-xs text-muted-foreground dark:text-[#8F96AE] font-medium text-right leading-tight">
+                Total registros
+              </span>
             </div>
-            <span className="text-2xl font-bold text-foreground">{metrics.total}</span>
+            <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white mt-2">
+              {metrics.total}
+            </span>
           </div>
 
           {/* Card 2: Presentes */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-green/10 dark:bg-green/10 border-green/20 dark:border-green/20 shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green/15 border border-green/25 text-green dark:text-green">
-                <CheckCircle2 className="w-4 h-4" />
+          <div className="rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between min-h-[104px] border bg-emerald-50/60 dark:bg-[#0B1E1B] border-emerald-200/80 dark:border-[#124336] shadow-xs">
+            <div className="flex items-center justify-between gap-1.5">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center bg-emerald-100 dark:bg-[#103328] border border-emerald-300/60 dark:border-[#1B5241] text-emerald-600 dark:text-[#34D399] shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="text-xs text-green-ink dark:text-green font-medium">Presentes</span>
+              <span className="text-[11px] sm:text-xs text-[#059669] dark:text-[#34D399] font-medium text-right leading-tight">
+                Presentes
+              </span>
             </div>
-            <span className="text-2xl font-bold text-foreground">{metrics.onTime}</span>
+            <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white mt-2">
+              {metrics.onTime}
+            </span>
           </div>
 
           {/* Card 3: Faltas / tardanzas */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-red/10 dark:bg-red/10 border-red/20 dark:border-red/20 shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-red/15 border border-red/25 text-red dark:text-red">
-                <XCircle className="w-4 h-4" />
+          <div className="rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between min-h-[104px] border bg-rose-50/60 dark:bg-[#211015] border-rose-200/80 dark:border-[#4A1D24] shadow-xs">
+            <div className="flex items-center justify-between gap-1.5">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center bg-rose-100 dark:bg-[#3D141C] border border-rose-300/60 dark:border-[#5E1E2B] text-rose-600 dark:text-[#FB7185] shrink-0">
+                <XCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="text-xs text-red-ink dark:text-red font-medium">Faltas / tardanzas</span>
+              <span className="text-[11px] sm:text-xs text-[#E11D48] dark:text-[#FB7185] font-medium text-right leading-tight">
+                Faltas / tardanzas
+              </span>
             </div>
-            <span className="text-2xl font-bold text-foreground">{metrics.late + metrics.absences}</span>
+            <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white mt-2">
+              {metrics.late + metrics.absences}
+            </span>
           </div>
 
           {/* Card 4: % asistencia */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-sidebar/90 border-slate-200/80 dark:border-raised shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-blue/10 border border-blue/20 text-blue">
-                <TrendingUp className="w-4 h-4" />
+          <div className="rounded-2xl p-3.5 sm:p-4 flex flex-col justify-between min-h-[104px] border bg-sky-50/60 dark:bg-[#10162A] border-sky-200/80 dark:border-[#1E2B45] shadow-xs">
+            <div className="flex items-center justify-between gap-1.5">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center bg-sky-100 dark:bg-[#15233D] border border-sky-300/60 dark:border-[#1E3760] text-sky-600 dark:text-[#38BDF8] shrink-0">
+                <TrendingUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="text-xs text-muted-foreground">% asistencia</span>
+              <span className="text-[11px] sm:text-xs text-[#0284C7] dark:text-[#38BDF8] font-medium text-right leading-tight">
+                % asistencia
+              </span>
             </div>
             <div>
-              <span className="text-2xl font-bold text-foreground">{metrics.rate}%</span>
-              <div className="w-full h-1.5 rounded-full bg-slate-100 dark:bg-raised mt-2 overflow-hidden">
+              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white">
+                {metrics.rate}%
+              </span>
+              <div className="w-full h-1.5 rounded-full bg-slate-200/80 dark:bg-[#1E2742] mt-2 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-violet to-cyan"
+                  className="h-full rounded-full bg-gradient-to-r from-[#6366F1] to-[#38BDF8]"
                   style={{ width: `${Math.min(100, Math.max(0, metrics.rate))}%` }}
                 />
               </div>
@@ -347,7 +470,7 @@ export function PMAttendanceView() {
 
           <div className="grid grid-cols-2 sm:flex items-center gap-3">
             <div className="flex-1 sm:min-w-[140px]">
-              <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val)}>
+              <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val as "ALL" | "ADMIN" | "PROJECT_MANAGER" | "TEAM_MEMBER")}>
                 <SelectTrigger className="w-full h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-xs text-foreground">
                   <SelectValue placeholder="Todos los roles" />
                 </SelectTrigger>
@@ -683,6 +806,63 @@ export function PMAttendanceView() {
             </button>
           </div>
         </div>
+
+        {/* CALENDAR DATE RANGE PICKER DIALOG */}
+        <Dialog open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
+          <DialogContent className="sm:max-w-[420px] rounded-2xl bg-card border-border">
+            <DialogHeader>
+              <DialogTitle className="text-base font-bold text-foreground">
+                Seleccionar rango de fechas
+              </DialogTitle>
+              <DialogDescription className="text-xs text-muted-foreground">
+                Elige las fechas de inicio y fin para auditar asistencias.
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4 py-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-foreground">Fecha inicio</label>
+                  <input
+                    type="date"
+                    value={tempStart}
+                    onChange={(e) => setTempStart(e.target.value)}
+                    className="w-full h-10 px-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-foreground">Fecha fin</label>
+                  <input
+                    type="date"
+                    value={tempEnd}
+                    onChange={(e) => setTempEnd(e.target.value)}
+                    className="w-full h-10 px-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <DialogFooter className="flex items-center justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setIsCalendarOpen(false)}
+                className="px-4 py-2 rounded-xl border border-border bg-card text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setCustomRange({ start: tempStart, end: tempEnd });
+                  setIsCalendarOpen(false);
+                }}
+                className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-medium hover:opacity-90 transition-opacity cursor-pointer"
+              >
+                Aplicar filtro
+              </button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );
