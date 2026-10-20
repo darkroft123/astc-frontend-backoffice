@@ -370,86 +370,88 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* BAR CHART: RESUMEN DE RECURSOS */}
-          <div className="lg:col-span-6 bg-card border border-border dark:bg-blue/10 dark:backdrop-blur-md dark:border-blue/20 rounded-2xl p-5 shadow-sm flex flex-col justify-between">
+          <div className="lg:col-span-6 bg-card border border-border dark:bg-[#101322] dark:border-[#1E2335] rounded-3xl p-5 sm:p-6 shadow-sm flex flex-col justify-between">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="text-sm font-bold text-foreground">
+                <h2 className="text-base font-bold text-foreground dark:text-white">
                   Resumen de recursos
                 </h2>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-0.5">
                   Distribución de entidades del sistema
                 </p>
               </div>
-              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full uppercase">
+              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-[#141C38] dark:text-[#7B9BFF] dark:border-[#233260] text-[10px] font-mono font-bold px-3 py-1 rounded-full uppercase">
                 GLOBAL
               </span>
             </div>
 
-            {/* Custom Bar Chart Canvas */}
-            <div className="py-4">
-              <div className="relative h-44 w-full flex items-end justify-between px-4 pb-6 pt-6">
-                {/* Y-Axis dashed grid lines */}
-                <div className="absolute inset-x-0 bottom-6 border-b border-border dark:border-blue/20" />
-                <div className="absolute inset-x-0 bottom-[68px] border-b border-border/60 dark:border-blue/20 border-dashed" />
-                <div className="absolute inset-x-0 bottom-[114px] border-b border-border/60 dark:border-blue/20 border-dashed" />
-                <div className="absolute inset-x-0 top-4 border-b border-border/60 dark:border-blue/20 border-dashed" />
-
-                {/* Y-Axis numbers */}
-                <span className="absolute left-0 bottom-5 text-[10px] font-mono text-muted-foreground">0</span>
-                <span className="absolute left-0 bottom-[63px] text-[10px] font-mono text-muted-foreground">2</span>
-                <span className="absolute left-0 bottom-[109px] text-[10px] font-mono text-muted-foreground">4</span>
-                <span className="absolute left-0 top-3 text-[10px] font-mono text-muted-foreground">6</span>
-
-                {/* BARS */}
-                <div className="flex-1 flex items-end justify-around pl-4">
-                  {/* BAR 1: Usuarios (5) */}
-                  <div className="flex flex-col items-center gap-1.5 w-14">
-                    <span className="text-xs font-bold text-foreground font-mono">5</span>
-                    <div
-                      style={{ height: `${(5 / 6) * 110}px` }}
-                      className="w-full bg-blue rounded-t-lg transition-all shadow-sm"
-                    />
-                    <span className="text-[11px] text-muted-foreground text-center truncate mt-1">
-                      Usuarios
-                    </span>
-                  </div>
-
-                  {/* BAR 2: Trabajadores (3) */}
-                  <div className="flex flex-col items-center gap-1.5 w-14">
-                    <span className="text-xs font-bold text-foreground font-mono">3</span>
-                    <div
-                      style={{ height: `${(3 / 6) * 110}px` }}
-                      className="w-full bg-green rounded-t-lg transition-all shadow-sm"
-                    />
-                    <span className="text-[11px] text-muted-foreground text-center truncate mt-1">
-                      Trabajadores
-                    </span>
-                  </div>
-
-                  {/* BAR 3: Jefes de proyecto (1) */}
-                  <div className="flex flex-col items-center gap-1.5 w-14">
-                    <span className="text-xs font-bold text-foreground font-mono">1</span>
-                    <div
-                      style={{ height: `${(1 / 6) * 110}px` }}
-                      className="w-full bg-amber rounded-t-lg transition-all shadow-sm"
-                    />
-                    <span className="text-[11px] text-muted-foreground text-center truncate mt-1">
-                      Jefes de proyecto
-                    </span>
-                  </div>
-
-                  {/* BAR 4: Proyectos (3) */}
-                  <div className="flex flex-col items-center gap-1.5 w-14">
-                    <span className="text-xs font-bold text-foreground font-mono">3</span>
-                    <div
-                      style={{ height: `${(3 / 6) * 110}px` }}
-                      className="w-full bg-violet rounded-t-lg transition-all shadow-sm"
-                    />
-                    <span className="text-[11px] text-muted-foreground text-center truncate mt-1">
-                      Proyectos
-                    </span>
-                  </div>
+            {/* Custom Bar Chart Canvas Matching Figma SVG & Image 1 */}
+            <div className="pt-8 pb-2">
+              {/* Bars Row */}
+              <div className="grid grid-cols-4 gap-3 sm:gap-6 items-end w-full h-[140px] px-2 sm:px-4">
+                {/* BAR 1: Usuarios (5) */}
+                <div className="flex flex-col items-center justify-end h-full">
+                  <span className="text-xs sm:text-sm font-bold text-foreground dark:text-white font-mono mb-2">
+                    {totalUsers}
+                  </span>
+                  <div
+                    style={{ height: `${Math.max(16, Math.round((totalUsers / 6) * 115))}px` }}
+                    className="w-full max-w-[44px] sm:max-w-[48px] bg-[#4F80FF] rounded-t-2xl sm:rounded-t-2xl transition-all shadow-sm"
+                  />
                 </div>
+
+                {/* BAR 2: Trabajadores (3) */}
+                <div className="flex flex-col items-center justify-end h-full">
+                  <span className="text-xs sm:text-sm font-bold text-foreground dark:text-white font-mono mb-2">
+                    {teamMembersCount}
+                  </span>
+                  <div
+                    style={{ height: `${Math.max(16, Math.round((teamMembersCount / 6) * 115))}px` }}
+                    className="w-full max-w-[44px] sm:max-w-[48px] bg-[#22C55E] rounded-t-2xl sm:rounded-t-2xl transition-all shadow-sm"
+                  />
+                </div>
+
+                {/* BAR 3: Jefes de proyecto (1) */}
+                <div className="flex flex-col items-center justify-end h-full">
+                  <span className="text-xs sm:text-sm font-bold text-foreground dark:text-white font-mono mb-2">
+                    {pmsCount}
+                  </span>
+                  <div
+                    style={{ height: `${Math.max(16, Math.round((pmsCount / 6) * 115))}px` }}
+                    className="w-full max-w-[44px] sm:max-w-[48px] bg-[#FBBF24] rounded-t-xl rounded-b-sm sm:rounded-t-xl transition-all shadow-sm"
+                  />
+                </div>
+
+                {/* BAR 4: Proyectos (3) */}
+                <div className="flex flex-col items-center justify-end h-full">
+                  <span className="text-xs sm:text-sm font-bold text-foreground dark:text-white font-mono mb-2">
+                    {totalProjects}
+                  </span>
+                  <div
+                    style={{ height: `${Math.max(16, Math.round((totalProjects / 6) * 115))}px` }}
+                    className="w-full max-w-[44px] sm:max-w-[48px] bg-[#A855F7] rounded-t-2xl sm:rounded-t-2xl transition-all shadow-sm"
+                  />
+                </div>
+              </div>
+
+              {/* Baseline */}
+              <div className="w-full border-b border-border/80 dark:border-[#1E2338]" />
+
+              {/* Labels Row */}
+              <div className="grid grid-cols-4 gap-3 sm:gap-6 w-full pt-3 px-2 sm:px-4">
+                <span className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center block">
+                  Usuarios
+                </span>
+                <span className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center block">
+                  Trabajadores
+                </span>
+                <div className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center flex flex-col items-center justify-start leading-tight">
+                  <span>Jefes de</span>
+                  <span>proyecto</span>
+                </div>
+                <span className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center block">
+                  Proyectos
+                </span>
               </div>
             </div>
           </div>
