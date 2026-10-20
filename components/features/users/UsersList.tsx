@@ -148,8 +148,8 @@ export default function UsersList() {
         onSearchChange={setSearchTerm}
       />
 
-      {/* TABLE */}
-      <div className="w-full border border-border bg-card dark:bg-sidebar/70 dark:border-raised rounded-2xl shadow-xs overflow-hidden">
+      {/* DESKTOP TABLE */}
+      <div className="hidden md:block w-full border border-border bg-card dark:bg-sidebar/70 dark:border-raised rounded-2xl shadow-xs overflow-hidden">
         <div className="w-full overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -322,6 +322,156 @@ export default function UsersList() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* MOBILE CARDS (MATCHING dark-usuarios.svg) */}
+      <div className="md:hidden space-y-3">
+        {loading ? (
+          <div className="py-12 text-center text-muted-foreground bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl">
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-6 h-6 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+              <span className="text-xs">Cargando usuarios...</span>
+            </div>
+          </div>
+        ) : paginatedUsers.length === 0 ? (
+          <div className="py-12 text-center text-xs text-muted-foreground bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl">
+            Sin usuarios registrados
+          </div>
+        ) : (
+          paginatedUsers.map((u) => {
+            const fullName =
+              `${u.firstName || ""} ${u.lastName || ""}`.trim() ||
+              u.username ||
+              "Usuario";
+            const avatarSrc = formatAvatarUrl(u.avatarUrl);
+            const assigned: any[] = Array.isArray(u.projects) ? u.projects : [];
+            const firstProject = assigned[0];
+            const isPM = firstProject?.responsibleId === u.id;
+            const remainingCount = assigned.length - 1;
+
+            const isAdmin =
+              u.roleCode === "ADMIN" ||
+              u.roleId === "ADMIN" ||
+              u.roleName === "Administrador";
+            const isProjectManager =
+              u.roleCode === "PROJECT_MANAGER" ||
+              u.roleId === "PROJECT_MANAGER" ||
+              u.roleName === "Project manager";
+
+            return (
+              <div
+                key={u.id}
+                className="bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl p-4 space-y-3.5 shadow-sm"
+              >
+                {/* Header row */}
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <Avatar className="h-10 w-10 rounded-2xl shrink-0 shadow-sm">
+                      {avatarSrc && (
+                        <AvatarImage
+                          src={avatarSrc}
+                          alt={fullName}
+                          className="object-cover"
+                        />
+                      )}
+                      <AvatarFallback className="bg-avatar-gradient text-white text-xs font-bold rounded-2xl">
+                        {getInitials(fullName)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col min-w-0">
+                      <span className="font-bold text-foreground dark:text-white text-sm leading-tight truncate">
+                        {fullName}
+                      </span>
+                      <span className="text-xs text-muted-foreground dark:text-[#8F96AE] leading-tight truncate mt-0.5">
+                        @{u.username}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Edit squircle button */}
+                  <button
+                    type="button"
+                    onClick={() => handleEdit(u)}
+                    title="Editar usuario"
+                    className="w-9 h-9 rounded-xl bg-muted/60 dark:bg-[#161B2E] border border-border dark:border-[#232B45] text-muted-foreground dark:text-[#8F96AE] hover:text-white flex items-center justify-center transition-colors shrink-0 cursor-pointer"
+                  >
+                    <Pencil className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* Fields: CORREO and TELÉFONO */}
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-[10px] font-semibold text-muted-foreground dark:text-[#8F96AE] tracking-wider uppercase">
+                      CORREO
+                    </span>
+                    <span className="text-foreground dark:text-white truncate max-w-[220px]">
+                      {u.email}
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-[10px] font-semibold text-muted-foreground dark:text-[#8F96AE] tracking-wider uppercase">
+                      TELÉFONO
+                    </span>
+                    <span className="font-mono text-foreground dark:text-white">
+                      {u.phone || "Sin teléfono"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Divider line */}
+                <div className="border-t border-border/60 dark:border-[#1E2335]" />
+
+                {/* Badges row */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {/* Role badge */}
+                  {isAdmin ? (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-violet/10 text-violet-ink border border-violet/20 dark:bg-[#241738] dark:text-[#C084FC] dark:border-[#401E68] whitespace-nowrap">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#C084FC] shrink-0" />
+                      Administrador
+                    </span>
+                  ) : isProjectManager ? (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber/10 text-amber-ink border border-amber/20 dark:bg-[#2C2112] dark:text-[#FBBF24] dark:border-[#4E3815] whitespace-nowrap">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#FBBF24] shrink-0" />
+                      Project manager
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue/10 text-blue border border-blue/20 dark:bg-[#132238] dark:text-[#38BDF8] dark:border-[#1E3A5F] whitespace-nowrap">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] shrink-0" />
+                      Team member
+                    </span>
+                  )}
+
+                  {/* Project badge */}
+                  {assigned.length === 0 ? (
+                    <span className="text-xs text-muted-foreground dark:text-[#8F96AE] whitespace-nowrap">
+                      Sin proyecto
+                    </span>
+                  ) : (
+                    <div className="flex items-center gap-1.5 whitespace-nowrap">
+                      <span className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1 rounded-lg bg-violet/10 text-violet-ink border border-violet/20 dark:bg-[#221A3B] dark:text-[#D8B4FE] dark:border-[#3B2A63] whitespace-nowrap">
+                        <span className="truncate max-w-[150px]">
+                          {firstProject.name}
+                        </span>
+                        {isPM && (
+                          <span className="text-[9px] font-bold bg-[#3B2A63] text-[#D8B4FE] px-1 py-0.5 rounded ml-1">
+                            PM
+                          </span>
+                        )}
+                      </span>
+
+                      {remainingCount > 0 && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-md bg-muted text-muted-foreground border border-border dark:bg-[#161B2E] dark:text-[#8F96AE] dark:border-[#232B45]">
+                          +{remainingCount}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
 
       {/* FOOTER / PAGINATION */}

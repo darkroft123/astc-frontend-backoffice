@@ -272,7 +272,7 @@ export function PMAttendanceView() {
         </div>
 
         {/* 4 METRIC CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {/* Card 1: Total registros */}
           <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-sidebar/90 border-slate-200/80 dark:border-raised shadow-xs">
             <div className="flex items-center justify-between">
@@ -327,8 +327,8 @@ export function PMAttendanceView() {
         </div>
 
         {/* FILTER BAR */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative flex-1 min-w-[200px]">
+        <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-3">
+          <div className="relative w-full sm:flex-1 sm:min-w-[200px]">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input
               placeholder="Colaborador o proyecto..."
@@ -338,37 +338,39 @@ export function PMAttendanceView() {
             />
           </div>
 
-          <div className="relative min-w-[140px]">
-            <select
-              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
-              value={selectedRole}
-              onChange={(e: any) => setSelectedRole(e.target.value)}
-            >
-              <option value="ALL">Todos los roles</option>
-              <option value="ADMIN">Administrador</option>
-              <option value="PROJECT_MANAGER">Jefes de proyecto</option>
-              <option value="TEAM_MEMBER">Colaboradores</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+          <div className="grid grid-cols-2 sm:flex items-center gap-3">
+            <div className="relative flex-1 sm:min-w-[140px]">
+              <select
+                className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
+                value={selectedRole}
+                onChange={(e: any) => setSelectedRole(e.target.value)}
+              >
+                <option value="ALL">Todos los roles</option>
+                <option value="ADMIN">Administrador</option>
+                <option value="PROJECT_MANAGER">Jefes de proyecto</option>
+                <option value="TEAM_MEMBER">Colaboradores</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            </div>
+
+            <div className="relative flex-1 sm:min-w-[170px]">
+              <select
+                className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
+                value={selectedProject}
+                onChange={(e) => setSelectedProject(e.target.value)}
+              >
+                <option value="all">Todos los proyectos</option>
+                {projects.map((p) => (
+                  <option key={p.id} value={p.id}>
+                    {p.name}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            </div>
           </div>
 
-          <div className="relative min-w-[170px]">
-            <select
-              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
-              value={selectedProject}
-              onChange={(e) => setSelectedProject(e.target.value)}
-            >
-              <option value="all">Todos los proyectos</option>
-              {projects.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-          </div>
-
-          <div className="relative min-w-[150px]">
+          <div className="relative w-full sm:w-auto sm:min-w-[150px]">
             <select
               className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
               value={statusFilter}
@@ -382,25 +384,27 @@ export function PMAttendanceView() {
             <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
           </div>
 
-          <button
-            onClick={fetchAttendance}
-            className="flex items-center gap-2 px-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-surface transition-colors"
-          >
-            <RefreshCw className={`w-4 h-4 text-muted-foreground ${isLoading ? "animate-spin" : ""}`} />
-            Actualizar
-          </button>
+          <div className="grid grid-cols-2 sm:flex items-center gap-3 w-full sm:w-auto">
+            <button
+              onClick={fetchAttendance}
+              className="flex items-center justify-center gap-2 px-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-surface transition-colors cursor-pointer"
+            >
+              <RefreshCw className={`w-4 h-4 text-muted-foreground ${isLoading ? "animate-spin" : ""}`} />
+              Actualizar
+            </button>
 
-          <button
-            onClick={handleExportCSV}
-            className="flex items-center gap-2 px-4 h-10 rounded-xl text-sm font-medium border border-green/30 text-green-ink dark:text-green bg-green/10 hover:bg-green/20 transition-colors cursor-pointer"
-          >
-            <Download className="w-4 h-4" />
-            Exportar CSV
-          </button>
+            <button
+              onClick={handleExportCSV}
+              className="flex items-center justify-center gap-2 px-4 h-10 rounded-xl text-sm font-medium border border-green/30 text-green-ink dark:text-green bg-green/10 hover:bg-green/20 transition-colors cursor-pointer"
+            >
+              <Download className="w-4 h-4" />
+              Exportar CSV
+            </button>
+          </div>
         </div>
 
-        {/* ATTENDANCE TABLE */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-surface bg-white dark:bg-background overflow-hidden shadow-xs">
+        {/* DESKTOP ATTENDANCE TABLE */}
+        <div className="hidden md:block rounded-2xl border border-slate-200/80 dark:border-surface bg-white dark:bg-background overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
@@ -527,32 +531,149 @@ export function PMAttendanceView() {
               </tbody>
             </table>
           </div>
+        </div>
 
-          {/* FOOTER */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 dark:border-surface bg-slate-50/30 dark:bg-transparent">
-            <span className="text-xs text-muted-foreground">
-              {filteredRows.length} {filteredRows.length === 1 ? "registro" : "registros"}
-            </span>
-
-            <div className="flex items-center gap-2">
-              <button
-                disabled={page <= 1}
-                onClick={() => setPage((p) => p - 1)}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-raised text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <span className="text-xs text-muted-foreground">
-                Página {page} de {totalPages}
-              </span>
-              <button
-                disabled={page >= totalPages}
-                onClick={() => setPage((p) => p + 1)}
-                className="p-1.5 rounded-lg border border-slate-200 dark:border-raised text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
+        {/* MOBILE ATTENDANCE CARDS (MATCHING dark-historial de asistencia.svg) */}
+        <div className="md:hidden space-y-3">
+          {paginatedRows.length === 0 ? (
+            <div className="py-12 text-center text-xs text-muted-foreground bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl">
+              No hay registros de asistencias para los filtros seleccionados
             </div>
+          ) : (
+            paginatedRows.map((r) => {
+              const initials =
+                ((r.user?.firstName?.[0] || "") + (r.user?.lastName?.[0] || "") ||
+                  r.userName?.[0] ||
+                  "C").toUpperCase();
+              const isAdmin =
+                r.userRole === "ADMIN" ||
+                r.user?.roleCode === "ADMIN" ||
+                r.user?.role === "ADMIN" ||
+                r.userName?.toLowerCase().includes("admin");
+              const isPm = !isAdmin && (r.userRole === "PROJECT_MANAGER" || r.user?.roleCode === "PROJECT_MANAGER");
+
+              return (
+                <div
+                  key={r.id}
+                  className="bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl p-4 space-y-3 shadow-sm"
+                >
+                  {/* Header row */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-10 h-10 rounded-2xl bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+                        {initials}
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="font-bold text-foreground dark:text-white text-sm leading-tight truncate">
+                          {r.userName}
+                        </h3>
+                        <div className="mt-1">
+                          <span
+                            className={`text-[10px] px-2 py-0.5 rounded-full font-medium border ${
+                              isAdmin
+                                ? "bg-violet/10 text-violet-ink border-violet/20 dark:bg-[#241738] dark:text-[#C084FC] dark:border-[#401E68]"
+                                : isPm
+                                ? "bg-amber/10 text-amber-ink border-amber/20 dark:bg-[#2C2112] dark:text-[#FBBF24] dark:border-[#4E3815]"
+                                : "bg-blue/10 text-blue border-blue/20 dark:bg-[#132238] dark:text-[#38BDF8] dark:border-[#1E3A5F]"
+                            }`}
+                          >
+                            {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Colaborador"}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Status badge */}
+                    <div className="shrink-0">
+                      <StatusBadge status={r.status} />
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  {r.user?.email && (
+                    <p className="text-xs text-muted-foreground dark:text-[#8F96AE] truncate">
+                      {r.user.email}
+                    </p>
+                  )}
+
+                  {/* Project and Date row */}
+                  <div className="flex items-center justify-between text-xs text-muted-foreground dark:text-[#8F96AE] pt-0.5">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <Folder className="w-3.5 h-3.5 text-muted-foreground dark:text-[#8F96AE] shrink-0" />
+                      <span className="truncate text-foreground dark:text-white font-medium">
+                        {r.projectName}
+                      </span>
+                    </div>
+                    <span className="font-mono shrink-0">
+                      {formatDateDisplay(r.date)}
+                    </span>
+                  </div>
+
+                  {/* ENTRADA & SALIDA boxes */}
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <div className="bg-muted/40 dark:bg-[#141829] border border-border/70 dark:border-[#1E2335] rounded-xl p-2.5">
+                      <span className="font-mono text-[10px] font-semibold text-muted-foreground dark:text-[#8F96AE] tracking-wider uppercase block">
+                        ENTRADA
+                      </span>
+                      <span className="font-mono text-sm font-bold text-foreground dark:text-white mt-1 block">
+                        {r.checkIn}
+                      </span>
+                    </div>
+                    <div className="bg-muted/40 dark:bg-[#141829] border border-border/70 dark:border-[#1E2335] rounded-xl p-2.5">
+                      <span className="font-mono text-[10px] font-semibold text-muted-foreground dark:text-[#8F96AE] tracking-wider uppercase block">
+                        SALIDA
+                      </span>
+                      <span className="font-mono text-sm font-bold text-foreground dark:text-white mt-1 block">
+                        {r.checkOut || (
+                          <span className="text-muted-foreground dark:text-[#8F96AE] font-normal text-xs">
+                            Sin salida
+                          </span>
+                        )}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Location Box */}
+                  <div className="bg-muted/30 dark:bg-[#141829] border border-border/70 dark:border-[#1E2335] rounded-xl px-3 py-2.5 flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <LocationCell
+                        locationName={r.locationName}
+                        latitude={r.latitude}
+                        longitude={r.longitude}
+                      />
+                    </div>
+                    <ChevronRight className="w-4 h-4 text-[#8F96AE] shrink-0" />
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* FOOTER */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-3.5 border-t border-slate-100 dark:border-surface bg-slate-50/30 dark:bg-transparent">
+          <span className="text-xs text-muted-foreground">
+            {filteredRows.length} {filteredRows.length === 1 ? "registro" : "registros"}
+          </span>
+
+          <div className="flex items-center gap-2">
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="p-1.5 rounded-lg border border-slate-200 dark:border-raised text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="text-xs text-muted-foreground">
+              Página {page} de {totalPages}
+            </span>
+            <button
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => p + 1)}
+              className="p-1.5 rounded-lg border border-slate-200 dark:border-raised text-muted-foreground hover:text-foreground disabled:opacity-40 transition-colors"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>

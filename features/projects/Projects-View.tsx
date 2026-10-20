@@ -171,52 +171,182 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
         </div>
 
         {/* FILTER & ACTIONS BAR */}
-        <div className="flex flex-wrap items-center gap-3">
-          <div className="relative flex-1 min-w-[280px]">
+        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+          <div className="relative flex-1">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input
               placeholder="Buscar por nombre o ID..."
-              className="w-full pl-9 pr-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-violet"
+              className="w-full pl-9 pr-4 h-11 md:h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-violet"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
 
-          <div className="relative">
-            <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-            <select
-              className="appearance-none pl-9 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
-              value={estadoFilter}
-              onChange={(e) => setEstadoFilter(e.target.value)}
-            >
-              <option value="all">Todos los estados</option>
-              <option value="ACTIVE">Activos</option>
-              <option value="INACTIVE">Inactivos</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-          </div>
+          <div className="flex items-center gap-2">
+            <div className="relative flex-1 md:flex-initial min-w-0">
+              <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+              <select
+                className="w-full appearance-none pl-9 pr-8 h-11 md:h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
+                value={estadoFilter}
+                onChange={(e) => setEstadoFilter(e.target.value)}
+              >
+                <option value="all">Todos los estados</option>
+                <option value="ACTIVE">Activos</option>
+                <option value="INACTIVE">Inactivos</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            </div>
 
-          <button
-            onClick={fetchProjects}
-            className="flex items-center gap-2 px-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-surface transition-colors"
-          >
-            <RefreshCw className={`w-4 h-4 text-muted-foreground ${isLoading ? "animate-spin" : ""}`} />
-            Actualizar
-          </button>
+            <button
+              onClick={fetchProjects}
+              title="Actualizar"
+              className="w-11 md:w-auto h-11 md:h-10 px-3 md:px-4 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-surface transition-colors flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+            >
+              <RefreshCw className={`w-4 h-4 text-muted-foreground ${isLoading ? "animate-spin" : ""}`} />
+              <span className="hidden md:inline">Actualizar</span>
+            </button>
+          </div>
 
           {isAdmin && (
             <button
               onClick={() => router.push("/projects/create")}
-              className="flex items-center gap-2 px-5 h-10 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-blue via-indigo-600 to-violet hover:opacity-95 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
+              className="w-full md:w-auto flex items-center justify-center gap-2 px-5 h-11 md:h-10 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-blue via-indigo-600 to-violet hover:opacity-95 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
             >
               <PlusSquare className="w-4 h-4" />
-              Crear proyecto
+              <span>Crear proyecto</span>
             </button>
           )}
         </div>
 
-        {/* PROJECTS TABLE */}
-        <div className="rounded-2xl border border-slate-200/80 dark:border-surface bg-white dark:bg-background overflow-hidden shadow-xs">
+        {/* MOBILE CARDS (Matches dark-gestion proyectos.svg) */}
+        <div className="md:hidden space-y-3">
+          {paginatedProjects.length === 0 ? (
+            <div className="p-8 text-center text-xs text-muted-foreground bg-[#101322] border border-dashed border-[#1E2335] rounded-2xl">
+              No hay proyectos para mostrar
+            </div>
+          ) : (
+            paginatedProjects.map((p) => {
+              const responsibleMember =
+                p.members?.find((m: any) => m.role === "PROJECT_MANAGER") || p.members?.[0];
+              const u = (p as any).responsible || responsibleMember?.user || {
+                username: "jefeproyecto-x",
+                firstName: "jefeproyecto-x",
+                lastName: "",
+              };
+              const initialLetter = ((u.firstName?.[0] || u.username?.[0] || "J") as string).toUpperCase();
+              const displayName = u.firstName ? `${u.firstName} ${u.lastName || ""}`.trim() : u.username;
+
+              return (
+                <div
+                  key={p.id}
+                  className="bg-[#101322] border border-[#1E2335] rounded-2xl p-4 space-y-3 shadow-sm hover:border-[#2A314A] transition-colors"
+                >
+                  {/* Top Row: Name, ID + Status Badge */}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <h3 className="font-bold text-sm text-white truncate">
+                        {p.name}
+                      </h3>
+                      <p className="text-xs text-[#8F96AE] font-mono truncate mt-0.5">
+                        {p.id}
+                      </p>
+                    </div>
+
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold shrink-0 ${
+                        p.status === "ACTIVE"
+                          ? "bg-[#10241F] text-[#10B981] border border-[#164D3F]"
+                          : "bg-[#25151C] text-[#EF4444] border border-[#4A1D27]"
+                      }`}
+                    >
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full ${
+                          p.status === "ACTIVE" ? "bg-[#10B981]" : "bg-[#EF4444]"
+                        }`}
+                      />
+                      {p.status === "ACTIVE" ? "Activo" : "Inactivo"}
+                    </span>
+                  </div>
+
+                  {/* Dates Box Row: INICIO & FIN */}
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="bg-[#141829] border border-[#1E2335] rounded-xl p-2.5">
+                      <span className="text-[10px] font-mono uppercase text-[#8B7BD8] tracking-wider block font-semibold">
+                        INICIO
+                      </span>
+                      <span className="font-mono text-xs font-bold text-white mt-0.5 block">
+                        {formatDate(p.startDate)}
+                      </span>
+                    </div>
+
+                    <div className="bg-[#141829] border border-[#1E2335] rounded-xl p-2.5">
+                      <span className="text-[10px] font-mono uppercase text-[#8B7BD8] tracking-wider block font-semibold">
+                        FIN
+                      </span>
+                      <span className="font-mono text-xs font-bold text-white mt-0.5 block">
+                        {formatDate(p.endDate)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Responsable Row */}
+                  <div className="flex items-center gap-2.5 pt-1">
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-xs shrink-0"
+                      style={{
+                        background: "linear-gradient(135deg, #5B8CFF 0%, #A855F7 100%)",
+                      }}
+                    >
+                      {initialLetter}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-xs font-bold text-white truncate">
+                        {displayName}
+                      </p>
+                      <p className="text-[11px] text-[#8F96AE] truncate">
+                        @{u.username} · Responsable
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Actions Row */}
+                  <div className="flex items-center gap-2 pt-1 border-t border-white/[0.04]">
+                    <button
+                      onClick={() => setSelectedProjectForMembers(p)}
+                      className="flex-1 h-10 px-3.5 rounded-xl border border-[#1E2335] bg-[#141829] hover:bg-[#1C2238] text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Users className="w-3.5 h-3.5 text-[#8F96AE]" />
+                      <span>Miembros</span>
+                    </button>
+
+                    {isAdmin && (
+                      <>
+                        <button
+                          onClick={() => router.push(`/projects/edit/${p.id}`)}
+                          className="w-10 h-10 rounded-xl border border-[#1E2335] bg-[#141829] hover:bg-[#1C2238] flex items-center justify-center text-[#8F96AE] hover:text-white transition-colors cursor-pointer shrink-0"
+                          title="Editar proyecto"
+                        >
+                          <Pencil className="w-4 h-4" />
+                        </button>
+
+                        <button
+                          onClick={() => setProjectToDelete(p)}
+                          className="w-10 h-10 rounded-xl border border-[#4D1C27] bg-[#24131A] hover:bg-[#321721] flex items-center justify-center text-[#EF4444] transition-colors cursor-pointer shrink-0"
+                          title="Eliminar proyecto"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
+
+        {/* PROJECTS TABLE (DESKTOP) */}
+        <div className="hidden md:block rounded-2xl border border-slate-200/80 dark:border-surface bg-white dark:bg-background overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>

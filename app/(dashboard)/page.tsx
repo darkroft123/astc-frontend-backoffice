@@ -466,56 +466,59 @@ export default function AdminDashboardPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-1">
+          <div className="flex flex-col lg:grid lg:grid-cols-5 gap-3 pt-1">
             {/* 1: MARCAR ASISTENCIA (Radiant Button) */}
             <button
               type="button"
               onClick={() => router.push("/registrar")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white font-medium text-xs transition-all shadow-lg shadow-purple-500/25 cursor-pointer"
+              className="w-full lg:w-auto h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white font-medium text-xs transition-all shadow-lg shadow-purple-500/25 cursor-pointer"
             >
               <ScanFace size={16} strokeWidth={2.2} />
               <span>Marcar asistencia</span>
             </button>
 
-            {/* 2: GESTIÓN DE USUARIOS */}
-            <button
-              type="button"
-              onClick={() => router.push("/users")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
-            >
-              <Users size={16} className="text-muted-foreground" />
-              <span>Gestión de usuarios</span>
-            </button>
+            {/* 2-5: 2x2 GRID ON MOBILE, SPREAD ACROSS DESKTOP GRID */}
+            <div className="grid grid-cols-2 lg:contents gap-3">
+              {/* 2: GESTIÓN DE USUARIOS */}
+              <button
+                type="button"
+                onClick={() => router.push("/users")}
+                className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              >
+                <Users size={16} className="text-muted-foreground" />
+                <span>Gestión de usuarios</span>
+              </button>
 
-            {/* 3: PROYECTOS */}
-            <button
-              type="button"
-              onClick={() => router.push("/projects")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
-            >
-              <Briefcase size={16} className="text-muted-foreground" />
-              <span>Proyectos</span>
-            </button>
+              {/* 3: PROYECTOS */}
+              <button
+                type="button"
+                onClick={() => router.push("/projects")}
+                className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              >
+                <Briefcase size={16} className="text-muted-foreground" />
+                <span>Proyectos</span>
+              </button>
 
-            {/* 4: FERIADOS GLOBALES */}
-            <button
-              type="button"
-              onClick={() => router.push("/feriados")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
-            >
-              <Calendar size={16} className="text-muted-foreground" />
-              <span>Feriados globales</span>
-            </button>
+              {/* 4: FERIADOS GLOBALES */}
+              <button
+                type="button"
+                onClick={() => router.push("/feriados")}
+                className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              >
+                <Calendar size={16} className="text-muted-foreground" />
+                <span>Feriados globales</span>
+              </button>
 
-            {/* 5: MIS ASISTENCIAS */}
-            <button
-              type="button"
-              onClick={() => router.push("/mis-asistencias")}
-              className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
-            >
-              <Clock size={16} className="text-muted-foreground" />
-              <span>Mis asistencias</span>
-            </button>
+              {/* 5: MIS ASISTENCIAS */}
+              <button
+                type="button"
+                onClick={() => router.push("/mis-asistencias")}
+                className="h-12 px-4 rounded-xl flex items-center justify-center gap-2 bg-muted/60 hover:bg-muted border border-border text-foreground dark:bg-blue/10 dark:hover:bg-blue/20 dark:border-blue/20 dark:text-[#e2e8f0] font-medium text-xs transition-colors cursor-pointer"
+              >
+                <Clock size={16} className="text-muted-foreground" />
+                <span>Mis asistencias</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>

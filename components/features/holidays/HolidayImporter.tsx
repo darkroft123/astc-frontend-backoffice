@@ -109,9 +109,14 @@ export function HolidayImporter({ onImport, year }: HolidayImporterProps) {
 
   return (
     <>
-      <Button variant="outline" onClick={() => resetState(true)} className="text-muted-foreground bg-card border-border">
-        <Upload className="w-4 h-4 mr-2 text-primary" /> Importar Feriados
-      </Button>
+      <button
+        type="button"
+        onClick={() => resetState(true)}
+        className="flex-1 sm:flex-initial h-11 px-4 rounded-xl text-xs font-semibold bg-[#141829] border border-[#22283D] text-white flex items-center justify-center gap-2 hover:bg-[#1A2035] transition-colors cursor-pointer"
+      >
+        <Upload className="w-4 h-4 text-white" />
+        <span>Importar</span>
+      </button>
 
       <Dialog open={open} onOpenChange={resetState}>
         <DialogContent className="sm:max-w-xl rounded-[var(--radius-modal)]">

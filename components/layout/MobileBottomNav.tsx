@@ -4,10 +4,10 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard,
-  CheckCircle2,
-  Calendar,
-  FolderKanban,
+  LayoutGrid,
+  Users,
+  Folder,
+  Clock,
   MoreHorizontal,
 } from "lucide-react";
 import { useMobileSidebar } from "./MobileSidebar";
@@ -19,24 +19,24 @@ export function MobileBottomNav() {
 
   const navItems = [
     {
-      name: "Panel",
+      name: "Inicio",
       href: "/",
-      icon: LayoutDashboard,
+      icon: LayoutGrid,
     },
     {
-      name: "Registrar",
-      href: "/registrar",
-      icon: CheckCircle2,
-    },
-    {
-      name: "Asistencias",
-      href: "/asistencias-pm",
-      icon: Calendar,
+      name: "Usuarios",
+      href: "/users",
+      icon: Users,
     },
     {
       name: "Proyectos",
       href: "/projects",
-      icon: FolderKanban,
+      icon: Folder,
+    },
+    {
+      name: "Historial",
+      href: "/asistencias-pm",
+      icon: Clock,
     },
     {
       name: "Más",
@@ -46,17 +46,36 @@ export function MobileBottomNav() {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#0A0D18]/95 backdrop-blur-lg border-t border-gray-200/80 dark:border-border/80 px-2 py-1.5 flex items-center justify-around shadow-lg">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0C0E18] border-t border-[#1E2335] px-2 py-1.5 flex items-center justify-around shadow-2xl">
       {navItems.map((item) => {
         if (item.isAction) {
+          const isMoreActive = pathname.startsWith("/feriados") || pathname.startsWith("/notificaciones") || pathname.startsWith("/registrar");
+
           return (
             <button
               key={item.name}
+              type="button"
               onClick={() => setOpen(true)}
-              className="flex flex-col items-center justify-center flex-1 py-1 px-1 text-[10.5px] font-medium text-gray-500 dark:text-text-4 hover:text-gray-900 dark:hover:text-foreground transition-colors cursor-pointer group"
+              className="flex flex-col items-center justify-center flex-1 py-1 px-1 cursor-pointer group"
             >
-              <item.icon className="w-5 h-5 mb-0.5 text-gray-500 dark:text-text-4 group-hover:text-gray-900 dark:group-hover:text-foreground transition-transform group-hover:scale-110" />
-              <span>{item.name}</span>
+              <div
+                className={cn(
+                  "w-10 h-7 rounded-full flex items-center justify-center transition-all",
+                  isMoreActive
+                    ? "bg-[#271D47] text-[#C084FC]"
+                    : "text-[#8F96AE] group-hover:text-white"
+                )}
+              >
+                <item.icon className="w-5 h-5" />
+              </div>
+              <span
+                className={cn(
+                  "text-[10.5px] leading-tight mt-0.5",
+                  isMoreActive ? "text-white font-bold" : "text-[#8F96AE] font-normal"
+                )}
+              >
+                {item.name}
+              </span>
             </button>
           );
         }
@@ -71,22 +90,26 @@ export function MobileBottomNav() {
           <Link
             key={item.name}
             href={href}
-            className={cn(
-              "flex flex-col items-center justify-center flex-1 py-1 px-1 text-[10.5px] font-medium transition-all rounded-xl",
-              isActive
-                ? "text-primary font-bold"
-                : "text-gray-500 dark:text-text-4 hover:text-gray-900 dark:hover:text-foreground"
-            )}
+            className="flex flex-col items-center justify-center flex-1 py-1 px-1 group cursor-pointer"
           >
             <div
               className={cn(
-                "p-1 rounded-xl transition-all",
-                isActive ? "bg-primary/15 text-primary" : "text-gray-500 dark:text-text-4"
+                "w-10 h-7 rounded-full flex items-center justify-center transition-all",
+                isActive
+                  ? "bg-[#271D47] text-[#C084FC]"
+                  : "text-[#8F96AE] group-hover:text-white"
               )}
             >
               <item.icon className="w-5 h-5" />
             </div>
-            <span className="leading-tight mt-0.5">{item.name}</span>
+            <span
+              className={cn(
+                "text-[10.5px] leading-tight mt-0.5",
+                isActive ? "text-white font-bold" : "text-[#8F96AE] font-normal"
+              )}
+            >
+              {item.name}
+            </span>
           </Link>
         );
       })}

@@ -14,6 +14,7 @@ import { SubMetricCard } from "@/components/dashboard/SubMetricCard";
 import PageHeader from "@/components/layout/page-header";
 import { Calendar as CalendarUI } from "@/components/ui/calendar";
 import { HolidayImporter } from "./HolidayImporter";
+import { CreateGlobalCollectionModal } from "./CreateGlobalCollectionModal";
 import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -215,69 +216,69 @@ export default function HolidayListView() {
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7d97ff] dark:border-violet/20 px-2.5 py-0.5 rounded-full">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-wider bg-[#1E1B4B]/70 text-[#818CF8] border border-[#3730A3]/60 px-3 py-1 rounded-full">
               CONTROL GLOBAL
             </span>
-            <span className="font-sans text-xs text-muted-foreground">
+            <span className="text-xs text-[#8F96AE]">
               · Panel administrativo
             </span>
           </div>
-          <h1 className="text-[26px] font-bold text-foreground dark:text-white tracking-tight leading-tight">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white tracking-tight leading-tight">
             Colecciones globales de feriados
           </h1>
-          <p className="text-xs text-muted-foreground dark:text-text-4 mt-1">
+          <p className="text-xs text-[#8F96AE] mt-1 leading-relaxed">
             Agrupa y administra feriados en colecciones que aplican a todos los proyectos.
           </p>
         </div>
 
         {/* 2. KPI CARDS */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
           {/* Card 1: Total feriados */}
-          <div className="bg-violet/10 border border-violet/20 dark:bg-violet/10 dark:border-violet/20 rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
+          <div className="bg-[#131428] border border-[#322557] rounded-2xl p-3 sm:p-4 flex flex-col justify-between shadow-xs min-h-[90px] sm:min-h-[96px]">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-violet/20 text-violet-ink dark:bg-violet/10 dark:text-[#c084fc] flex items-center justify-center">
-                <CalendarIcon className="w-4 h-4" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#271E42] border border-[#4C3382] text-[#A855F7] flex items-center justify-center shrink-0">
+                <CalendarIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="font-sans text-[11px] text-muted-foreground dark:text-text-4 font-normal">
+              <span className="text-[10px] sm:text-[11px] text-[#A0A6BE] font-normal">
                 Total feriados
               </span>
             </div>
-            <div className="mt-3">
-              <span className="text-3xl font-bold text-foreground dark:text-white">
+            <div className="mt-2 sm:mt-3">
+              <span className="text-2xl sm:text-3xl font-bold text-white">
                 {totalHolidays > 0 ? totalHolidays : 10}
               </span>
             </div>
           </div>
 
           {/* Card 2: Colecciones */}
-          <div className="bg-green/10 border border-green/20 dark:bg-green/10 dark:border-green/20 rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
+          <div className="bg-[#0F1E24] border border-[#1B4543] rounded-2xl p-3 sm:p-4 flex flex-col justify-between shadow-xs min-h-[90px] sm:min-h-[96px]">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-green/20 text-[#059669] dark:bg-green/20 dark:text-green flex items-center justify-center">
-                <Layers className="w-4 h-4" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#112F2E] border border-[#1E5752] text-[#10B981] flex items-center justify-center shrink-0">
+                <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="font-sans text-[11px] text-muted-foreground dark:text-text-4 font-normal">
+              <span className="text-[10px] sm:text-[11px] text-[#A0A6BE] font-normal">
                 Colecciones
               </span>
             </div>
-            <div className="mt-3">
-              <span className="text-3xl font-bold text-foreground dark:text-white">
+            <div className="mt-2 sm:mt-3">
+              <span className="text-2xl sm:text-3xl font-bold text-white">
                 {collections.length > 0 ? collections.length : 3}
               </span>
             </div>
           </div>
 
           {/* Card 3: Días próximos */}
-          <div className="bg-amber/10 border border-amber/20 dark:bg-amber/10 dark:border-amber/20 rounded-2xl p-4 flex flex-col justify-between shadow-xs min-h-[96px]">
+          <div className="bg-[#1E1C18] border border-[#483A1C] rounded-2xl p-3 sm:p-4 flex flex-col justify-between shadow-xs min-h-[90px] sm:min-h-[96px]">
             <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-xl bg-amber/20 text-amber dark:bg-amber/20 dark:text-amber flex items-center justify-center">
-                <Sun className="w-4 h-4" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#2D2415] border border-[#59421A] text-[#F59E0B] flex items-center justify-center shrink-0">
+                <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </div>
-              <span className="font-sans text-[11px] text-muted-foreground dark:text-text-4 font-normal">
+              <span className="text-[10px] sm:text-[11px] text-[#A0A6BE] font-normal">
                 Días próximos
               </span>
             </div>
-            <div className="mt-3">
-              <span className="text-3xl font-bold text-foreground dark:text-white">
+            <div className="mt-2 sm:mt-3">
+              <span className="text-2xl sm:text-3xl font-bold text-white">
                 7
               </span>
             </div>
@@ -286,16 +287,16 @@ export default function HolidayListView() {
 
         {/* 3. SEARCH & REFRESH BAR */}
         <div>
-          <label className="text-[11px] text-muted-foreground dark:text-text-4 mb-1.5 block">
+          <label className="text-xs text-[#8F96AE] mb-1.5 block font-medium">
             Buscar colección o fecha
           </label>
           <div className="flex items-center gap-2">
-            <div className="relative w-full max-w-sm">
-              <Search className="w-4 h-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 text-[#8F96AE] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
               <input
                 type="text"
                 placeholder="Nombre, feriado o mes (ej. dic)..."
-                className="w-full h-10 pl-9 pr-4 text-xs rounded-xl bg-card border border-border dark:bg-surface dark:border-violet/10 dark:text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/40"
+                className="w-full h-11 pl-10 pr-4 text-xs rounded-xl bg-[#121626] border border-[#23293F] text-white placeholder-[#606680] focus:outline-none focus:ring-1 focus:ring-purple-500/40"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -303,7 +304,7 @@ export default function HolidayListView() {
             <button
               onClick={fetchCollections}
               title="Actualizar"
-              className="w-10 h-10 rounded-xl border border-border bg-card dark:bg-surface dark:border-violet/10 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors cursor-pointer shrink-0"
+              className="w-11 h-11 rounded-xl border border-[#23293F] bg-[#121626] flex items-center justify-center text-[#8F96AE] hover:text-white transition-colors cursor-pointer shrink-0"
             >
               <RotateCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </button>
@@ -311,17 +312,18 @@ export default function HolidayListView() {
         </div>
 
         {/* 4. LIST HEADER & ACTIONS */}
-        <div className="flex items-center justify-between pt-1">
-          <h2 className="text-sm font-semibold text-foreground dark:text-white">
+        <div className="space-y-3 pt-1">
+          <h2 className="text-sm font-bold text-foreground dark:text-white">
             Listado de colecciones
           </h2>
           <div className="flex items-center gap-2.5">
             <HolidayImporter onImport={handleImportHolidays} year={new Date().getFullYear()} />
             <button
               onClick={() => setIsFormOpen(true)}
-              className="h-9 px-4 rounded-xl text-xs font-semibold bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center gap-1.5 shadow-sm shadow-purple-500/20 transition-all cursor-pointer"
+              className="flex-1 sm:flex-initial h-11 px-4 rounded-xl text-xs font-semibold bg-gradient-to-r from-[#5B8CFF] to-[#A855F7] hover:brightness-110 active:scale-[0.98] text-white flex items-center justify-center gap-1.5 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
             >
-              <Plus className="w-4 h-4" /> Nueva colección
+              <Plus className="w-4 h-4 text-white" />
+              <span>Nueva colección</span>
             </button>
           </div>
         </div>
@@ -336,65 +338,69 @@ export default function HolidayListView() {
             filteredCollections.map((c) => (
               <div
                 key={c.id}
-                className="bg-card dark:bg-surface/80 border border-border/80 dark:border-[#1a2138] rounded-2xl overflow-hidden shadow-xs hover:border-[#2d385e] transition-colors"
+                className="bg-[#101322] border border-[#1E2335] rounded-2xl overflow-hidden shadow-xs hover:border-[#2d385e] transition-colors"
               >
                 <div
-                  className="p-4 flex items-center justify-between cursor-pointer group"
+                  className="p-4 cursor-pointer group"
                   onClick={() => toggleExpand(c.id)}
                 >
-                  {/* Left Info */}
-                  <div className="flex items-center gap-3.5 min-w-0">
-                    <div className="w-11 h-11 rounded-xl bg-violet/10 dark:bg-violet/10 border border-violet/20 dark:border-violet/20 text-[#8b5cf6] dark:text-[#c084fc] flex items-center justify-center shrink-0">
-                      <Layers className="w-5 h-5" />
+                  {/* Top Row: Icon + Name/Subtitle + Chevron */}
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3.5 min-w-0 flex-1">
+                      <div className="w-10 h-10 rounded-xl bg-[#1E1736] border border-[#3C2863] text-[#A855F7] flex items-center justify-center shrink-0">
+                        <Layers className="w-5 h-5" />
+                      </div>
+                      <div className="min-w-0">
+                        <h3 className="font-bold text-sm text-foreground dark:text-white truncate">
+                          {c.name}
+                        </h3>
+                        <p className="text-xs text-[#8F96AE] mt-0.5 flex items-center gap-1.5">
+                          <span>{c.items?.length || 0} feriados</span>
+                          <span>•</span>
+                          <span>
+                            Creado {format(new Date(c.createdAt || Date.now()), "dd MMM yyyy", { locale: es })}
+                          </span>
+                        </p>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <h3 className="font-bold text-sm text-foreground dark:text-white truncate">
-                        {c.name}
-                      </h3>
-                      <p className="text-xs text-muted-foreground dark:text-text-5 mt-0.5 flex items-center gap-1.5">
-                        <span>{c.items?.length || 0} feriados</span>
-                        <span>•</span>
-                        <span>
-                          Creado {format(new Date(c.createdAt || Date.now()), "dd MMM yyyy", { locale: es })}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
 
-                  {/* Right Actions */}
-                  <div className="flex items-center gap-3 shrink-0">
-                    <span className="font-mono text-[9.5px] font-bold px-2 py-0.5 rounded bg-amber/10 text-amber border border-amber/20 dark:bg-amber/15 dark:text-amber dark:border-amber/20 uppercase tracking-wider">
-                      GLOBAL
-                    </span>
-
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setPendingAssignment(c.id);
-                      }}
-                      className="h-8 px-3 rounded-xl border border-gray-200 dark:border-[#262f4e] bg-white dark:bg-surface hover:bg-gray-50 dark:hover:bg-raised text-xs font-medium text-foreground dark:text-text-2 flex items-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <Folder className="w-3.5 h-3.5 text-muted-foreground" />
-                      <span>{assignedCollectionId === c.id ? "Asignado" : "Asignar"}</span>
-                    </button>
-
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(c.id);
-                      }}
-                      title="Eliminar colección"
-                      className="p-1.5 text-muted-foreground hover:text-red dark:text-text-5 dark:hover:text-red-ink transition-colors cursor-pointer"
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-
-                    <div className="text-muted-foreground dark:text-text-5 group-hover:translate-x-0.5 transition-transform">
+                    <div className="text-[#8F96AE] group-hover:translate-x-0.5 transition-transform shrink-0">
                       {expandedId === c.id ? (
                         <ChevronDown className="w-4 h-4" />
                       ) : (
                         <ChevronRight className="w-4 h-4" />
                       )}
+                    </div>
+                  </div>
+
+                  {/* Bottom Row: GLOBAL Badge + Asignar button + Delete button */}
+                  <div className="flex items-center justify-between pt-3 mt-3 border-t border-white/[0.04]">
+                    <span className="font-mono text-[9.5px] font-bold px-2.5 py-1 rounded-lg bg-[#282114] text-[#EAB308] border border-[#483718] uppercase tracking-wider">
+                      GLOBAL
+                    </span>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPendingAssignment(c.id);
+                        }}
+                        className="h-9 px-3.5 rounded-xl border border-[#22283D] bg-[#141829] hover:bg-[#1C2238] text-xs font-medium text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Folder className="w-3.5 h-3.5 text-[#8F96AE]" />
+                        <span>{assignedCollectionId === c.id ? "Asignado" : "Asignar"}</span>
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(c.id);
+                        }}
+                        title="Eliminar colección"
+                        className="w-9 h-9 rounded-xl border border-[#4D1C27] bg-[#24131A] hover:bg-[#321721] flex items-center justify-center text-[#EF4444] transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -472,63 +478,41 @@ export default function HolidayListView() {
         </div>
       </div>
 
-        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
-          <DialogContent className="sm:max-w-3xl rounded-[var(--radius-modal)]">
-            <DialogHeader>
-              <DialogTitle className="text-xl font-bold text-foreground">Crear Colección Global</DialogTitle>
-              <DialogDescription className="text-text-4">
-                Crea una colección para agrupar múltiples feriados. Aplica a toda la organización.
-              </DialogDescription>
-            </DialogHeader>
-            <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-              
-              <div className="space-y-3 bg-muted/50 p-4 rounded-lg border border-line flex flex-col items-center">
-                <Label className="text-foreground font-semibold mb-2">Selecciona las Fechas</Label>
-                <div className="bg-card rounded-md shadow-sm border p-2">
-                  <CalendarUI mode="multiple" selected={formDates} onSelect={(dates) => setFormDates(dates as Date[])} className="rounded-md" />
-                </div>
-                <p className="text-xs text-text-4 mt-2 text-center">Has seleccionado {formDates.length} días.</p>
-              </div>
+        {/* Modal: Crear Colección Global (Design matching dark- Crear colección global.svg) */}
+        <CreateGlobalCollectionModal
+          open={isFormOpen}
+          onOpenChange={setIsFormOpen}
+          onSubmit={async (name, dates, specificDateNames) => {
+            if (!token) return;
+            const validDates = dates.map((d) => {
+              const offset = d.getTimezoneOffset();
+              const adjusted = new Date(d.getTime() - offset * 60 * 1000);
+              return adjusted.toISOString().split("T")[0];
+            });
+            const items = validDates.map((d) => ({
+              date: d,
+              name: specificDateNames[d] || name,
+            }));
 
-              <div className="space-y-5 flex flex-col">
-                <div className="space-y-2">
-                  <Label className="text-sm font-semibold">Nombre de la Colección <span className="text-red-ink">*</span></Label>
-                  <Input value={formName} onChange={(e) => setFormName(e.target.value)} placeholder="Ej. Feriados Perú 2026" required />
-                </div>
-
-                {formDates.length > 0 && (
-                  <div className="space-y-3 max-h-48 overflow-y-auto pr-2 border rounded-md p-3 bg-muted/30 flex-1">
-                    <Label className="text-sm font-semibold block mb-2 text-muted-foreground">Nombres específicos (Opcional)</Label>
-                    {formDates.map((d, i) => {
-                      const offset = d.getTimezoneOffset();
-                      const adjusted = new Date(d.getTime() - (offset*60*1000));
-                      const dateStr = adjusted.toISOString().split('T')[0];
-                      return (
-                        <div key={i} className="flex items-center gap-3">
-                          <span className="text-xs font-mono bg-muted px-2 py-1 rounded text-muted-foreground min-w-[90px] text-center">{dateStr}</span>
-                          <Input 
-                            size={1}
-                            className="h-8 text-sm" 
-                            placeholder={formName || "Nombre..."} 
-                            value={dateNames[dateStr] || ""} 
-                            onChange={(e) => setDateNames(prev => ({...prev, [dateStr]: e.target.value}))} 
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                <DialogFooter className="pt-2 mt-auto">
-                  <Button type="button" variant="outline" onClick={() => setIsFormOpen(false)} disabled={isSubmitting}>Cancelar</Button>
-                  <Button type="submit" className="bg-green hover:bg-green/90" disabled={isSubmitting}>
-                    <Plus className="w-4 h-4 mr-1" /> {isSubmitting ? "Creando..." : "Crear Colección"}
-                  </Button>
-                </DialogFooter>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
+            setIsSubmitting(true);
+            try {
+              await createCollection(token, { name, scope: "GLOBAL" }, items);
+              setIsFormOpen(false);
+              await fetchCollections();
+              toast({ title: "Colección creada con éxito" });
+            } catch (error: any) {
+              console.error("Error creating collection:", error);
+              toast({
+                title: "Error",
+                description: error.message || "No se pudo crear la colección.",
+                variant: "destructive",
+              });
+            } finally {
+              setIsSubmitting(false);
+            }
+          }}
+          isSubmitting={isSubmitting}
+        />
 
         {/* Modal: Confirmar Asignación Global */}
         <Dialog open={!!pendingAssignment} onOpenChange={(open) => { if (!open) setPendingAssignment(null); }}>
