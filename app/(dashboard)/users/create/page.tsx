@@ -26,6 +26,14 @@ import {
 } from "@/app/services/users.service";
 import { formatAvatarUrl } from "@/lib/avatar-url";
 import { useAuthGuard } from "@/app/jwt/auth/useAuthGuard";
+import { NotificationBell } from "@/components/layout/notification-bell";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 const ROLES = {
   ADMIN: "018f6b7a-0001-7000-8000-000000000001",
@@ -407,21 +415,34 @@ export default function CreateUserPage() {
   return (
     <div className="relative min-h-screen bg-transparent overflow-hidden pb-12">
       <div className="relative max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6 z-10">
-        {/* HEADER */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-xs">
+        {/* MOBILE TOP BAR (MATCHING SVG: <- Usuarios + Notification Bell) */}
+        <div className="flex md:hidden items-center justify-between pb-1">
+          <button
+            type="button"
+            onClick={() => router.push("/users")}
+            className="flex items-center gap-2 text-sm font-semibold text-foreground hover:opacity-80 transition-opacity cursor-pointer"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span>Usuarios</span>
+          </button>
+          <NotificationBell />
+        </div>
+
+        {/* SECTION HEADER */}
+        <div className="flex items-start md:items-center justify-between gap-4">
+          <div className="flex items-start md:items-center gap-3">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#6366F1] to-[#A855F7] flex items-center justify-center text-white shadow-md shrink-0">
               {isEditMode ? (
-                <UserCheck className="w-5 h-5" />
+                <UserCheck className="w-6 h-6" />
               ) : (
-                <UserPlus className="w-5 h-5" />
+                <UserPlus className="w-6 h-6" />
               )}
             </div>
             <div>
-              <h1 className="text-xl font-bold text-foreground">
+              <h1 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">
                 {isEditMode ? "Editar usuario" : "Crear nuevo usuario"}
               </h1>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
                 {isEditMode
                   ? "Modifica los datos del usuario, país, rol y credenciales de acceso."
                   : "Registra al colaborador con su país de residencia, biometría y rol institucional."}
@@ -432,7 +453,7 @@ export default function CreateUserPage() {
           <button
             type="button"
             onClick={() => router.push("/users")}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-xl border border-border bg-card hover:bg-raised text-xs font-medium text-foreground transition-colors cursor-pointer"
+            className="hidden md:flex items-center gap-2 px-3.5 py-2 rounded-xl border border-border bg-card hover:bg-raised text-xs font-medium text-foreground transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Volver a usuarios</span>
@@ -550,18 +571,24 @@ export default function CreateUserPage() {
                     <span>País de residencia</span>
                     <span className="text-red">*</span>
                   </label>
-                  <select
-                    name="country"
+                  <Select
                     value={formData.country}
-                    onChange={(e) => handleCountryChange(e.target.value)}
-                    className="w-full h-10 px-3.5 rounded-xl border border-border bg-background text-foreground text-xs focus:border-primary focus:ring-2 focus:ring-primary/10 cursor-pointer outline-none transition-all shadow-xs"
+                    onValueChange={(val) => handleCountryChange(val)}
                   >
-                    {Object.values(COUNTRIES).map((c) => (
-                      <option key={c.id} value={c.id}>
-                        {c.name} ({c.prefix})
-                      </option>
-                    ))}
-                  </select>
+                    <SelectTrigger className="w-full h-11 px-3.5 rounded-xl border border-border bg-background text-foreground text-xs shadow-xs">
+                      <div className="flex items-center gap-2">
+                        <Globe className="w-3.5 h-3.5 text-muted-foreground" />
+                        <SelectValue placeholder="Selecciona un país" />
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Object.values(COUNTRIES).map((c) => (
+                        <SelectItem key={c.id} value={c.id}>
+                          {c.name} ({c.prefix})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <p className="text-[11px] text-muted-foreground">
                     Sincroniza el prefijo telefónico y la zona horaria.
                   </p>
@@ -865,18 +892,18 @@ export default function CreateUserPage() {
           </div>
 
           {/* BOTTOM ACTION BAR */}
-          <div className="bg-card border border-border rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+          <div className="bg-card border border-border rounded-2xl p-4 flex flex-col items-stretch gap-3 shadow-xs">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Info className="w-4 h-4 text-primary shrink-0" />
               <span>Completa los campos con <span className="text-red font-bold">*</span> para guardar.</span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 w-full">
               <button
                 type="button"
                 onClick={() => router.push("/users")}
                 disabled={loading}
-                className="px-4 py-2 rounded-xl text-xs font-medium border border-border bg-card hover:bg-raised text-foreground transition-colors cursor-pointer disabled:opacity-50"
+                className="h-12 flex-1 rounded-2xl text-sm font-semibold border border-border bg-card dark:bg-[#161928] hover:bg-raised text-foreground transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center shadow-xs"
               >
                 Cancelar
               </button>
@@ -884,7 +911,7 @@ export default function CreateUserPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="px-5 py-2.5 rounded-xl text-xs font-medium bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center gap-2 shadow-md shadow-primary/20 transition-all cursor-pointer disabled:opacity-50"
+                className="h-12 flex-1 rounded-2xl text-sm font-semibold bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center justify-center gap-2 shadow-lg shadow-purple-500/25 transition-all cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <Loader2 className="w-4 h-4 animate-spin" />

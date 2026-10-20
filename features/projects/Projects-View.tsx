@@ -25,6 +25,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import DeleteProjectModal from "@/components/features/projects/DeleteProjectModal";
 
 export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN" | "PM" }) {
@@ -181,18 +188,20 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="relative flex-1 md:flex-initial min-w-0">
-              <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
-              <select
-                className="w-full appearance-none pl-9 pr-8 h-11 md:h-10 rounded-xl border border-border dark:border-[#1E2335] bg-white dark:bg-[#141829] text-xs md:text-sm text-foreground dark:text-white focus:outline-none cursor-pointer font-normal transition-colors"
-                value={estadoFilter}
-                onChange={(e) => setEstadoFilter(e.target.value)}
-              >
-                <option value="all" className="bg-white dark:bg-[#141829] text-gray-900 dark:text-gray-100">Todos los estados</option>
-                <option value="ACTIVE" className="bg-white dark:bg-[#141829] text-gray-900 dark:text-gray-100">Activos</option>
-                <option value="INACTIVE" className="bg-white dark:bg-[#141829] text-gray-900 dark:text-gray-100">Inactivos</option>
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <div className="flex-1 md:flex-initial min-w-[150px]">
+              <Select value={estadoFilter} onValueChange={(val) => setEstadoFilter(val)}>
+                <SelectTrigger className="w-full h-11 md:h-10 rounded-xl border border-border dark:border-[#1E2335] bg-white dark:bg-[#141829] text-xs md:text-sm text-foreground dark:text-white font-normal">
+                  <div className="flex items-center gap-2">
+                    <Filter className="w-4 h-4 text-muted-foreground" />
+                    <SelectValue placeholder="Todos los estados" />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos los estados</SelectItem>
+                  <SelectItem value="ACTIVE">Activos</SelectItem>
+                  <SelectItem value="INACTIVE">Inactivos</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <button

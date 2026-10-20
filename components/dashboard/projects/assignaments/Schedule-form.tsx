@@ -301,11 +301,10 @@ export default function ScheduleForm({
 
               <div className="md:col-span-2">
                 <label className="text-xs font-semibold text-text-3 block mb-1">Proyecto</label>
-                <select
-                  className="h-10 w-full border rounded-lg px-3 text-sm bg-background"
+                <Select
                   value={selectedProjectId}
-                  onChange={(e) => {
-                    const p = projects.find((x) => x.id === e.target.value);
+                  onValueChange={(val) => {
+                    const p = projects.find((x) => x.id === val);
                     setSelectedProjectId(p?.id || "");
                     if (p) {
                       setStartHour(p.workStartTime || "08:00");
@@ -313,11 +312,15 @@ export default function ScheduleForm({
                     }
                   }}
                 >
-                  <option value="">Seleccionar proyecto</option>
-                  {projects.map((p) => (
-                    <option key={p.id} value={p.id}>{p.name}</option>
-                  ))}
-                </select>
+                  <SelectTrigger className="h-10 w-full rounded-xl border border-border bg-background text-sm">
+                    <SelectValue placeholder="Seleccionar proyecto" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {projects.map((p) => (
+                      <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div>

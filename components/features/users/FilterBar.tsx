@@ -2,6 +2,13 @@
 import React from "react";
 import { Search, UserPlus, Shield, ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 export default function FilterBar({
   roleFilter,
@@ -30,19 +37,21 @@ export default function FilterBar({
       </div>
 
       {/* ROLE FILTER */}
-      <div className="relative shrink-0">
-        <Shield className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground dark:text-[#5a607f] pointer-events-none" />
-        <select
-          value={roleFilter}
-          onChange={(e) => onRoleChange(e.target.value)}
-          className="h-11 pl-10 pr-9 rounded-xl border border-border bg-card dark:bg-sidebar dark:border-raised text-foreground text-sm focus:border-primary/60 dark:focus:border-primary/60 cursor-pointer appearance-none outline-none transition-all min-w-[160px] shadow-xs font-normal"
-        >
-          <option value="all">Todos los roles</option>
-          <option value="ADMIN">Administrador</option>
-          <option value="PROJECT_MANAGER">Project manager</option>
-          <option value="TEAM_MEMBER">Team member</option>
-        </select>
-        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground dark:text-[#5a607f] pointer-events-none" />
+      <div className="shrink-0 min-w-[160px]">
+        <Select value={roleFilter} onValueChange={onRoleChange}>
+          <SelectTrigger className="h-11 rounded-xl border border-border bg-card dark:bg-sidebar dark:border-raised text-foreground text-xs font-normal">
+            <div className="flex items-center gap-2">
+              <Shield className="w-4 h-4 text-muted-foreground dark:text-[#5a607f]" />
+              <SelectValue placeholder="Todos los roles" />
+            </div>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Todos los roles</SelectItem>
+            <SelectItem value="ADMIN">Administrador</SelectItem>
+            <SelectItem value="PROJECT_MANAGER">Project manager</SelectItem>
+            <SelectItem value="TEAM_MEMBER">Team member</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {/* CREATE USER BUTTON */}

@@ -18,6 +18,13 @@ import {
 } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
+import {
   getAllProjects,
   getAllUsers,
   listTeamAttendance,
@@ -339,49 +346,49 @@ export function PMAttendanceView() {
           </div>
 
           <div className="grid grid-cols-2 sm:flex items-center gap-3">
-            <div className="relative flex-1 sm:min-w-[140px]">
-              <select
-                className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
-                value={selectedRole}
-                onChange={(e: any) => setSelectedRole(e.target.value)}
-              >
-                <option value="ALL">Todos los roles</option>
-                <option value="ADMIN">Administrador</option>
-                <option value="PROJECT_MANAGER">Jefes de proyecto</option>
-                <option value="TEAM_MEMBER">Colaboradores</option>
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <div className="flex-1 sm:min-w-[140px]">
+              <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val)}>
+                <SelectTrigger className="w-full h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-xs text-foreground">
+                  <SelectValue placeholder="Todos los roles" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="ALL">Todos los roles</SelectItem>
+                  <SelectItem value="ADMIN">Administrador</SelectItem>
+                  <SelectItem value="PROJECT_MANAGER">Jefes de proyecto</SelectItem>
+                  <SelectItem value="TEAM_MEMBER">Colaboradores</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            <div className="relative flex-1 sm:min-w-[170px]">
-              <select
-                className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
-                value={selectedProject}
-                onChange={(e) => setSelectedProject(e.target.value)}
-              >
-                <option value="all">Todos los proyectos</option>
-                {projects.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <div className="flex-1 sm:min-w-[170px]">
+              <Select value={selectedProject} onValueChange={(val) => setSelectedProject(val)}>
+                <SelectTrigger className="w-full h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-xs text-foreground">
+                  <SelectValue placeholder="Todos los proyectos" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos los proyectos</SelectItem>
+                  {projects.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>
+                      {p.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
           </div>
 
-          <div className="relative w-full sm:w-auto sm:min-w-[150px]">
-            <select
-              className="w-full appearance-none pl-3 pr-8 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-            >
-              <option value="all">Todos los estados</option>
-              <option value="ASISTENCIA">Asistencia</option>
-              <option value="TARDE">Tarde</option>
-              <option value="FALTA">Falta</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+          <div className="w-full sm:w-auto sm:min-w-[150px]">
+            <Select value={statusFilter} onValueChange={(val) => setStatusFilter(val)}>
+              <SelectTrigger className="w-full h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-xs text-foreground">
+                <SelectValue placeholder="Todos los estados" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">Todos los estados</SelectItem>
+                <SelectItem value="ASISTENCIA">Asistencia</SelectItem>
+                <SelectItem value="TARDE">Tarde</SelectItem>
+                <SelectItem value="FALTA">Falta</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
 
           <div className="grid grid-cols-2 sm:flex items-center gap-3 w-full sm:w-auto">

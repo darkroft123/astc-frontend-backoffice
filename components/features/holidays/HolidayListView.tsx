@@ -216,17 +216,17 @@ export default function HolidayListView() {
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider bg-[#1E1B4B]/70 text-[#818CF8] border border-[#3730A3]/60 px-3 py-1 rounded-full">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 dark:bg-[#1E1B4B]/70 dark:text-[#818CF8] dark:border-[#3730A3]/60 px-3 py-1 rounded-full">
               CONTROL GLOBAL
             </span>
-            <span className="text-xs text-[#8F96AE]">
+            <span className="text-xs text-muted-foreground dark:text-[#8F96AE]">
               · Panel administrativo
             </span>
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white tracking-tight leading-tight">
             Colecciones globales de feriados
           </h1>
-          <p className="text-xs text-[#8F96AE] mt-1 leading-relaxed">
+          <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-1 leading-relaxed">
             Agrupa y administra feriados en colecciones que aplican a todos los proyectos.
           </p>
         </div>

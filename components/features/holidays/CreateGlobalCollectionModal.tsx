@@ -266,35 +266,6 @@ export function CreateGlobalCollectionModal({
             </div>
           </div>
 
-          {/* Optional: Names for selected dates (collapsible / compact) */}
-          {selectedDates.length > 0 && (
-            <div className="max-h-36 overflow-y-auto space-y-2 pr-1 border border-border dark:border-[#23283E] rounded-xl p-2.5 bg-[#F8FAFC] dark:bg-[#161928]">
-              <span className="text-[11px] font-semibold text-muted-foreground dark:text-[#8F96AE] block">
-                Nombres específicos (Opcional):
-              </span>
-              {selectedDates.map((d, i) => {
-                const offset = d.getTimezoneOffset();
-                const adjusted = new Date(d.getTime() - offset * 60 * 1000);
-                const dateStr = adjusted.toISOString().split("T")[0];
-                return (
-                  <div key={i} className="flex items-center gap-2">
-                    <span className="text-[11px] font-mono bg-card dark:bg-[#1D2030] text-muted-foreground dark:text-[#8F96AE] border border-border dark:border-transparent px-2 py-1 rounded-md shrink-0">
-                      {dateStr}
-                    </span>
-                    <input
-                      type="text"
-                      className="h-8 flex-1 px-2.5 text-xs rounded-lg bg-card dark:bg-[#1D2030] border border-border dark:border-[#2B3048] text-foreground dark:text-white placeholder:text-muted-foreground dark:placeholder-[#606680] focus:outline-none"
-                      placeholder={formName || "Nombre del feriado..."}
-                      value={dateNames[dateStr] || ""}
-                      onChange={(e) =>
-                        setDateNames((prev) => ({ ...prev, [dateStr]: e.target.value }))
-                      }
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          )}
 
           {/* Footer: Cancelar & Crear Colección Buttons */}
           <div className="border-t border-border dark:border-[#1E2338] pt-4 flex items-center gap-3">
