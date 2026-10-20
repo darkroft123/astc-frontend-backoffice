@@ -24,6 +24,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -544,6 +545,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           <DialogContent className="sm:max-w-md bg-white dark:bg-[#12141F] border border-border dark:border-[#1E2335] text-foreground dark:text-white rounded-2xl">
             <DialogHeader>
               <DialogTitle className="text-foreground dark:text-white font-bold">Miembros de {selectedProjectForMembers?.name}</DialogTitle>
+              <DialogDescription className="sr-only">Miembros asignados al proyecto</DialogDescription>
             </DialogHeader>
             <div className="py-2">
               {selectedProjectForMembers?.members && selectedProjectForMembers.members.length > 0 ? (
