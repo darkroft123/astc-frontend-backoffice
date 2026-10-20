@@ -433,9 +433,9 @@ export default function CreateUserPage() {
           <div className="flex items-start md:items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#6366F1] to-[#A855F7] flex items-center justify-center text-white shadow-md shrink-0">
               {isEditMode ? (
-                <UserCheck className="w-6 h-6" />
+                <UserCheck className="w-6 h-6 shrink-0 aspect-square" strokeWidth={1.8} />
               ) : (
-                <UserPlus className="w-6 h-6" />
+                <UserPlus className="w-6 h-6 shrink-0 aspect-square" strokeWidth={1.8} />
               )}
             </div>
             <div>
@@ -892,10 +892,10 @@ export default function CreateUserPage() {
           </div>
 
           {/* BOTTOM ACTION BAR */}
-          <div className="bg-card border border-border rounded-2xl p-4 flex flex-col items-stretch gap-3 shadow-xs">
+          <div className="space-y-3 pt-2">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Info className="w-4 h-4 text-primary shrink-0" />
-              <span>Completa los campos con <span className="text-red font-bold">*</span> para guardar.</span>
+              <span>Completa los campos con <span className="text-destructive font-bold">*</span> para guardar.</span>
             </div>
 
             <div className="flex items-center gap-3 w-full">
@@ -903,7 +903,7 @@ export default function CreateUserPage() {
                 type="button"
                 onClick={() => router.push("/users")}
                 disabled={loading}
-                className="h-12 flex-1 rounded-2xl text-sm font-semibold border border-border bg-card dark:bg-[#161928] hover:bg-raised text-foreground transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center shadow-xs"
+                className="h-12 flex-1 rounded-2xl text-xs sm:text-sm font-semibold border border-border bg-card dark:bg-[#161928] hover:bg-raised text-foreground transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center shadow-xs"
               >
                 Cancelar
               </button>
@@ -911,14 +911,14 @@ export default function CreateUserPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="h-12 flex-1 rounded-2xl text-sm font-semibold bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center justify-center gap-2 shadow-lg shadow-purple-500/25 transition-all cursor-pointer disabled:opacity-50"
+                className="h-12 flex-1 rounded-2xl text-xs sm:text-sm font-semibold bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center justify-center gap-2 shadow-lg shadow-purple-500/25 transition-all cursor-pointer disabled:opacity-50 px-3 whitespace-nowrap"
               >
                 {loading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 shrink-0 aspect-square animate-spin" />
                 ) : (
-                  <Save className="w-4 h-4" />
+                  <Save className="w-4 h-4 shrink-0 aspect-square" strokeWidth={1.75} />
                 )}
-                <span>
+                <span className="truncate">
                   {loading
                     ? "Guardando..."
                     : isEditMode

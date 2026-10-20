@@ -199,7 +199,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
         <div className="flex items-start md:items-center justify-between gap-4">
           <div className="flex items-start md:items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#6366F1] to-[#A855F7] flex items-center justify-center text-white shadow-md shrink-0">
-              <FolderKanban className="w-6 h-6" />
+              <FolderKanban className="w-6 h-6 shrink-0 aspect-square" strokeWidth={1.8} />
             </div>
             <div>
               <h1 className="text-xl md:text-2xl font-bold text-foreground tracking-tight">
@@ -567,7 +567,8 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
         </div>
 
         {/* BOTTOM ACTION BAR */}
-        <div className="bg-card border border-border rounded-2xl p-4 flex flex-col items-stretch gap-3 shadow-xs mt-6">
+        {/* BOTTOM ACTIONS */}
+        <div className="space-y-3 pt-2 mt-6">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Info className="w-4 h-4 text-primary shrink-0" />
             <span>
@@ -582,7 +583,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
               type="button"
               onClick={() => router.push("/projects")}
               disabled={isSubmitting}
-              className="h-12 flex-1 rounded-2xl text-sm font-semibold border border-border bg-card dark:bg-[#161928] hover:bg-raised text-foreground transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center shadow-xs"
+              className="h-12 flex-1 rounded-2xl text-xs sm:text-sm font-semibold border border-border bg-card dark:bg-[#161928] hover:bg-raised text-foreground transition-all cursor-pointer disabled:opacity-50 flex items-center justify-center shadow-xs"
             >
               Cancelar
             </button>
@@ -591,14 +592,14 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
               type="button"
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="h-12 flex-1 rounded-2xl text-sm font-semibold bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center justify-center gap-2 shadow-lg shadow-purple-500/25 transition-all cursor-pointer disabled:opacity-50"
+              className="h-12 flex-1 rounded-2xl text-xs sm:text-sm font-semibold bg-brand-gradient hover:brightness-110 active:scale-[0.98] text-white flex items-center justify-center gap-2 shadow-lg shadow-purple-500/25 transition-all cursor-pointer disabled:opacity-50 px-3 whitespace-nowrap"
             >
               {isSubmitting ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-4 h-4 shrink-0 aspect-square animate-spin" />
               ) : (
-                <Save className="w-4 h-4" />
+                <Save className="w-4 h-4 shrink-0 aspect-square" strokeWidth={1.75} />
               )}
-              <span>{isSubmitting ? "Guardando..." : "Guardar proyecto"}</span>
+              <span className="truncate">{isSubmitting ? "Guardando..." : "Guardar proyecto"}</span>
             </button>
           </div>
         </div>
