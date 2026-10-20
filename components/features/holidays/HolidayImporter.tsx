@@ -112,9 +112,9 @@ export function HolidayImporter({ onImport, year }: HolidayImporterProps) {
       <button
         type="button"
         onClick={() => resetState(true)}
-        className="flex-1 sm:flex-initial h-11 px-4 rounded-xl text-xs font-semibold bg-[#141829] border border-[#22283D] text-white flex items-center justify-center gap-2 hover:bg-[#1A2035] transition-colors cursor-pointer"
+        className="flex-1 sm:flex-initial h-11 px-4 rounded-xl text-xs font-semibold bg-white dark:bg-[#141829] border border-border dark:border-[#22283D] text-foreground dark:text-white flex items-center justify-center gap-2 hover:bg-muted/60 dark:hover:bg-[#1A2035] transition-colors cursor-pointer shadow-2xs"
       >
-        <Upload className="w-4 h-4 text-white" />
+        <Upload className="w-4 h-4 text-foreground dark:text-white" />
         <span>Importar</span>
       </button>
 

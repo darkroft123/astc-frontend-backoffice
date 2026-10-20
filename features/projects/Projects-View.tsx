@@ -132,51 +132,49 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           </p>
         </div>
 
-        {/* MASTER CARD CONTAINER (MATCHING SVG SPEC) */}
-        <div className="rounded-2xl border border-border/80 bg-card dark:bg-sidebar/70 p-6 space-y-6 shadow-sm">
-          {/* 3 METRIC CARDS */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* 3 METRIC CARDS (MATCHING SVG: 3 cols side by side) */}
+        <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
           {/* Card 1: Total */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-white dark:bg-sidebar/90 border-slate-200/80 dark:border-raised shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-slate-100 dark:bg-surface border border-slate-200 dark:border-field text-muted-foreground">
-                <Folder className="w-4 h-4" />
-              </div>
-              <span className="text-xs text-muted-foreground">Total</span>
+          <div className="rounded-2xl p-3 sm:p-4 flex flex-col justify-between min-h-[96px] border bg-white dark:bg-[#101322] border-border dark:border-[#1E2335] shadow-xs transition-colors">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center bg-muted/60 dark:bg-surface border border-border dark:border-field text-muted-foreground">
+              <Folder className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
-            <span className="text-2xl font-bold text-foreground">{totalProjects}</span>
+            <div className="mt-2.5">
+              <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium block truncate">Total</span>
+              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block mt-0.5 leading-none">{totalProjects}</span>
+            </div>
           </div>
 
           {/* Card 2: Activos */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-green/10 dark:bg-green/10 border-green/20 dark:border-green/20 shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-green/15 border border-green/25 text-green dark:text-green">
-                <Check className="w-4 h-4" />
-              </div>
-              <span className="text-xs text-green-ink dark:text-green font-medium">Activos</span>
+          <div className="rounded-2xl p-3 sm:p-4 flex flex-col justify-between min-h-[96px] border bg-[#ECFDF5] dark:bg-[#0C1F1F] border-[#A7F3D0] dark:border-[#164745] shadow-xs transition-colors">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center bg-[#D1FAE5] dark:bg-[#112F2E] border border-[#A7F3D0] dark:border-[#1E5752] text-[#059669] dark:text-[#10B981]">
+              <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
-            <span className="text-2xl font-bold text-foreground">{activeProjects}</span>
+            <div className="mt-2.5">
+              <span className="text-[10px] sm:text-[11px] text-[#059669] dark:text-[#10B981] font-medium block truncate">Activos</span>
+              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block mt-0.5 leading-none">{activeProjects}</span>
+            </div>
           </div>
 
           {/* Card 3: Inactivos */}
-          <div className="rounded-xl p-4 flex flex-col justify-between h-[100px] border bg-red/10 dark:bg-red/10 border-red/20 dark:border-red/20 shadow-xs">
-            <div className="flex items-center justify-between">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-red/15 border border-red/25 text-red dark:text-red">
-                <Ban className="w-4 h-4" />
-              </div>
-              <span className="text-xs text-red-ink dark:text-red font-medium">Inactivos</span>
+          <div className="rounded-2xl p-3 sm:p-4 flex flex-col justify-between min-h-[96px] border bg-[#FEF2F2] dark:bg-[#1F1218] border-[#FECACA] dark:border-[#441C25] shadow-xs transition-colors">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl flex items-center justify-center bg-[#FEE2E2] dark:bg-[#2D161F] border border-[#FECACA] dark:border-[#521C27] text-[#DC2626] dark:text-[#EF4444]">
+              <Ban className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </div>
-            <span className="text-2xl font-bold text-foreground">{inactiveProjects}</span>
+            <div className="mt-2.5">
+              <span className="text-[10px] sm:text-[11px] text-[#DC2626] dark:text-[#EF4444] font-medium block truncate">Inactivos</span>
+              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block mt-0.5 leading-none">{inactiveProjects}</span>
+            </div>
           </div>
         </div>
 
-        {/* FILTER & ACTIONS BAR */}
-        <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3">
+        {/* FILTER & ACTIONS BAR (MATCHING SVG: search, filter+refresh, button wrapped in container card on mobile) */}
+        <div className="bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl p-3.5 space-y-3 shadow-xs md:bg-transparent md:border-0 md:p-0 md:space-y-0 md:shadow-none md:flex md:flex-row md:items-center md:gap-3">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input
               placeholder="Buscar por nombre o ID..."
-              className="w-full pl-9 pr-4 h-11 md:h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-violet"
+              className="w-full pl-9 pr-4 h-11 md:h-10 rounded-xl border border-border dark:border-[#1E2335] bg-white dark:bg-[#141829] text-xs md:text-sm text-foreground dark:text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-violet transition-colors"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
@@ -186,13 +184,13 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
             <div className="relative flex-1 md:flex-initial min-w-0">
               <Filter className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
               <select
-                className="w-full appearance-none pl-9 pr-8 h-11 md:h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground focus:outline-none cursor-pointer"
+                className="w-full appearance-none pl-9 pr-8 h-11 md:h-10 rounded-xl border border-border dark:border-[#1E2335] bg-white dark:bg-[#141829] text-xs md:text-sm text-foreground dark:text-white focus:outline-none cursor-pointer font-normal transition-colors"
                 value={estadoFilter}
                 onChange={(e) => setEstadoFilter(e.target.value)}
               >
-                <option value="all">Todos los estados</option>
-                <option value="ACTIVE">Activos</option>
-                <option value="INACTIVE">Inactivos</option>
+                <option value="all" className="bg-white dark:bg-[#141829] text-gray-900 dark:text-gray-100">Todos los estados</option>
+                <option value="ACTIVE" className="bg-white dark:bg-[#141829] text-gray-900 dark:text-gray-100">Activos</option>
+                <option value="INACTIVE" className="bg-white dark:bg-[#141829] text-gray-900 dark:text-gray-100">Inactivos</option>
               </select>
               <ChevronDown className="w-3.5 h-3.5 absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             </div>
@@ -200,9 +198,9 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
             <button
               onClick={fetchProjects}
               title="Actualizar"
-              className="w-11 md:w-auto h-11 md:h-10 px-3 md:px-4 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm font-medium text-foreground hover:bg-slate-50 dark:hover:bg-surface transition-colors flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+              className="w-11 md:w-auto h-11 md:h-10 px-3 md:px-4 rounded-xl border border-border dark:border-[#1E2335] bg-white dark:bg-[#141829] text-xs md:text-sm font-medium text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white hover:bg-muted dark:hover:bg-surface transition-colors flex items-center justify-center gap-2 shrink-0 cursor-pointer"
             >
-              <RefreshCw className={`w-4 h-4 text-muted-foreground ${isLoading ? "animate-spin" : ""}`} />
+              <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
               <span className="hidden md:inline">Actualizar</span>
             </button>
           </div>
@@ -210,7 +208,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           {isAdmin && (
             <button
               onClick={() => router.push("/projects/create")}
-              className="w-full md:w-auto flex items-center justify-center gap-2 px-5 h-11 md:h-10 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-blue via-indigo-600 to-violet hover:opacity-95 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
+              className="w-full md:w-auto flex items-center justify-center gap-2 px-5 h-11 md:h-10 rounded-xl text-xs md:text-sm font-semibold text-white bg-gradient-to-r from-[#5B8CFF] to-[#A855F7] hover:opacity-95 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
             >
               <PlusSquare className="w-4 h-4" />
               <span>Crear proyecto</span>
@@ -218,10 +216,10 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           )}
         </div>
 
-        {/* MOBILE CARDS (Matches dark-gestion proyectos.svg) */}
+        {/* MOBILE CARDS (Matches dark-gestion proyectos.svg & light-gestion proyectos.svg) */}
         <div className="md:hidden space-y-3">
           {paginatedProjects.length === 0 ? (
-            <div className="p-8 text-center text-xs text-muted-foreground bg-[#101322] border border-dashed border-[#1E2335] rounded-2xl">
+            <div className="p-8 text-center text-xs text-muted-foreground bg-card dark:bg-[#101322] border border-dashed border-border dark:border-[#1E2335] rounded-2xl">
               No hay proyectos para mostrar
             </div>
           ) : (
@@ -239,15 +237,15 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
               return (
                 <div
                   key={p.id}
-                  className="bg-[#101322] border border-[#1E2335] rounded-2xl p-4 space-y-3 shadow-sm hover:border-[#2A314A] transition-colors"
+                  className="bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl p-4 space-y-3 shadow-xs dark:shadow-sm hover:border-[#2A314A] transition-colors"
                 >
                   {/* Top Row: Name, ID + Status Badge */}
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-bold text-sm text-white truncate">
+                      <h3 className="font-bold text-sm text-foreground dark:text-white truncate">
                         {p.name}
                       </h3>
-                      <p className="text-xs text-[#8F96AE] font-mono truncate mt-0.5">
+                      <p className="text-xs text-muted-foreground dark:text-[#8F96AE] font-mono truncate mt-0.5">
                         {p.id}
                       </p>
                     </div>
@@ -255,8 +253,8 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                     <span
                       className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold shrink-0 ${
                         p.status === "ACTIVE"
-                          ? "bg-[#10241F] text-[#10B981] border border-[#164D3F]"
-                          : "bg-[#25151C] text-[#EF4444] border border-[#4A1D27]"
+                          ? "bg-[#10B981]/10 text-[#047857] border border-[#10B981]/20 dark:bg-[#10B981]/15 dark:text-[#10B981] dark:border-[#164D3F]"
+                          : "bg-[#EF4444]/10 text-[#DC2626] border border-[#EF4444]/20 dark:bg-[#EF4444]/15 dark:text-[#EF4444] dark:border-[#4A1D27]"
                       }`}
                     >
                       <span
@@ -268,22 +266,29 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                     </span>
                   </div>
 
+                  {/* Description row if available */}
+                  {p.description && (
+                    <p className="text-xs text-muted-foreground dark:text-[#8F96AE] truncate -mt-1">
+                      {p.description}
+                    </p>
+                  )}
+
                   {/* Dates Box Row: INICIO & FIN */}
                   <div className="grid grid-cols-2 gap-2">
-                    <div className="bg-[#141829] border border-[#1E2335] rounded-xl p-2.5">
-                      <span className="text-[10px] font-mono uppercase text-[#8B7BD8] tracking-wider block font-semibold">
+                    <div className="bg-[#F6F7FB] dark:bg-[#141829] border border-border/80 dark:border-[#1E2335] rounded-xl p-2.5">
+                      <span className="text-[10px] font-mono uppercase text-[#6D4FD6] dark:text-[#A855F7] tracking-wider block font-semibold">
                         INICIO
                       </span>
-                      <span className="font-mono text-xs font-bold text-white mt-0.5 block">
+                      <span className="font-mono text-xs font-bold text-foreground dark:text-white mt-0.5 block">
                         {formatDate(p.startDate)}
                       </span>
                     </div>
 
-                    <div className="bg-[#141829] border border-[#1E2335] rounded-xl p-2.5">
-                      <span className="text-[10px] font-mono uppercase text-[#8B7BD8] tracking-wider block font-semibold">
+                    <div className="bg-[#F6F7FB] dark:bg-[#141829] border border-border/80 dark:border-[#1E2335] rounded-xl p-2.5">
+                      <span className="text-[10px] font-mono uppercase text-[#6D4FD6] dark:text-[#A855F7] tracking-wider block font-semibold">
                         FIN
                       </span>
-                      <span className="font-mono text-xs font-bold text-white mt-0.5 block">
+                      <span className="font-mono text-xs font-bold text-foreground dark:text-white mt-0.5 block">
                         {formatDate(p.endDate)}
                       </span>
                     </div>
@@ -292,49 +297,49 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                   {/* Responsable Row */}
                   <div className="flex items-center gap-2.5 pt-1">
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-xs shrink-0"
+                      className="w-8 h-8 rounded-xl flex items-center justify-center text-white font-bold text-xs shadow-xs shrink-0"
                       style={{
-                        background: "linear-gradient(135deg, #5B8CFF 0%, #A855F7 100%)",
+                        background: "linear-gradient(135deg, #5B8CFF 0%, #A855F7 55%, #22C3E6 100%)",
                       }}
                     >
                       {initialLetter}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-bold text-white truncate">
+                      <p className="text-xs font-bold text-foreground dark:text-white truncate">
                         {displayName}
                       </p>
-                      <p className="text-[11px] text-[#8F96AE] truncate">
-                        @{u.username} · Responsable
+                      <p className="text-[11px] text-muted-foreground dark:text-[#8F96AE] truncate">
+                        Responsable
                       </p>
                     </div>
                   </div>
 
                   {/* Actions Row */}
-                  <div className="flex items-center gap-2 pt-1 border-t border-white/[0.04]">
+                  <div className="flex items-center gap-2 pt-2 border-t border-border/80 dark:border-[#1E2335]">
                     <button
                       onClick={() => setSelectedProjectForMembers(p)}
-                      className="flex-1 h-10 px-3.5 rounded-xl border border-[#1E2335] bg-[#141829] hover:bg-[#1C2238] text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      className="flex-1 h-9 px-3 rounded-xl border border-border dark:border-[#1E2335] bg-[#F6F7FB] dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] text-xs font-semibold text-foreground dark:text-white flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
                     >
-                      <Users className="w-3.5 h-3.5 text-[#8F96AE]" />
-                      <span>Miembros</span>
+                      <Users className="w-3.5 h-3.5 text-muted-foreground dark:text-[#8F96AE]" />
+                      <span>Miembros ({p.members?.length || 0})</span>
                     </button>
 
                     {isAdmin && (
                       <>
                         <button
                           onClick={() => router.push(`/projects/edit/${p.id}`)}
-                          className="w-10 h-10 rounded-xl border border-[#1E2335] bg-[#141829] hover:bg-[#1C2238] flex items-center justify-center text-[#8F96AE] hover:text-white transition-colors cursor-pointer shrink-0"
+                          className="w-9 h-9 rounded-xl border border-border dark:border-[#1E2335] bg-[#F6F7FB] dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] flex items-center justify-center text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer shrink-0"
                           title="Editar proyecto"
                         >
-                          <Pencil className="w-4 h-4" />
+                          <Pencil className="w-3.5 h-3.5" />
                         </button>
 
                         <button
                           onClick={() => setProjectToDelete(p)}
-                          className="w-10 h-10 rounded-xl border border-[#4D1C27] bg-[#24131A] hover:bg-[#321721] flex items-center justify-center text-[#EF4444] transition-colors cursor-pointer shrink-0"
+                          className="w-9 h-9 rounded-xl border border-[#EF4444]/20 dark:border-[#4D1C27] bg-[#EF4444]/[0.06] dark:bg-[#24131A] hover:bg-[#EF4444]/15 dark:hover:bg-[#321721] flex items-center justify-center text-[#DC2626] dark:text-[#EF4444] transition-colors cursor-pointer shrink-0"
                           title="Eliminar proyecto"
                         >
-                          <Trash2 className="w-4 h-4" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </>
                     )}
@@ -343,6 +348,33 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
               );
             })
           )}
+        </div>
+
+        {/* MOBILE PAGINATION (MATCHING SVG) */}
+        <div className="md:hidden flex items-center justify-between px-1 pt-1">
+          <span className="text-xs text-muted-foreground font-medium">
+            {totalProjects} {totalProjects === 1 ? "proyecto" : "proyectos"}
+          </span>
+
+          <div className="flex items-center gap-2">
+            <button
+              disabled={page <= 1}
+              onClick={() => setPage((p) => p - 1)}
+              className="h-9 w-9 rounded-xl border border-border bg-card dark:bg-[#141829] dark:border-[#1E2335] text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white flex items-center justify-center disabled:opacity-40 transition-colors cursor-pointer"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <span className="text-xs text-muted-foreground dark:text-[#8F96AE] font-medium px-1">
+              Página {page} de {totalPages}
+            </span>
+            <button
+              disabled={page >= totalPages}
+              onClick={() => setPage((p) => p + 1)}
+              className="h-9 w-9 rounded-xl border border-border bg-card dark:bg-[#141829] dark:border-[#1E2335] text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white flex items-center justify-center disabled:opacity-40 transition-colors cursor-pointer"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* PROJECTS TABLE (DESKTOP) */}
@@ -494,41 +526,40 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
             </div>
           </div>
         </div>
-      </div>
 
         {/* MODAL MIEMBROS */}
         <Dialog
           open={!!selectedProjectForMembers}
           onOpenChange={(open) => !open && setSelectedProjectForMembers(null)}
         >
-          <DialogContent className="sm:max-w-md">
+          <DialogContent className="sm:max-w-md bg-white dark:bg-[#12141F] border border-border dark:border-[#1E2335] text-foreground dark:text-white rounded-2xl">
             <DialogHeader>
-              <DialogTitle>Miembros de {selectedProjectForMembers?.name}</DialogTitle>
+              <DialogTitle className="text-foreground dark:text-white font-bold">Miembros de {selectedProjectForMembers?.name}</DialogTitle>
             </DialogHeader>
-            <div className="py-4">
+            <div className="py-2">
               {selectedProjectForMembers?.members && selectedProjectForMembers.members.length > 0 ? (
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   {selectedProjectForMembers.members.map((m: any, idx: number) => {
                     const u = m.user;
                     return (
                       <div
                         key={idx}
-                        className="flex justify-between items-center p-2.5 bg-muted/50 border rounded-lg"
+                        className="flex justify-between items-center p-3 bg-[#F8FAFC] dark:bg-[#181B2A] border border-border/80 dark:border-[#1E2335] rounded-xl"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-full bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+                          <div className="w-8 h-8 rounded-xl bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
                             {((u?.firstName?.[0] || u?.username?.[0] || "C") as string).toUpperCase()}
                           </div>
                           <div>
-                            <p className="font-semibold text-foreground text-sm">
+                            <p className="font-semibold text-foreground dark:text-white text-sm">
                               {u ? `${u.firstName || ""} ${u.lastName || ""}`.trim() || u.username : "Colaborador"}
                             </p>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-xs text-muted-foreground dark:text-[#8F96AE]">
                               @{u?.username || m.userId}
                             </p>
                           </div>
                         </div>
-                        <span className="text-xs bg-primary/10 text-primary px-2.5 py-0.5 rounded-full font-medium">
+                        <span className="text-xs bg-primary/10 text-primary dark:bg-violet/15 dark:text-[#C084FC] px-2.5 py-0.5 rounded-full font-medium">
                           {m.role || "TEAM_MEMBER"}
                         </span>
                       </div>
@@ -536,7 +567,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                   })}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">
+                <p className="text-sm text-muted-foreground dark:text-[#8F96AE] text-center py-4">
                   No hay miembros asignados a este proyecto.
                 </p>
               )}

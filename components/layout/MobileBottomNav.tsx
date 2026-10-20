@@ -46,7 +46,7 @@ export function MobileBottomNav() {
   ];
 
   return (
-    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0C0E18] border-t border-[#1E2335] px-2 py-1.5 flex items-center justify-around shadow-2xl">
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-[#0C0E18] border-t border-border dark:border-[#1E2335] px-2 py-1.5 flex items-center justify-around shadow-lg dark:shadow-2xl transition-colors">
       {navItems.map((item) => {
         if (item.isAction) {
           const isMoreActive = pathname.startsWith("/feriados") || pathname.startsWith("/notificaciones") || pathname.startsWith("/registrar");
@@ -62,8 +62,8 @@ export function MobileBottomNav() {
                 className={cn(
                   "w-10 h-7 rounded-full flex items-center justify-center transition-all",
                   isMoreActive
-                    ? "bg-[#271D47] text-[#C084FC]"
-                    : "text-[#8F96AE] group-hover:text-white"
+                    ? "bg-[#F3E8FF] text-[#9333EA] dark:bg-[#271D47] dark:text-[#C084FC]"
+                    : "text-muted-foreground dark:text-[#8F96AE] group-hover:text-foreground dark:group-hover:text-white"
                 )}
               >
                 <item.icon className="w-5 h-5" />
@@ -71,7 +71,9 @@ export function MobileBottomNav() {
               <span
                 className={cn(
                   "text-[10.5px] leading-tight mt-0.5",
-                  isMoreActive ? "text-white font-bold" : "text-[#8F96AE] font-normal"
+                  isMoreActive
+                    ? "text-[#9333EA] dark:text-white font-bold"
+                    : "text-muted-foreground dark:text-[#8F96AE] font-normal"
                 )}
               >
                 {item.name}
@@ -96,8 +98,8 @@ export function MobileBottomNav() {
               className={cn(
                 "w-10 h-7 rounded-full flex items-center justify-center transition-all",
                 isActive
-                  ? "bg-[#271D47] text-[#C084FC]"
-                  : "text-[#8F96AE] group-hover:text-white"
+                  ? "bg-[#F3E8FF] text-[#9333EA] dark:bg-[#271D47] dark:text-[#C084FC]"
+                  : "text-muted-foreground dark:text-[#8F96AE] group-hover:text-foreground dark:group-hover:text-white"
               )}
             >
               <item.icon className="w-5 h-5" />
@@ -105,7 +107,9 @@ export function MobileBottomNav() {
             <span
               className={cn(
                 "text-[10.5px] leading-tight mt-0.5",
-                isActive ? "text-white font-bold" : "text-[#8F96AE] font-normal"
+                isActive
+                  ? "text-[#9333EA] dark:text-white font-bold"
+                  : "text-muted-foreground dark:text-[#8F96AE] font-normal"
               )}
             >
               {item.name}
