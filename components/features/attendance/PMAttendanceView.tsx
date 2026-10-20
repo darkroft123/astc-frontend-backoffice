@@ -11,7 +11,7 @@ import {
   Folder,
   RefreshCw,
   Download,
-  Calendar,
+  Calendar as CalendarIcon,
   ChevronLeft,
   ChevronRight,
   ChevronDown,
@@ -22,8 +22,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
 } from "@/components/ui/dialog";
+import { Calendar } from "@/components/ui/calendar";
+import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
 import {
   Select,
   SelectTrigger,
@@ -77,8 +80,20 @@ export function PMAttendanceView() {
     start: "2026-09-01",
     end: "2026-09-03",
   });
-  const [tempStart, setTempStart] = useState("2026-09-01");
-  const [tempEnd, setTempEnd] = useState("2026-09-03");
+  const [calendarFrom, setCalendarFrom] = useState<Date | undefined>(new Date(2026, 8, 1));
+  const [calendarTo, setCalendarTo] = useState<Date | undefined>(new Date(2026, 8, 3));
+
+  const handleOpenCalendar = () => {
+    if (customRange.start) {
+      const [y, m, d] = customRange.start.split("-").map(Number);
+      setCalendarFrom(new Date(y, m - 1, d));
+    }
+    if (customRange.end) {
+      const [y, m, d] = customRange.end.split("-").map(Number);
+      setCalendarTo(new Date(y, m - 1, d));
+    }
+    setIsCalendarOpen(true);
+  };
 
   const dateRangeDisplay = useMemo(() => {
     const formatIso = (iso: string) => {
@@ -325,20 +340,16 @@ export function PMAttendanceView() {
           {/* Date range & Calendar button row */}
           <div className="flex items-center gap-2">
             <div className="flex-1 h-11 px-3 rounded-2xl bg-[#EEF2FC]/70 dark:bg-[#101322] border border-[#D5DEF7] dark:border-[#1E243A] flex items-center justify-center gap-2 text-xs font-mono text-blue dark:text-[#5B82F6]">
-              <Calendar className="w-3.5 h-3.5" />
+              <CalendarIcon className="w-3.5 h-3.5" />
               <span>{dateRangeDisplay}</span>
             </div>
             <button
               type="button"
-              onClick={() => {
-                setTempStart(customRange.start);
-                setTempEnd(customRange.end);
-                setIsCalendarOpen(true);
-              }}
+              onClick={handleOpenCalendar}
               className="w-11 h-11 rounded-2xl bg-white dark:bg-[#151928] border border-slate-200 dark:border-[#232A40] flex items-center justify-center text-muted-foreground dark:text-[#8F98B2] hover:text-foreground dark:hover:text-white shadow-xs transition-colors cursor-pointer shrink-0"
               aria-label="Abrir selector de fecha"
             >
-              <Calendar className="w-4 h-4" />
+              <CalendarIcon className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -367,20 +378,16 @@ export function PMAttendanceView() {
 
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-[#1E243A] bg-white dark:bg-[#101322] text-xs font-mono text-blue dark:text-[#5B82F6] shadow-xs">
-              <Calendar className="w-3.5 h-3.5" />
+              <CalendarIcon className="w-3.5 h-3.5" />
               <span>{dateRangeDisplay}</span>
             </div>
             <button
               type="button"
-              onClick={() => {
-                setTempStart(customRange.start);
-                setTempEnd(customRange.end);
-                setIsCalendarOpen(true);
-              }}
+              onClick={handleOpenCalendar}
               className="w-9 h-9 rounded-xl bg-white dark:bg-[#151928] border border-slate-200 dark:border-[#232A40] flex items-center justify-center text-muted-foreground dark:text-[#8F98B2] hover:text-foreground dark:hover:text-white shadow-xs transition-colors cursor-pointer"
               aria-label="Abrir selector de fecha"
             >
-              <Calendar className="w-4 h-4" />
+              <CalendarIcon className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -807,60 +814,48 @@ export function PMAttendanceView() {
           </div>
         </div>
 
-        {/* CALENDAR DATE RANGE PICKER DIALOG */}
+        {/* CALENDAR DATE RANGE PICKER DIALOG (MATCHING PROJECT MANAGER & TEAM MEMBER) */}
         <Dialog open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-          <DialogContent className="sm:max-w-[420px] rounded-2xl bg-card border-border">
+          <DialogContent className="sm:max-w-md rounded-3xl border border-border bg-card">
             <DialogHeader>
-              <DialogTitle className="text-base font-bold text-foreground">
-                Seleccionar rango de fechas
+              <DialogTitle className="font-sans font-bold text-lg text-foreground">
+                Seleccionar rango personalizado
               </DialogTitle>
-              <DialogDescription className="text-xs text-muted-foreground">
-                Elige las fechas de inicio y fin para auditar asistencias.
+              <DialogDescription className="font-sans text-xs text-muted-foreground">
+                Elige una fecha de inicio y fin para filtrar los datos.
               </DialogDescription>
             </DialogHeader>
 
-            <div className="space-y-4 py-3">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">Fecha inicio</label>
-                  <input
-                    type="date"
-                    value={tempStart}
-                    onChange={(e) => setTempStart(e.target.value)}
-                    className="w-full h-10 px-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-foreground">Fecha fin</label>
-                  <input
-                    type="date"
-                    value={tempEnd}
-                    onChange={(e) => setTempEnd(e.target.value)}
-                    className="w-full h-10 px-3 rounded-xl border border-border bg-background text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <DialogFooter className="flex items-center justify-end gap-2 pt-2">
-              <button
-                type="button"
-                onClick={() => setIsCalendarOpen(false)}
-                className="px-4 py-2 rounded-xl border border-border bg-card text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              >
-                Cancelar
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setCustomRange({ start: tempStart, end: tempEnd });
-                  setIsCalendarOpen(false);
+            <div className="space-y-4">
+              <Calendar
+                mode="range"
+                selected={{
+                  from: calendarFrom,
+                  to: calendarTo,
                 }}
-                className="px-4 py-2 rounded-xl bg-primary text-primary-foreground text-xs font-medium hover:opacity-90 transition-opacity cursor-pointer"
+                onSelect={(range) => {
+                  setCalendarFrom(range?.from);
+                  setCalendarTo(range?.to);
+                }}
+                numberOfMonths={1}
+                className="rounded-2xl border border-border p-3 flex justify-center"
+              />
+
+              <Button
+                onClick={() => {
+                  if (calendarFrom && calendarTo) {
+                    const startStr = format(calendarFrom, "yyyy-MM-dd");
+                    const endStr = format(calendarTo, "yyyy-MM-dd");
+                    setCustomRange({ start: startStr, end: endStr });
+                    setIsCalendarOpen(false);
+                  }
+                }}
+                disabled={!calendarFrom || !calendarTo}
+                className="w-full bg-brand-gradient hover:opacity-95 text-primary-foreground rounded-2xl h-11 font-semibold text-xs shadow-md cursor-pointer"
               >
-                Aplicar filtro
-              </button>
-            </DialogFooter>
+                Aplicar rango
+              </Button>
+            </div>
           </DialogContent>
         </Dialog>
       </div>

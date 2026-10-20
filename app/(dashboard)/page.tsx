@@ -84,8 +84,12 @@ export default function AdminDashboardPage() {
 
   const totalProjects = projectsList.length > 0 ? Math.min(projectsList.length, 3) : 3;
 
-  const fullName = user?.username || "admin";
-  const email = user?.email || "admin@astc.com";
+  const isUserAdmin =
+    user?.role === "ADMIN" ||
+    user?.roleCode === "ADMIN" ||
+    user?.username?.toLowerCase().startsWith("admin");
+  const fullName = isUserAdmin ? "admin" : (user?.username || "admin");
+  const email = isUserAdmin && (!user?.email || user.email.includes("astc")) ? "admin@astc.com" : (user?.email || "admin@astc.com");
 
   // Donut chart calculations: Radius = 52, Circumference = 2 * PI * 52 ≈ 326.726
   const R = 52;
@@ -103,7 +107,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="relative min-h-screen bg-transparent pb-12">
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6 z-10">
+      <div className="relative max-w-6xl mx-auto px-0 md:px-6 py-2 md:py-6 space-y-4 md:space-y-6 z-10">
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -136,7 +140,7 @@ export default function AdminDashboardPage() {
                   <span className="font-bold text-base text-foreground dark:text-white truncate">
                     {fullName}
                   </span>
-                  <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7d97ff] dark:border-violet/20 text-[10.5px] font-mono font-bold px-2.5 py-0.5 rounded-full">
+                  <span className="bg-[#5B8CFF]/15 text-[#3b6ed8] border border-[#5B8CFF]/30 dark:bg-[#141C38] dark:border-[#23315C] dark:text-[#A5C0FF] text-[10.5px] font-mono font-bold px-3 py-0.5 rounded-full tracking-wider">
                     ADMIN
                   </span>
                 </div>
@@ -169,7 +173,7 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* CARDS 2-5: RESPONSIVE METRIC CARDS (2-COL ON MOBILE, 4-COL ON TABLET/DESKTOP) */}
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:flex xl:flex-1 gap-3.5 w-full">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 xl:flex xl:flex-1 gap-3 md:gap-3.5 w-full">
             {/* CARD 2: JEFES DE PROYECTO */}
             <div
               onClick={() => router.push("/users")}
