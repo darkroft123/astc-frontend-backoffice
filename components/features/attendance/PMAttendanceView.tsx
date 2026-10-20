@@ -15,6 +15,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  Check,
+  X,
 } from "lucide-react";
 import {
   Dialog,
@@ -80,19 +82,41 @@ export function PMAttendanceView() {
     start: "2026-09-01",
     end: "2026-09-03",
   });
-  const [calendarFrom, setCalendarFrom] = useState<Date | undefined>(new Date(2026, 8, 1));
-  const [calendarTo, setCalendarTo] = useState<Date | undefined>(new Date(2026, 8, 3));
+  const [tempStartDate, setTempStartDate] = useState("2026-09-01");
+  const [tempEndDate, setTempEndDate] = useState("2026-09-03");
 
   const handleOpenCalendar = () => {
-    if (customRange.start) {
-      const [y, m, d] = customRange.start.split("-").map(Number);
-      setCalendarFrom(new Date(y, m - 1, d));
-    }
-    if (customRange.end) {
-      const [y, m, d] = customRange.end.split("-").map(Number);
-      setCalendarTo(new Date(y, m - 1, d));
-    }
+    setTempStartDate(customRange.start);
+    setTempEndDate(customRange.end);
     setIsCalendarOpen(true);
+  };
+
+  const handlePreset = (daysOrType: number | "month") => {
+    const today = new Date();
+    const formatIso = (d: Date) => {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    };
+
+    if (daysOrType === "month") {
+      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+      setTempStartDate(formatIso(firstDay));
+      setTempEndDate(formatIso(today));
+    } else {
+      const past = new Date(today);
+      past.setDate(today.getDate() - daysOrType);
+      setTempStartDate(formatIso(past));
+      setTempEndDate(formatIso(today));
+    }
+  };
+
+  const handleApplyCustomRange = () => {
+    if (tempStartDate && tempEndDate) {
+      setCustomRange({ start: tempStartDate, end: tempEndDate });
+      setIsCalendarOpen(false);
+    }
   };
 
   const dateRangeDisplay = useMemo(() => {
@@ -270,7 +294,7 @@ export function PMAttendanceView() {
 
   return (
     <div className="min-h-screen bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 py-6 md:px-8 space-y-6">
+      <div className="max-w-7xl mx-auto px-0 md:px-8 py-2 md:py-6 space-y-6">
         {/* HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -814,47 +838,119 @@ export function PMAttendanceView() {
           </div>
         </div>
 
-        {/* CALENDAR DATE RANGE PICKER DIALOG (MATCHING PROJECT MANAGER & TEAM MEMBER) */}
+        {/* CALENDAR DATE RANGE PICKER DIALOG (EXACT FIGMA / MEDIA_1792521842662 DESIGN) */}
         <Dialog open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
-          <DialogContent className="sm:max-w-md rounded-3xl border border-border bg-card">
-            <DialogHeader>
-              <DialogTitle className="font-sans font-bold text-lg text-foreground">
-                Seleccionar rango personalizado
-              </DialogTitle>
-              <DialogDescription className="font-sans text-xs text-muted-foreground">
-                Elige una fecha de inicio y fin para filtrar los datos.
-              </DialogDescription>
-            </DialogHeader>
-
-            <div className="space-y-4">
-              <Calendar
-                mode="range"
-                selected={{
-                  from: calendarFrom,
-                  to: calendarTo,
-                }}
-                onSelect={(range) => {
-                  setCalendarFrom(range?.from);
-                  setCalendarTo(range?.to);
-                }}
-                numberOfMonths={1}
-                className="rounded-2xl border border-border p-3 flex justify-center"
-              />
-
-              <Button
-                onClick={() => {
-                  if (calendarFrom && calendarTo) {
-                    const startStr = format(calendarFrom, "yyyy-MM-dd");
-                    const endStr = format(calendarTo, "yyyy-MM-dd");
-                    setCustomRange({ start: startStr, end: endStr });
-                    setIsCalendarOpen(false);
-                  }
-                }}
-                disabled={!calendarFrom || !calendarTo}
-                className="w-full bg-brand-gradient hover:opacity-95 text-primary-foreground rounded-2xl h-11 font-semibold text-xs shadow-md cursor-pointer"
+          <DialogContent className="sm:max-w-md rounded-3xl border border-slate-200 dark:border-[#22283A] bg-white dark:bg-[#131622] p-5 sm:p-6 shadow-2xl [&>button]:hidden">
+            {/* Header */}
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-[#201A36] dark:bg-[#201A36] border border-[#3E2D68] flex items-center justify-center shrink-0 shadow-sm">
+                  <CalendarIcon className="w-5 h-5 text-[#C084FC]" />
+                </div>
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-foreground dark:text-white tracking-tight">
+                    Rango personalizado
+                  </h2>
+                  <p className="text-xs text-muted-foreground dark:text-[#8F98B2] mt-0.5">
+                    Selecciona fechas para filtrar
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsCalendarOpen(false)}
+                className="text-muted-foreground dark:text-[#8F98B2] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer p-1 rounded-lg"
+                aria-label="Cerrar"
               >
-                Aplicar rango
-              </Button>
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Inputs */}
+            <div className="mt-5 space-y-3.5">
+              <div>
+                <label className="block text-xs font-semibold text-foreground dark:text-white mb-1.5">
+                  Desde
+                </label>
+                <input
+                  type="date"
+                  value={tempStartDate}
+                  onChange={(e) => setTempStartDate(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-[#0D0F1A] border border-slate-200 dark:border-[#22283A] text-sm text-foreground dark:text-white font-mono focus:outline-none focus:border-purple-500/50 [color-scheme:dark]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-foreground dark:text-white mb-1.5">
+                  Hasta
+                </label>
+                <input
+                  type="date"
+                  value={tempEndDate}
+                  onChange={(e) => setTempEndDate(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-[#0D0F1A] border border-slate-200 dark:border-[#22283A] text-sm text-foreground dark:text-white font-mono focus:outline-none focus:border-purple-500/50 [color-scheme:dark]"
+                />
+              </div>
+
+              {/* Accesos rápidos */}
+              <div>
+                <p className="text-[10.5px] font-mono uppercase tracking-[0.05em] text-muted-foreground dark:text-[#8F98B2] font-semibold mt-4 mb-2">
+                  ACCESOS RÁPIDOS
+                </p>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => handlePreset(7)}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 dark:bg-[#141828] border border-slate-200 dark:border-[#232A40] text-foreground dark:text-[#C8D1E6] hover:bg-slate-200 dark:hover:bg-[#1E243A] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer"
+                  >
+                    7 días
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handlePreset(15)}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 dark:bg-[#141828] border border-slate-200 dark:border-[#232A40] text-foreground dark:text-[#C8D1E6] hover:bg-slate-200 dark:hover:bg-[#1E243A] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer"
+                  >
+                    15 días
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handlePreset(30)}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 dark:bg-[#141828] border border-slate-200 dark:border-[#232A40] text-foreground dark:text-[#C8D1E6] hover:bg-slate-200 dark:hover:bg-[#1E243A] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer"
+                  >
+                    30 días
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handlePreset("month")}
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-100 dark:bg-[#141828] border border-slate-200 dark:border-[#232A40] text-foreground dark:text-[#C8D1E6] hover:bg-slate-200 dark:hover:bg-[#1E243A] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer"
+                  >
+                    Este mes
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-slate-200 dark:border-[#1E243A] my-4" />
+
+            {/* Footer buttons */}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setIsCalendarOpen(false)}
+                className="px-5 h-11 rounded-2xl bg-slate-100 dark:bg-[#141828] border border-slate-200 dark:border-[#232A40] text-xs font-semibold text-foreground dark:text-[#C8D1E6] hover:bg-slate-200 dark:hover:bg-[#1E243A] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleApplyCustomRange}
+                disabled={!tempStartDate || !tempEndDate}
+                className="flex-1 h-11 rounded-2xl bg-brand-gradient hover:opacity-95 disabled:opacity-50 text-white text-xs font-bold shadow-md flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+              >
+                <Check className="w-4 h-4 text-white" />
+                <span>Aplicar rango</span>
+              </button>
             </div>
           </DialogContent>
         </Dialog>

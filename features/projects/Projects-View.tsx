@@ -120,7 +120,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
 
   return (
     <div className="min-h-screen bg-transparent">
-      <div className="max-w-7xl mx-auto px-4 py-6 md:px-8 space-y-6">
+      <div className="max-w-7xl mx-auto px-0 md:px-8 py-2 md:py-6 space-y-6">
         {/* HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">

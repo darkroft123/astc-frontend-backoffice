@@ -180,7 +180,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
 
   return (
     <div className="relative min-h-screen bg-transparent overflow-hidden pb-12">
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-8 py-6 space-y-6 z-10">
+      <div className="relative max-w-6xl mx-auto px-0 md:px-8 py-2 md:py-6 space-y-6 z-10">
 
         {/* MOBILE TOP BAR (MATCHING SVG: <- Proyectos + Notification Bell) */}
         <div className="flex md:hidden items-center justify-between pb-1">
