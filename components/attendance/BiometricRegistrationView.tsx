@@ -343,11 +343,6 @@ export default function BiometricRegistrationView({
           <div className="flex items-center gap-2 bg-[#0B1B2B] dark:bg-[#071927] border border-cyan-500/40 text-cyan-500 dark:text-[#00E5FF] px-4 py-2 rounded-xl font-mono text-sm font-semibold tracking-wide shadow-inner">
             <span>{time || "10:51:42 p. m."}</span>
           </div>
-
-          {/* Notification Bell with red 9+ badge (desktop only, MobileHeader provides the bell on mobile) */}
-          <div className="hidden md:flex">
-            <NotificationBell />
-          </div>
         </div>
       </div>
 

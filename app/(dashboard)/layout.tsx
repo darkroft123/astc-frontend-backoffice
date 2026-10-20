@@ -35,6 +35,13 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           <div className="absolute top-[-300px] right-0 w-[600px] h-[450px] bg-violet/10 dark:bg-violet/20 blur-[140px] rounded-full pointer-events-none hidden md:dark:block z-0" />
           <div className="absolute top-[-130px] right-[200px] w-[350px] h-[250px] bg-indigo-500/10 dark:bg-indigo-500/15 blur-[100px] rounded-full pointer-events-none hidden md:dark:block z-0" />
 
+          {/* Desktop Notification Bell */}
+          {!isCreateOrEdit && (
+            <div className="hidden md:flex absolute top-6 right-6 lg:top-8 lg:right-8 z-40 items-center gap-3">
+              <NotificationBell />
+            </div>
+          )}
+
           <main
             className={cn(
               "flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 bg-transparent relative z-10",
