@@ -63,7 +63,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} ${inter.variable} ${jetbrainsMono.variable} font-sans antialiased overflow-x-hidden`}>
+      <body className={`${inter.className} ${inter.variable} ${jetbrainsMono.variable} font-sans antialiased w-full min-h-screen`}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
           <AuthProvider>
             {children}

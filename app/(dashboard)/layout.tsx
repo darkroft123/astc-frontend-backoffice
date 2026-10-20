@@ -27,7 +27,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
         <MobileSidebar>
           <SidebarNav onNavigate={() => {}} />
         </MobileSidebar>
-        <div className="flex-1 min-w-0 md:ml-[268px] flex flex-col min-h-screen relative overflow-x-hidden bg-background">
+        <div className="flex-1 min-w-0 md:ml-[268px] flex flex-col min-h-screen relative bg-background">
           {/* Mobile Top Header (Hidden on creation/edit screens) */}
           {!isCreateOrEdit && <MobileHeader />}
 
@@ -44,7 +44,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
           <main
             className={cn(
-              "flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 bg-transparent relative z-10",
+              "flex-1 p-4 md:p-6 bg-transparent relative z-10",
               isCreateOrEdit ? "pb-6" : "pb-24 md:pb-6"
             )}
           >
