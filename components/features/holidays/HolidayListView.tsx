@@ -212,7 +212,7 @@ export default function HolidayListView() {
 
   return (
     <div className="relative min-h-screen bg-transparent pb-12">
-      <div className="max-w-6xl mx-auto px-0 md:px-8 py-2 md:py-6 space-y-6 relative z-10">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 space-y-6 relative z-10">
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -231,95 +231,104 @@ export default function HolidayListView() {
           </p>
         </div>
 
-        {/* 2. KPI CARDS (MATCHING SVG: Vertical stack icon -> label -> number, prevents overflow) */}
-        <div className="grid grid-cols-3 gap-2.5 sm:gap-4">
+        {/* 2. KPI CARDS */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 md:gap-5">
           {/* Card 1: Total feriados */}
-          <div className="bg-[#F5F3FF] dark:bg-[#131428] border border-[#DDD6FE] dark:border-[#322557] rounded-2xl p-3 sm:p-4 flex flex-col justify-between shadow-xs min-h-[96px] transition-colors">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#EDE9FE] dark:bg-[#271E42] border border-[#DDD6FE] dark:border-[#4C3382] text-[#7C3AED] dark:text-[#A855F7] flex items-center justify-center shrink-0">
-              <CalendarIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </div>
-            <div className="mt-2.5">
-              <span className="text-[10px] sm:text-[11px] text-[#7C3AED] dark:text-[#A0A6BE] font-medium block truncate">
+          <div className="bg-[#F5F3FF] dark:bg-[#131428] border border-[#DDD6FE] dark:border-[#322557] rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-xs min-h-[96px] sm:min-h-[104px] transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="w-8 h-8 rounded-xl bg-[#EDE9FE] dark:bg-[#271E42] border border-[#DDD6FE] dark:border-[#4C3382] text-[#7C3AED] dark:text-[#A855F7] flex items-center justify-center shrink-0">
+                <CalendarIcon className="w-4 h-4" />
+              </div>
+              <span className="text-xs text-[#7C3AED] dark:text-[#A0A6BE] font-medium truncate">
                 Total feriados
               </span>
-              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block mt-0.5 leading-none">
+            </div>
+            <div className="mt-2.5 sm:mt-3">
+              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block leading-none">
                 {totalHolidays > 0 ? totalHolidays : 10}
               </span>
             </div>
           </div>
 
           {/* Card 2: Colecciones */}
-          <div className="bg-[#ECFDF5] dark:bg-[#0F1E24] border border-[#A7F3D0] dark:border-[#1B4543] rounded-2xl p-3 sm:p-4 flex flex-col justify-between shadow-xs min-h-[96px] transition-colors">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#D1FAE5] dark:bg-[#112F2E] border border-[#A7F3D0] dark:border-[#1E5752] text-[#059669] dark:text-[#10B981] flex items-center justify-center shrink-0">
-              <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </div>
-            <div className="mt-2.5">
-              <span className="text-[10px] sm:text-[11px] text-[#059669] dark:text-[#A0A6BE] font-medium block truncate">
+          <div className="bg-[#ECFDF5] dark:bg-[#0F1E24] border border-[#A7F3D0] dark:border-[#1B4543] rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-xs min-h-[96px] sm:min-h-[104px] transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="w-8 h-8 rounded-xl bg-[#D1FAE5] dark:bg-[#112F2E] border border-[#A7F3D0] dark:border-[#1E5752] text-[#059669] dark:text-[#10B981] flex items-center justify-center shrink-0">
+                <Layers className="w-4 h-4" />
+              </div>
+              <span className="text-xs text-[#059669] dark:text-[#A0A6BE] font-medium truncate">
                 Colecciones
               </span>
-              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block mt-0.5 leading-none">
+            </div>
+            <div className="mt-2.5 sm:mt-3">
+              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block leading-none">
                 {collections.length > 0 ? collections.length : 3}
               </span>
             </div>
           </div>
 
           {/* Card 3: Días próximos */}
-          <div className="bg-[#FFFBEB] dark:bg-[#1E1C18] border border-[#FDE68A] dark:border-[#483A1C] rounded-2xl p-3 sm:p-4 flex flex-col justify-between shadow-xs min-h-[96px] transition-colors">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#FEF3C7] dark:bg-[#2D2415] border border-[#FDE68A] dark:border-[#59421A] text-[#D97706] dark:text-[#F59E0B] flex items-center justify-center shrink-0">
-              <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-            </div>
-            <div className="mt-2.5">
-              <span className="text-[10px] sm:text-[11px] text-[#D97706] dark:text-[#A0A6BE] font-medium block truncate">
+          <div className="bg-[#FFFBEB] dark:bg-[#1E1C18] border border-[#FDE68A] dark:border-[#483A1C] rounded-2xl p-4 sm:p-5 flex flex-col justify-between shadow-xs min-h-[96px] sm:min-h-[104px] transition-colors">
+            <div className="flex items-center justify-between">
+              <div className="w-8 h-8 rounded-xl bg-[#FEF3C7] dark:bg-[#2D2415] border border-[#FDE68A] dark:border-[#59421A] text-[#D97706] dark:text-[#F59E0B] flex items-center justify-center shrink-0">
+                <Sun className="w-4 h-4" />
+              </div>
+              <span className="text-xs text-[#D97706] dark:text-[#A0A6BE] font-medium truncate">
                 Días próximos
               </span>
-              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block mt-0.5 leading-none">
+            </div>
+            <div className="mt-2.5 sm:mt-3">
+              <span className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white block leading-none">
                 7
               </span>
             </div>
           </div>
         </div>
 
-        {/* 3. SEARCH & REFRESH BAR */}
-        <div>
-          <label className="text-xs text-muted-foreground dark:text-[#8F96AE] mb-1.5 block font-medium">
-            Buscar colección o fecha
-          </label>
-          <div className="flex items-center gap-2">
-            <div className="relative flex-1">
-              <Search className="w-4 h-4 text-muted-foreground dark:text-[#8F96AE] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-              <input
-                type="text"
-                placeholder="Nombre, feriado o mes (ej. dic)..."
-                className="w-full h-11 pl-10 pr-4 text-xs rounded-xl bg-card dark:bg-[#121626] border border-border dark:border-[#23293F] text-foreground dark:text-white placeholder:text-muted-foreground dark:placeholder-[#606680] focus:outline-none focus:ring-1 focus:ring-purple-500/40"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+        {/* 3. SEARCH & ACTIONS BAR */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div className="w-full md:max-w-md">
+            <label className="text-xs text-muted-foreground dark:text-[#8F96AE] mb-1.5 block font-medium">
+              Buscar colección o fecha
+            </label>
+            <div className="flex items-center gap-2">
+              <div className="relative flex-1">
+                <Search className="w-4 h-4 text-muted-foreground dark:text-[#8F96AE] absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <input
+                  type="text"
+                  placeholder="Nombre, feriado o mes (ej. dic)..."
+                  className="w-full h-11 pl-10 pr-4 text-xs rounded-xl bg-card dark:bg-[#121626] border border-border dark:border-[#23293F] text-foreground dark:text-white placeholder:text-muted-foreground dark:placeholder-[#606680] focus:outline-none focus:ring-1 focus:ring-purple-500/40"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <button
+                onClick={fetchCollections}
+                title="Actualizar"
+                className="w-11 h-11 rounded-xl border border-border dark:border-[#23293F] bg-card dark:bg-[#121626] flex items-center justify-center text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer shrink-0"
+              >
+                <RotateCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+              </button>
             </div>
-            <button
-              onClick={fetchCollections}
-              title="Actualizar"
-              className="w-11 h-11 rounded-xl border border-border dark:border-[#23293F] bg-card dark:bg-[#121626] flex items-center justify-center text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer shrink-0"
-            >
-              <RotateCcw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
-            </button>
           </div>
-        </div>
 
-        {/* 4. LIST HEADER & ACTIONS */}
-        <div className="space-y-3 pt-1">
-          <h2 className="text-sm font-bold text-foreground dark:text-white">
-            Listado de colecciones
-          </h2>
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 shrink-0">
             <HolidayImporter onImport={handleImportHolidays} year={new Date().getFullYear()} />
             <button
               onClick={() => setIsFormOpen(true)}
-              className="flex-1 sm:flex-initial h-11 px-4 rounded-xl text-xs font-semibold bg-gradient-to-r from-[#5B8CFF] to-[#A855F7] hover:brightness-110 active:scale-[0.98] text-white flex items-center justify-center gap-1.5 shadow-md shadow-purple-500/20 transition-all cursor-pointer"
+              className="flex-1 sm:flex-initial h-11 px-5 rounded-xl text-xs sm:text-sm font-semibold bg-gradient-to-r from-[#5B8CFF] to-[#A855F7] hover:brightness-110 active:scale-[0.98] text-white flex items-center justify-center gap-2 shadow-md shadow-purple-500/20 transition-all cursor-pointer shrink-0"
             >
               <Plus className="w-4 h-4 text-white" />
               <span>Nueva colección</span>
             </button>
           </div>
+        </div>
+
+        {/* 4. LIST OF COLLECTIONS HEADER */}
+        <div className="pt-2">
+          <h2 className="text-base font-bold text-foreground dark:text-white">
+            Listado de colecciones
+          </h2>
         </div>
 
         {/* 5. LIST OF COLLECTIONS */}
@@ -338,8 +347,9 @@ export default function HolidayListView() {
                   className="p-4 cursor-pointer group"
                   onClick={() => toggleExpand(c.id)}
                 >
-                  {/* Top Row: Icon + Name/Subtitle + Chevron */}
+                  {/* Top Row / Desktop Single Row */}
                   <div className="flex items-center justify-between gap-3">
+                    {/* Left Info */}
                     <div className="flex items-center gap-3.5 min-w-0 flex-1">
                       <div className="w-10 h-10 rounded-xl bg-[#F5F3FF] dark:bg-[#1E1736] border border-[#DDD6FE] dark:border-[#3C2863] text-[#7C3AED] dark:text-[#A855F7] flex items-center justify-center shrink-0">
                         <Layers className="w-5 h-5" />
@@ -358,7 +368,45 @@ export default function HolidayListView() {
                       </div>
                     </div>
 
-                    <div className="text-muted-foreground dark:text-[#8F96AE] group-hover:translate-x-0.5 transition-transform shrink-0">
+                    {/* Desktop Right Actions (hidden on mobile) */}
+                    <div className="hidden md:flex items-center gap-3 shrink-0">
+                      <span className="font-mono text-[9.5px] font-bold px-2.5 py-1 rounded-lg bg-[#FEF3C7] dark:bg-[#282114] text-[#D97706] dark:text-[#EAB308] border border-[#FDE68A] dark:border-[#483718] uppercase tracking-wider">
+                        GLOBAL
+                      </span>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setPendingAssignment(c.id);
+                        }}
+                        className="h-9 px-3.5 rounded-xl border border-border dark:border-[#22283D] bg-muted/60 dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] text-xs font-medium text-foreground dark:text-white flex items-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Folder className="w-3.5 h-3.5 text-muted-foreground dark:text-[#8F96AE]" />
+                        <span>{assignedCollectionId === c.id ? "Asignado" : "Asignar"}</span>
+                      </button>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(c.id);
+                        }}
+                        title="Eliminar colección"
+                        className="w-9 h-9 rounded-xl border border-red/20 dark:border-[#4D1C27] bg-red/10 dark:bg-[#24131A] hover:bg-red/20 dark:hover:bg-[#321721] flex items-center justify-center text-red dark:text-[#EF4444] transition-colors cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+
+                      <div className="text-muted-foreground dark:text-[#8F96AE] group-hover:translate-x-0.5 transition-transform ml-1">
+                        {expandedId === c.id ? (
+                          <ChevronDown className="w-4 h-4" />
+                        ) : (
+                          <ChevronRight className="w-4 h-4" />
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Mobile Chevron (hidden on desktop) */}
+                    <div className="md:hidden text-muted-foreground dark:text-[#8F96AE] group-hover:translate-x-0.5 transition-transform shrink-0">
                       {expandedId === c.id ? (
                         <ChevronDown className="w-4 h-4" />
                       ) : (
@@ -367,8 +415,8 @@ export default function HolidayListView() {
                     </div>
                   </div>
 
-                  {/* Bottom Row: GLOBAL Badge + Asignar button + Delete button */}
-                  <div className="flex items-center justify-between pt-3 mt-3 border-t border-border/60 dark:border-white/[0.04]">
+                  {/* Mobile Bottom Row (hidden on desktop) */}
+                  <div className="md:hidden flex items-center justify-between pt-3 mt-3 border-t border-border/60 dark:border-white/[0.04]">
                     <span className="font-mono text-[9.5px] font-bold px-2.5 py-1 rounded-lg bg-[#FEF3C7] dark:bg-[#282114] text-[#D97706] dark:text-[#EAB308] border border-[#FDE68A] dark:border-[#483718] uppercase tracking-wider">
                       GLOBAL
                     </span>
