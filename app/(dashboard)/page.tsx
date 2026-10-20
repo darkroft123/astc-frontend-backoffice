@@ -385,71 +385,71 @@ export default function AdminDashboardPage() {
               </span>
             </div>
 
-            {/* Custom Bar Chart Canvas Matching Figma SVG & Image 1 */}
-            <div className="pt-8 pb-2">
+            {/* Custom Bar Chart Canvas Matching Figma SVG */}
+            <div className="pt-6 pb-2">
               {/* Bars Row */}
-              <div className="grid grid-cols-4 gap-3 sm:gap-6 items-end w-full h-[140px] px-2 sm:px-4">
+              <div className="grid grid-cols-4 items-end w-full h-[152px]">
                 {/* BAR 1: Usuarios (5) */}
                 <div className="flex flex-col items-center justify-end h-full">
-                  <span className="text-xs sm:text-sm font-bold text-foreground dark:text-white font-mono mb-2">
+                  <span className="text-xs font-bold text-foreground dark:text-white font-mono mb-1.5">
                     {totalUsers}
                   </span>
                   <div
-                    style={{ height: `${Math.max(16, Math.round((totalUsers / 6) * 115))}px` }}
-                    className="w-full max-w-[44px] sm:max-w-[48px] bg-[#4F80FF] rounded-t-2xl sm:rounded-t-2xl transition-all shadow-sm"
+                    style={{ height: `${Math.max(26, Math.round((totalUsers / 5) * 130))}px` }}
+                    className="w-[52px] sm:w-[56px] max-w-[85%] bg-[#5B8CFF] rounded-t-[10px] rounded-b-[4px] transition-all shadow-sm"
                   />
                 </div>
 
                 {/* BAR 2: Trabajadores (3) */}
                 <div className="flex flex-col items-center justify-end h-full">
-                  <span className="text-xs sm:text-sm font-bold text-foreground dark:text-white font-mono mb-2">
+                  <span className="text-xs font-bold text-foreground dark:text-white font-mono mb-1.5">
                     {teamMembersCount}
                   </span>
                   <div
-                    style={{ height: `${Math.max(16, Math.round((teamMembersCount / 6) * 115))}px` }}
-                    className="w-full max-w-[44px] sm:max-w-[48px] bg-[#22C55E] rounded-t-2xl sm:rounded-t-2xl transition-all shadow-sm"
+                    style={{ height: `${Math.max(26, Math.round((teamMembersCount / 5) * 130))}px` }}
+                    className="w-[52px] sm:w-[56px] max-w-[85%] bg-[#34D399] rounded-t-[10px] rounded-b-[4px] transition-all shadow-sm"
                   />
                 </div>
 
                 {/* BAR 3: Jefes de proyecto (1) */}
                 <div className="flex flex-col items-center justify-end h-full">
-                  <span className="text-xs sm:text-sm font-bold text-foreground dark:text-white font-mono mb-2">
+                  <span className="text-xs font-bold text-foreground dark:text-white font-mono mb-1.5">
                     {pmsCount}
                   </span>
                   <div
-                    style={{ height: `${Math.max(16, Math.round((pmsCount / 6) * 115))}px` }}
-                    className="w-full max-w-[44px] sm:max-w-[48px] bg-[#FBBF24] rounded-t-xl rounded-b-sm sm:rounded-t-xl transition-all shadow-sm"
+                    style={{ height: `${Math.max(26, Math.round((pmsCount / 5) * 130))}px` }}
+                    className="w-[52px] sm:w-[56px] max-w-[85%] bg-[#FBBF24] rounded-t-[10px] rounded-b-[4px] transition-all shadow-sm"
                   />
                 </div>
 
                 {/* BAR 4: Proyectos (3) */}
                 <div className="flex flex-col items-center justify-end h-full">
-                  <span className="text-xs sm:text-sm font-bold text-foreground dark:text-white font-mono mb-2">
+                  <span className="text-xs font-bold text-foreground dark:text-white font-mono mb-1.5">
                     {totalProjects}
                   </span>
                   <div
-                    style={{ height: `${Math.max(16, Math.round((totalProjects / 6) * 115))}px` }}
-                    className="w-full max-w-[44px] sm:max-w-[48px] bg-[#A855F7] rounded-t-2xl sm:rounded-t-2xl transition-all shadow-sm"
+                    style={{ height: `${Math.max(26, Math.round((totalProjects / 5) * 130))}px` }}
+                    className="w-[52px] sm:w-[56px] max-w-[85%] bg-[#A855F7] rounded-t-[10px] rounded-b-[4px] transition-all shadow-sm"
                   />
                 </div>
               </div>
 
               {/* Baseline */}
-              <div className="w-full border-b border-border/80 dark:border-[#1E2338]" />
+              <div className="w-full border-b border-border/80 dark:border-white/10" />
 
               {/* Labels Row */}
-              <div className="grid grid-cols-4 gap-3 sm:gap-6 w-full pt-3 px-2 sm:px-4">
-                <span className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center block">
+              <div className="grid grid-cols-4 w-full pt-2.5">
+                <span className="text-[10px] sm:text-xs text-muted-foreground dark:text-[#8F96AE] text-center block truncate px-0.5">
                   Usuarios
                 </span>
-                <span className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center block">
+                <span className="text-[10px] sm:text-xs text-muted-foreground dark:text-[#8F96AE] text-center block px-0.5">
                   Trabajadores
                 </span>
-                <div className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center flex flex-col items-center justify-start leading-tight">
+                <div className="text-[10px] sm:text-xs text-muted-foreground dark:text-[#8F96AE] text-center flex flex-col items-center justify-start leading-[13px] px-0.5">
                   <span>Jefes de</span>
                   <span>proyecto</span>
                 </div>
-                <span className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center block">
+                <span className="text-[10px] sm:text-xs text-muted-foreground dark:text-[#8F96AE] text-center block truncate px-0.5">
                   Proyectos
                 </span>
               </div>
