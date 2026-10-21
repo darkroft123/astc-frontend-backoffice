@@ -563,7 +563,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                           </div>
                           <div>
                             <p className="font-semibold text-foreground dark:text-white text-sm">
-                              {u ? `${u.firstName || ""} ${u.lastName || ""}`.trim() || u.username : "Colaborador"}
+                              {u ? `${u.firstName || ""} ${u.lastName || ""}`.trim() || u.username : "Trabajador"}
                             </p>
                             <p className="text-xs text-muted-foreground dark:text-[#8F96AE]">
                               @{u?.username || m.userId}

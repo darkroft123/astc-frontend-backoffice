@@ -18,7 +18,7 @@ export function RecentActivityCard({ users = [] }: { users?: any[] }) {
     const user = users[index];
     if (user) {
       const initials = `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}` || "U";
-      const name = `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.username || "Colaborador";
+      const name = `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.username || "Trabajador";
       const action = index === 0 ? "Subió justificación de ausencia" : index === 1 ? "Registró asistencia" : "Envió justificante médico";
       const time = index === 0 ? "1h" : index === 1 ? "3h" : "5h";
       const color = index === 0 ? "blue" : index === 1 ? "emerald" : "amber";

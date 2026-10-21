@@ -270,7 +270,7 @@ export default function AdminDashboardPage() {
                   Estructura de la organización
                 </h2>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Consolidado de roles, colaboradores y proyectos
+                  Consolidado de roles, trabajadores y proyectos
                 </p>
               </div>
               <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 text-xs px-2.5 py-0.5 rounded-full font-medium">

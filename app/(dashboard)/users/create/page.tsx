@@ -46,7 +46,7 @@ const ROLE_INFO = [
     id: ROLES.TEAM_MEMBER,
     title: "Team member",
     description:
-      "Colaborador estándar. Marca asistencia con biometría facial y GPS, y envía justificaciones.",
+      "Trabajador estándar. Marca asistencia con biometría facial y GPS, y envía justificaciones.",
     icon: UserIcon,
   },
   {
@@ -155,7 +155,7 @@ const COUNTRIES: Record<string, CountryConfig> = {
     placeholder: "Número telefónico",
     timezone: "UTC",
     utcOffset: "UTC",
-    description: "Configuración para colaboradores en otros países.",
+    description: "Configuración para trabajadores en otros países.",
   },
 };
 
@@ -445,7 +445,7 @@ export default function CreateUserPage() {
               <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
                 {isEditMode
                   ? "Modifica los datos del usuario, país, rol y credenciales de acceso."
-                  : "Registra al colaborador con su país de residencia, biometría y rol institucional."}
+                  : "Registra al trabajador con su país de residencia, biometría y rol institucional."}
               </p>
             </div>
           </div>

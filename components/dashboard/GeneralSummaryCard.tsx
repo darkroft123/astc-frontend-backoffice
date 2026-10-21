@@ -35,7 +35,7 @@ export function GeneralSummaryCard({
           <div>
             <h3 className="font-bold text-lg text-foreground">Estructura de la Organización</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Consolidado de roles, colaboradores y proyectos
+              Consolidado de roles, trabajadores y proyectos
             </p>
           </div>
           <span className="text-xs font-bold text-muted-foreground bg-muted px-2.5 py-1 rounded-full border border-border flex-shrink-0">
@@ -76,7 +76,7 @@ export function GeneralSummaryCard({
             </div>
 
             <div className="space-y-3">
-              <LegendItem color="blue" label="Colaboradores" value={teamMembersCount} />
+              <LegendItem color="blue" label="Trabajadores" value={teamMembersCount} />
               <LegendItem color="violet" label="Jefes de Proyecto" value={pmsCount} />
               <LegendItem color="amber" label="Administradores" value={adminsCount} />
               <LegendItem color="emerald" label="Proyectos Activos" value={activeProjects} />

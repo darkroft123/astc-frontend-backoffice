@@ -309,7 +309,7 @@ export function PMAttendanceView() {
             Historial de asistencias
           </h1>
           <p className="text-xs text-muted-foreground mt-1">
-            Auditoría y control de asistencias de jefes de proyecto y colaboradores en todos los proyectos.
+            Auditoría y control de asistencias de jefes de proyecto y trabajadores en todos los proyectos.
           </p>
         </div>
 
@@ -492,7 +492,7 @@ export function PMAttendanceView() {
           <div className="relative w-full sm:flex-1 sm:min-w-[200px]">
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none" />
             <input
-              placeholder="Colaborador o proyecto..."
+              placeholder="Trabajador o proyecto..."
               className="w-full pl-9 pr-4 h-10 rounded-xl border border-slate-200 dark:border-raised bg-white dark:bg-sidebar text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-violet"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -509,7 +509,7 @@ export function PMAttendanceView() {
                   <SelectItem value="ALL">Todos los roles</SelectItem>
                   <SelectItem value="ADMIN">Administrador</SelectItem>
                   <SelectItem value="PROJECT_MANAGER">Jefes de proyecto</SelectItem>
-                  <SelectItem value="TEAM_MEMBER">Colaboradores</SelectItem>
+                  <SelectItem value="TEAM_MEMBER">Trabajadores</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -571,7 +571,7 @@ export function PMAttendanceView() {
               <thead>
                 <tr className="border-b border-border/80 dark:border-surface bg-muted/30 dark:bg-transparent">
                   <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
-                    COLABORADOR
+                    TRABAJADOR
                   </th>
                   <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                     PROYECTO
@@ -639,7 +639,7 @@ export function PMAttendanceView() {
                                       : "bg-blue/10 text-blue dark:text-blue border-blue/20"
                                   }`}
                                 >
-                                  {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Colaborador"}
+                                  {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Trabajador"}
                                 </span>
                                 {r.user?.email && (
                                   <span className="text-[11px] text-muted-foreground truncate max-w-[150px]">
@@ -738,7 +738,7 @@ export function PMAttendanceView() {
                                 : "bg-blue/10 text-blue border-blue/20 dark:bg-[#132238] dark:text-[#38BDF8] dark:border-[#1E3A5F]"
                             }`}
                           >
-                            {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Colaborador"}
+                            {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Trabajador"}
                           </span>
                         </div>
                       </div>
