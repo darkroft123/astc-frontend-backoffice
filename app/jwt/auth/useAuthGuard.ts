@@ -1,8 +1,22 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 
 import { useAuth } from "./auth.provider";
 import { getApiBaseUrl } from "@/lib/api-host";
+
+// [MOCK LOCAL] Devuelve usuario administrador mock siempre autenticado
+const MOCK_TOKEN = "mock_jwt_token_local_admin_12345";
+const MOCK_USER = {
+  id: "admin-001",
+  sub: "admin-001",
+  email: "admin@astc.joyit.io",
+  username: "admin-principal",
+  firstName: "Administrador",
+  lastName: "Global",
+  role: "ADMIN",
+  avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
+  exp: 1893456000,
+};
 
 export function useAuthGuard(allowedRoles: string[]) {
   const { token, user, role, hydrated, logout } = useAuth();
@@ -44,25 +58,18 @@ export function useAuthGuard(allowedRoles: string[]) {
     */
   }, [hydrated, token, user, role]);
 
-  // [MOCK LOCAL] Devuelve usuario administrador mock siempre autenticado
-  const mockToken = "mock_jwt_token_local_admin_12345";
-  const mockUser = {
-    id: "admin-001",
-    sub: "admin-001",
-    email: "admin@astc.joyit.io",
-    username: "admin-principal",
-    firstName: "Administrador",
-    lastName: "Global",
-    role: "ADMIN",
-    avatarUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150",
-    exp: Math.floor(Date.now() / 1000) + 86400 * 30,
-  };
+  const activeToken = token || MOCK_TOKEN;
+  const activeUser = user || (MOCK_USER as any);
+  const activeRole = role || "ADMIN";
 
-  return {
-    hydrated: true,
-    token: token || mockToken,
-    user: user || (mockUser as any),
-    role: role || "ADMIN",
-    checkingAuth: false,
-  };
+  return useMemo(
+    () => ({
+      hydrated: true,
+      token: activeToken,
+      user: activeUser,
+      role: activeRole,
+      checkingAuth: false,
+    }),
+    [activeToken, activeUser, activeRole]
+  );
 }
