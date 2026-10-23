@@ -216,14 +216,14 @@ export default function HolidayListView() {
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-wider bg-primary/10 text-primary border border-primary/20 dark:bg-[#1E1B4B]/70 dark:text-[#818CF8] dark:border-[#3730A3]/60 px-3 py-1 rounded-full">
+            <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em] bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 px-2.5 py-0.5 rounded-full">
               CONTROL GLOBAL
             </span>
             <span className="text-xs text-muted-foreground dark:text-[#8F96AE]">
               · Panel administrativo
             </span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white tracking-tight leading-tight">
+          <h1 className="text-[26px] font-bold text-foreground dark:text-white tracking-tight leading-tight">
             Colecciones globales de feriados
           </h1>
           <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-1 leading-relaxed">
