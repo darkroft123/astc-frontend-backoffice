@@ -212,7 +212,7 @@ export default function HolidayListView() {
 
   return (
     <div className="relative min-h-screen bg-transparent pb-12">
-      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6 md:py-8 space-y-6 relative z-10">
+      <div className="w-full max-w-7xl mx-auto space-y-6 relative z-10">
         {/* 1. HEADER */}
         <div>
           <div className="flex items-center gap-2 mb-2 flex-wrap">

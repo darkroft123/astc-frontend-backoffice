@@ -37,7 +37,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
           {/* Desktop Notification Bell */}
           {!isCreateOrEdit && (
-            <div className="hidden md:flex absolute top-6 right-6 lg:top-8 lg:right-8 z-40 items-center gap-3">
+            <div className="hidden md:flex absolute top-5 right-6 lg:top-5 lg:right-8 z-40 items-center gap-3">
               <NotificationBell />
             </div>
           )}
