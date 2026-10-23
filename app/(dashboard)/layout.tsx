@@ -44,7 +44,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
           <main
             className={cn(
-              "flex-1 p-4 md:p-6 bg-transparent relative z-10",
+              "flex-1 p-4 md:px-8 md:pt-5 md:pb-6 bg-transparent relative z-10",
               isCreateOrEdit ? "pb-6" : "pb-24 md:pb-6"
             )}
           >
