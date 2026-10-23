@@ -22,8 +22,15 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Backoffice",
-  description: "Sistema de gestión",
+  title: "ASTC-BACKOFFICE",
+  description: "Sistema de gestión ASTC - Backoffice Administrador",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico" },
+    ],
+    apple: "/apple-icon.png",
+  },
 };
 
 export default function RootLayout({
