@@ -346,6 +346,58 @@ export const MOCK_COLLECTIONS = [
       { id: "ci-10", collectionId: "col-3", date: "2026-06-29", name: "San Pedro y San Pablo" },
     ],
   },
+  {
+    id: "col-nacional-2026",
+    name: "Calendario Anual Completo 2026",
+    scope: "GLOBAL",
+    createdAt: "2026-08-20T09:00:00Z",
+    items: [
+      { id: "ci-11", collectionId: "col-nacional-2026", date: "2026-01-01", name: "Año Nuevo" },
+      { id: "ci-12", collectionId: "col-nacional-2026", date: "2026-04-02", name: "Jueves Santo" },
+      { id: "ci-13", collectionId: "col-nacional-2026", date: "2026-04-03", name: "Viernes Santo" },
+      { id: "ci-14", collectionId: "col-nacional-2026", date: "2026-05-01", name: "Día del Trabajo" },
+      { id: "ci-15", collectionId: "col-nacional-2026", date: "2026-06-07", name: "Batalla de Arica y Día de la Bandera" },
+      { id: "ci-16", collectionId: "col-nacional-2026", date: "2026-06-29", name: "San Pedro y San Pablo" },
+      { id: "ci-17", collectionId: "col-nacional-2026", date: "2026-07-23", name: "Día de la FAP" },
+      { id: "ci-18", collectionId: "col-nacional-2026", date: "2026-07-28", name: "Fiestas Patrias Día 1" },
+      { id: "ci-19", collectionId: "col-nacional-2026", date: "2026-07-29", name: "Fiestas Patrias Día 2" },
+      { id: "ci-20", collectionId: "col-nacional-2026", date: "2026-08-06", name: "Batalla de Junín" },
+      { id: "ci-21", collectionId: "col-nacional-2026", date: "2026-08-30", name: "Santa Rosa de Lima" },
+      { id: "ci-22", collectionId: "col-nacional-2026", date: "2026-10-08", name: "Combate de Angamos" },
+      { id: "ci-23", collectionId: "col-nacional-2026", date: "2026-11-01", name: "Día de Todos los Santos" },
+      { id: "ci-24", collectionId: "col-nacional-2026", date: "2026-12-08", name: "Inmaculada Concepción" },
+      { id: "ci-25", collectionId: "col-nacional-2026", date: "2026-12-09", name: "Batalla de Ayacucho" },
+      { id: "ci-26", collectionId: "col-nacional-2026", date: "2026-12-25", name: "Navidad" },
+    ],
+  },
+  {
+    id: "col-5",
+    name: "Días No Laborables Compensables",
+    scope: "GLOBAL",
+    createdAt: "2026-08-15T14:00:00Z",
+    items: [
+      { id: "ci-27", collectionId: "col-5", date: "2026-01-02", name: "Puente Año Nuevo" },
+      { id: "ci-28", collectionId: "col-5", date: "2026-07-27", name: "Puente Fiestas Patrias" },
+    ],
+  },
+  {
+    id: "col-6",
+    name: "Sede Regional Arequipa",
+    scope: "GLOBAL",
+    createdAt: "2026-08-10T16:00:00Z",
+    items: [
+      { id: "ci-29", collectionId: "col-6", date: "2026-08-15", name: "Aniversario de Arequipa" },
+    ],
+  },
+  {
+    id: "col-7",
+    name: "Sede Regional Cusco",
+    scope: "GLOBAL",
+    createdAt: "2026-08-05T12:00:00Z",
+    items: [
+      { id: "ci-30", collectionId: "col-7", date: "2026-06-24", name: "Inti Raymi - Día del Cusco" },
+    ],
+  },
 ];
 
 

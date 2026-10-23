@@ -7,7 +7,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Plus, Trash2, Calendar as CalendarIcon, Briefcase, RefreshCw, Layers, ChevronDown, ChevronRight, CheckCircle, Pencil, Sun, Search, Folder, RotateCcw, Upload } from "lucide-react";
+import { Plus, Trash2, Calendar as CalendarIcon, Briefcase, RefreshCw, Layers, ChevronDown, ChevronRight, ChevronLeft, CheckCircle, Pencil, Sun, Search, Folder, RotateCcw, Upload } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { SubMetricCard } from "@/components/dashboard/SubMetricCard";
@@ -18,10 +18,11 @@ import { CreateGlobalCollectionModal } from "./CreateGlobalCollectionModal";
 import { useToast } from "@/components/ui/use-toast";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import { MOCK_COLLECTIONS } from "@/lib/mock-data";
 
 export default function HolidayListView() {
   const { token } = useAuth();
-  const [collections, setCollections] = useState<CollectionOutput[]>([]);
+  const [collections, setCollections] = useState<CollectionOutput[]>(MOCK_COLLECTIONS as any);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
@@ -29,6 +30,8 @@ export default function HolidayListView() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [assignedCollectionId, setAssignedCollectionId] = useState<string | null>(null);
   const [pendingAssignment, setPendingAssignment] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
 
   // Form states
   const [formName, setFormName] = useState("");
@@ -47,10 +50,14 @@ export default function HolidayListView() {
     setLoading(true);
     try {
       const [data, assignedId] = await Promise.all([
-        getGlobalCollections(token),
+        getGlobalCollections(token).catch(() => null),
         getAdminSetting(token, "GLOBAL_ASSIGNED_COLLECTION_ID").catch(() => null),
       ]);
-      setCollections(data || []);
+      if (Array.isArray(data) && data.length > 0) {
+        setCollections(data);
+      } else {
+        setCollections(MOCK_COLLECTIONS as any);
+      }
       if (assignedId) {
         setAssignedCollectionId(assignedId);
       }
@@ -76,6 +83,23 @@ export default function HolidayListView() {
       (c.items && c.items.some(i => i.name?.toLowerCase().includes(lowerQuery) || i.date.includes(lowerQuery)))
     );
   }, [collections, searchQuery]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredCollections.length / pageSize));
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages);
+    }
+  }, [totalPages, currentPage]);
+
+  const paginatedCollections = useMemo(() => {
+    const start = (currentPage - 1) * pageSize;
+    return filteredCollections.slice(start, start + pageSize);
+  }, [filteredCollections, currentPage, pageSize]);
 
   const handleDelete = async (id: string) => {
     if (!token) return;
@@ -325,10 +349,27 @@ export default function HolidayListView() {
         </div>
 
         {/* 4. LIST OF COLLECTIONS HEADER */}
-        <div className="pt-2">
+        <div className="pt-2 flex items-center justify-between">
           <h2 className="text-base font-bold text-foreground dark:text-white">
             Listado de colecciones
           </h2>
+          {filteredCollections.length > 5 && (
+            <div className="flex items-center gap-1.5 text-xs text-muted-foreground dark:text-[#8F96AE]">
+              <span>Mostrar:</span>
+              <select
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="h-7 px-2 rounded-lg border border-border dark:border-[#23293F] bg-card dark:bg-[#121626] text-xs font-medium text-foreground dark:text-white focus:outline-none cursor-pointer"
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+              </select>
+            </div>
+          )}
         </div>
 
         {/* 5. LIST OF COLLECTIONS */}
@@ -338,7 +379,7 @@ export default function HolidayListView() {
               {searchQuery ? "No se encontraron colecciones." : "No hay colecciones creadas."}
             </div>
           ) : (
-            filteredCollections.map((c) => (
+            paginatedCollections.map((c) => (
               <div
                 key={c.id}
                 className="bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl overflow-hidden shadow-xs hover:border-[#2d385e] transition-colors"
@@ -456,51 +497,72 @@ export default function HolidayListView() {
                       </p>
                     ) : (
                       <>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
-                          {c.items.map((item) => {
-                            const dateObj = new Date(item.date + "T00:00:00");
-                            const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-                            return (
-                              <div
-                                key={item.id}
-                                className="flex items-center justify-between p-3 bg-card dark:bg-surface border border-border dark:border-violet/10 rounded-xl shadow-2xs group"
-                              >
-                                <div className="flex items-center gap-3">
-                                  <div className="flex flex-col items-center justify-center bg-muted dark:bg-raised rounded-lg p-2 min-w-[48px]">
-                                    <span className="text-[10px] text-muted-foreground uppercase font-medium">
-                                      {format(dateObj, "MMM", { locale: es })}
-                                    </span>
-                                    <span className="text-base font-bold text-foreground dark:text-white leading-none mt-0.5">
-                                      {format(dateObj, "dd")}
-                                    </span>
-                                  </div>
-                                  <div>
-                                    <p className="text-xs font-semibold text-foreground dark:text-white">
-                                      {item.name}
-                                    </p>
-                                    <p className="text-[11px] text-muted-foreground mt-0.5">
-                                      {days[dateObj.getDay()]}, {dateObj.getFullYear()}
-                                    </p>
-                                  </div>
-                                </div>
-                                <Button
-                                  size="icon"
-                                  variant="ghost"
-                                  className="h-7 w-7 text-red opacity-0 group-hover:opacity-100 transition-opacity"
-                                  onClick={() => handleDeleteCollectionItem(item.id)}
-                                  title="Eliminar fecha"
-                                >
-                                  <Trash2 className="w-3.5 h-3.5" />
-                                </Button>
-                              </div>
-                            );
-                          })}
+                        <div className="flex items-center justify-between pb-2.5 mb-3 border-b border-border/60 dark:border-[#1E2335] text-xs">
+                          <div className="flex items-center gap-2">
+                            <CalendarIcon className="w-3.5 h-3.5 text-primary dark:text-[#A855F7]" />
+                            <span className="font-semibold text-foreground dark:text-white">
+                              {c.items.length} {c.items.length === 1 ? "feriado registrado" : "feriados registrados"}
+                            </span>
+                          </div>
+                          {c.items.length > 6 && (
+                            <span className="text-[11px] text-muted-foreground dark:text-[#8F96AE]">
+                              Desplázate para ver todos los feriados
+                            </span>
+                          )}
                         </div>
-                        <div className="mt-3 flex justify-center">
+
+                        {/* Contenedor acotado con scroll vertical fluido */}
+                        <div className="max-h-[340px] sm:max-h-[380px] overflow-y-auto pr-1 sm:pr-1.5">
+                          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                            {c.items.map((item) => {
+                              const dateObj = new Date(item.date + "T00:00:00");
+                              const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+                              return (
+                                <div
+                                  key={item.id}
+                                  className="flex items-center justify-between p-3 bg-card dark:bg-surface border border-border dark:border-violet/10 rounded-xl shadow-2xs group"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <div className="flex flex-col items-center justify-center bg-muted dark:bg-raised rounded-lg p-2 min-w-[48px]">
+                                      <span className="text-[10px] text-muted-foreground uppercase font-medium">
+                                        {format(dateObj, "MMM", { locale: es })}
+                                      </span>
+                                      <span className="text-base font-bold text-foreground dark:text-white leading-none mt-0.5">
+                                        {format(dateObj, "dd")}
+                                      </span>
+                                    </div>
+                                    <div>
+                                      <p className="text-xs font-semibold text-foreground dark:text-white">
+                                        {item.name}
+                                      </p>
+                                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                                        {days[dateObj.getDay()]}, {dateObj.getFullYear()}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <Button
+                                    size="icon"
+                                    variant="ghost"
+                                    className="h-7 w-7 text-red opacity-0 group-hover:opacity-100 transition-opacity"
+                                    onClick={() => handleDeleteCollectionItem(item.id)}
+                                    title="Eliminar fecha"
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                  </Button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        <div className="mt-3 pt-3 border-t border-border/60 dark:border-[#1E2335] flex items-center justify-between gap-3">
+                          <span className="text-xs text-muted-foreground dark:text-[#8F96AE]">
+                            Total: <strong className="text-foreground dark:text-white">{c.items.length}</strong> {c.items.length === 1 ? "fecha" : "fechas"}
+                          </span>
                           <Button
                             size="sm"
                             variant="outline"
-                            className="text-xs border-dashed rounded-xl h-8"
+                            className="text-xs border-dashed rounded-xl h-8 cursor-pointer"
                             onClick={() => {
                               setEditingCollectionId(c.id);
                               setEditDates([]);
@@ -518,6 +580,45 @@ export default function HolidayListView() {
             ))
           )}
         </div>
+
+        {/* 6. PAGINACIÓN DE COLECCIONES */}
+        {filteredCollections.length > 0 && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 px-1 text-xs text-muted-foreground dark:text-[#8F96AE]">
+            <div>
+              <span>
+                Mostrando <strong className="text-foreground dark:text-white">{Math.min((currentPage - 1) * pageSize + 1, filteredCollections.length)}</strong> - <strong className="text-foreground dark:text-white">{Math.min(currentPage * pageSize, filteredCollections.length)}</strong> de <strong className="text-foreground dark:text-white">{filteredCollections.length}</strong> colecciones
+              </span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span>
+                Página <strong className="text-foreground dark:text-white">{currentPage}</strong> de <strong className="text-foreground dark:text-white">{totalPages}</strong>
+              </span>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  disabled={currentPage <= 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
+                  title="Página anterior"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline text-xs">Anterior</span>
+                </button>
+                <button
+                  type="button"
+                  disabled={currentPage >= totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
+                  title="Página siguiente"
+                >
+                  <span className="hidden sm:inline text-xs">Siguiente</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
         {/* Modal: Crear Colección Global (Design matching dark- Crear colección global.svg) */}
