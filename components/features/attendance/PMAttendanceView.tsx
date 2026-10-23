@@ -136,7 +136,7 @@ export function PMAttendanceView() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPhotoUrl, setSelectedPhotoUrl] = useState<string | null>(null);
   const [page, setPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 5;
 
   useEffect(() => {
     if (!token) return;

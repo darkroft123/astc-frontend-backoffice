@@ -83,6 +83,9 @@ export default function AdminDashboardPage() {
     ).length || 1;
 
   const totalProjects = projectsList.length > 0 ? Math.min(projectsList.length, 3) : 3;
+  const maxResourceCount = Math.max(totalUsers, teamMembersCount, pmsCount, totalProjects, 1);
+  const getBarHeight = (value: number) =>
+    Math.max(26, Math.round((value / maxResourceCount) * 118));
 
   const isUserAdmin =
     user?.role === "ADMIN" ||
@@ -399,7 +402,7 @@ export default function AdminDashboardPage() {
                     {totalUsers}
                   </span>
                   <div
-                    style={{ height: `${Math.max(26, Math.round((totalUsers / 5) * 130))}px` }}
+                    style={{ height: `${getBarHeight(totalUsers)}px` }}
                     className="w-[52px] sm:w-[56px] max-w-[85%] bg-[#5B8CFF] rounded-t-[10px] rounded-b-[4px] transition-all shadow-sm"
                   />
                 </div>
@@ -410,7 +413,7 @@ export default function AdminDashboardPage() {
                     {teamMembersCount}
                   </span>
                   <div
-                    style={{ height: `${Math.max(26, Math.round((teamMembersCount / 5) * 130))}px` }}
+                    style={{ height: `${getBarHeight(teamMembersCount)}px` }}
                     className="w-[52px] sm:w-[56px] max-w-[85%] bg-[#34D399] rounded-t-[10px] rounded-b-[4px] transition-all shadow-sm"
                   />
                 </div>
@@ -421,7 +424,7 @@ export default function AdminDashboardPage() {
                     {pmsCount}
                   </span>
                   <div
-                    style={{ height: `${Math.max(26, Math.round((pmsCount / 5) * 130))}px` }}
+                    style={{ height: `${getBarHeight(pmsCount)}px` }}
                     className="w-[52px] sm:w-[56px] max-w-[85%] bg-[#FBBF24] rounded-t-[10px] rounded-b-[4px] transition-all shadow-sm"
                   />
                 </div>
@@ -432,7 +435,7 @@ export default function AdminDashboardPage() {
                     {totalProjects}
                   </span>
                   <div
-                    style={{ height: `${Math.max(26, Math.round((totalProjects / 5) * 130))}px` }}
+                    style={{ height: `${getBarHeight(totalProjects)}px` }}
                     className="w-[52px] sm:w-[56px] max-w-[85%] bg-[#A855F7] rounded-t-[10px] rounded-b-[4px] transition-all shadow-sm"
                   />
                 </div>

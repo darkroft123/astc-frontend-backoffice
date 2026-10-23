@@ -97,7 +97,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
   const activeProjects = filteredProjects.filter((p) => p.status === "ACTIVE").length;
   const inactiveProjects = filteredProjects.filter((p) => p.status === "INACTIVE").length;
 
-  const pageSize = 10;
+  const pageSize = 5;
   const totalPages = Math.max(1, Math.ceil(filteredProjects.length / pageSize));
 
   const paginatedProjects = useMemo(() => {
