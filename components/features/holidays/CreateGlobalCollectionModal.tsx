@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ChevronLeft, ChevronRight, Plus, X } from "lucide-react";
-import { format } from "date-fns";
-import { es } from "date-fns/locale";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { X, Calendar as CalendarIcon, Plus } from "lucide-react";
+import { MonthCalendarPicker } from "./MonthCalendarPicker";
 
 interface CreateGlobalCollectionModalProps {
   open: boolean;
@@ -20,275 +19,193 @@ export function CreateGlobalCollectionModal({
   isSubmitting = false,
 }: CreateGlobalCollectionModalProps) {
   const [formName, setFormName] = useState("");
-  const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+  const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [dateNames, setDateNames] = useState<Record<string, string>>({});
-  const [currentMonth, setCurrentMonth] = useState<Date>(new Date(2026, 8, 1)); // Default Sep 2026 matching SVG design
+  const [mounted, setMounted] = useState(false);
 
-  // Format month title: "Septiembre 2026"
-  const monthTitle = useMemo(() => {
-    const raw = format(currentMonth, "MMMM yyyy", { locale: es });
-    return raw.charAt(0).toUpperCase() + raw.slice(1);
-  }, [currentMonth]);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const prevMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1));
+  const handleToggleDate = (dateStr: string) => {
+    setSelectedDates((prev) => {
+      if (prev.includes(dateStr)) {
+        const next = prev.filter((d) => d !== dateStr);
+        setDateNames((old) => {
+          const updated = { ...old };
+          delete updated[dateStr];
+          return updated;
+        });
+        return next;
+      } else {
+        return [...prev, dateStr].sort();
+      }
+    });
   };
 
-  const nextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1));
-  };
-
-  // Generate calendar days for current month view
-  const calendarCells = useMemo(() => {
-    const year = currentMonth.getFullYear();
-    const month = currentMonth.getMonth();
-
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    // Monday = 0, Sunday = 6
-    const firstDayOfWeek = (new Date(year, month, 1).getDay() + 6) % 7;
-
-    const daysInPrevMonth = new Date(year, month, 0).getDate();
-
-    const cells: { day: number; isCurrentMonth: boolean; date: Date }[] = [];
-
-    // Prev month padding
-    for (let i = firstDayOfWeek - 1; i >= 0; i--) {
-      const d = daysInPrevMonth - i;
-      cells.push({
-        day: d,
-        isCurrentMonth: false,
-        date: new Date(year, month - 1, d),
-      });
-    }
-
-    // Current month days
-    for (let i = 1; i <= daysInMonth; i++) {
-      cells.push({
-        day: i,
-        isCurrentMonth: true,
-        date: new Date(year, month, i),
-      });
-    }
-
-    // Next month padding to fill complete rows of 7
-    const remainder = (7 - (cells.length % 7)) % 7;
-    for (let i = 1; i <= remainder; i++) {
-      cells.push({
-        day: i,
-        isCurrentMonth: false,
-        date: new Date(year, month + 1, i),
-      });
-    }
-
-    return cells;
-  }, [currentMonth]);
-
-  const isDateSelected = (date: Date) => {
-    const targetYMD = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    return selectedDates.some(
-      (d) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}` === targetYMD
-    );
-  };
-
-  const toggleDate = (date: Date) => {
-    const targetYMD = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
-    const exists = selectedDates.some(
-      (d) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}` === targetYMD
-    );
-
-    if (exists) {
-      setSelectedDates(
-        selectedDates.filter(
-          (d) => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}` !== targetYMD
-        )
-      );
-      const offset = date.getTimezoneOffset();
-      const adjusted = new Date(date.getTime() - offset * 60 * 1000);
-      const dateStr = adjusted.toISOString().split("T")[0];
-      const updated = { ...dateNames };
-      delete updated[dateStr];
-      setDateNames(updated);
-    } else {
-      setSelectedDates([...selectedDates, date]);
-    }
+  const handleClose = () => {
+    setFormName("");
+    setSelectedDates([]);
+    setDateNames({});
+    onOpenChange(false);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formName.trim()) {
-      alert("El nombre de la colección es obligatorio.");
+    if (!formName.trim()) return;
+    if (selectedDates.length === 0) {
+      alert("Por favor selecciona al menos una fecha.");
       return;
     }
-    await onSubmit(formName, selectedDates, dateNames);
-    // Reset form
-    setFormName("");
-    setSelectedDates([]);
-    setDateNames({});
+
+    const dateObjects = selectedDates.map((str) => new Date(`${str}T12:00:00`));
+    await onSubmit(formName, dateObjects, dateNames);
+    handleClose();
   };
 
-  const handleClose = () => {
-    onOpenChange(false);
-  };
+  if (!open || !mounted) return null;
 
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        showCloseButton={false}
-        className="w-[92vw] max-w-[420px] p-0 rounded-3xl bg-white dark:bg-[#12141F] border border-border dark:border-white/10 text-foreground dark:text-white shadow-2xl overflow-hidden focus:outline-none transition-colors"
-      >
-        <DialogTitle className="sr-only">Crear colección global</DialogTitle>
-        <DialogDescription className="sr-only">
-          Crea una colección para agrupar múltiples feriados. Aplica a toda la organización.
-        </DialogDescription>
+  const modalNode = (
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-xs p-4 animate-in fade-in-0 duration-200"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) handleClose();
+      }}
+    >
+      <div className="w-full max-w-lg md:max-w-4xl max-h-[92vh] overflow-y-auto bg-card dark:bg-[#0E111C] border border-border dark:border-[#1E2335] rounded-[24px] sm:rounded-[28px] p-5 sm:p-7 shadow-2xl relative text-foreground dark:text-white space-y-5">
+        {/* Drag Handle (Mobile only) */}
+        <div className="w-12 h-1 rounded-full bg-muted-foreground/30 mx-auto md:hidden" />
 
-        <form onSubmit={handleSubmit} className="p-5 sm:p-6 space-y-4">
-          {/* Top Grab Handle */}
-          <div className="w-10 h-1 rounded-full bg-muted dark:bg-white/20 mx-auto -mt-1 mb-3" />
-
-          {/* Header Row: Title & Subtitle + Squircle Close Button */}
-          <div className="flex items-start justify-between gap-3">
-            <div>
-              <h2 className="text-xl font-bold text-foreground dark:text-white tracking-tight">
-                Crear colección global
-              </h2>
-              <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-1 leading-relaxed">
-                Crea una colección para agrupar múltiples feriados. Aplica a toda la organización.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              onClick={handleClose}
-              className="w-10 h-10 rounded-2xl bg-[#F8FAFC] dark:bg-[#1D2030] border border-border dark:border-[#2B3048] flex items-center justify-center text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white transition-colors cursor-pointer shrink-0 shadow-xs"
-              aria-label="Cerrar modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-
-          {/* Field 1: Nombre de la colección */}
-          <div className="pt-1">
-            <label className="text-xs font-semibold text-foreground/90 dark:text-white/90 block mb-1.5">
-              Nombre de la colección<span className="text-[#EF4444]">*</span>
-            </label>
-            <input
-              type="text"
-              required
-              value={formName}
-              onChange={(e) => setFormName(e.target.value)}
-              placeholder="Ej. Feriados Perú 2026"
-              className="w-full h-12 px-4 rounded-xl bg-[#F8FAFC] dark:bg-[#1D2030] border border-border dark:border-[#2B3048] text-sm text-foreground dark:text-white placeholder:text-muted-foreground dark:placeholder-[#606680] focus:outline-none focus:border-purple-500/60 transition-colors shadow-2xs"
-            />
-          </div>
-
-          {/* Field 2: Selecciona las fechas */}
+        {/* Header */}
+        <div className="flex items-start justify-between gap-3 pb-2 border-b border-border dark:border-[#1E2335]">
           <div>
-            <label className="text-xs font-semibold text-muted-foreground dark:text-[#8F96AE] block mb-2">
-              Selecciona las fechas
-            </label>
+            <h3 className="text-lg font-bold text-foreground dark:text-white">
+              Crear colección global
+            </h3>
+            <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-1">
+              Crea una colección para agrupar múltiples feriados. Aplica a toda la organización.
+            </p>
+          </div>
 
-            {/* Calendar Box matching exact SVG design */}
-            <div className="bg-[#F8FAFC] dark:bg-[#181B2A] border border-border dark:border-[#23283E] rounded-2xl p-4 shadow-2xs">
-              {/* Header: < Septiembre 2026 > */}
-              <div className="flex items-center justify-between mb-3 px-1">
-                <button
-                  type="button"
-                  onClick={prevMonth}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
-                  aria-label="Mes anterior"
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                </button>
+          <button
+            type="button"
+            onClick={handleClose}
+            className="w-8 h-8 rounded-xl border border-border dark:border-[#1E2335] bg-muted/50 dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1c2238] flex items-center justify-center text-muted-foreground hover:text-foreground dark:hover:text-white transition-colors shrink-0 cursor-pointer"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
-                <span className="text-sm font-bold text-foreground dark:text-white tracking-tight">
-                  {monthTitle}
-                </span>
-
-                <button
-                  type="button"
-                  onClick={nextMonth}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground dark:text-[#8F96AE] hover:text-foreground dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors cursor-pointer"
-                  aria-label="Mes siguiente"
-                >
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Desktop 2-column layout */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+            {/* Left Column: Nombre & Calendar */}
+            <div className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-foreground dark:text-white">
+                  Nombre de la colección<span className="text-rose-400">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Ej. Feriados Perú 2026"
+                  value={formName}
+                  onChange={(e) => setFormName(e.target.value)}
+                  className="w-full h-11 px-3.5 rounded-xl border border-border dark:border-[#1E2335] bg-background dark:bg-[#141829] text-xs font-medium text-foreground dark:text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-purple-500"
+                />
               </div>
 
-              {/* Day Headers: LU MA MI JU VI SÁ DO */}
-              <div className="grid grid-cols-7 mb-2 text-center">
-                {["LU", "MA", "MI", "JU", "VI", "SÁ", "DO"].map((dayName) => (
-                  <span
-                    key={dayName}
-                    className="text-[11px] font-semibold text-muted-foreground dark:text-[#656C8A] uppercase tracking-wider"
-                  >
-                    {dayName}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-foreground dark:text-white">
+                    Selecciona las fechas
+                  </label>
+                  <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-purple-500/10 text-purple-600 dark:text-[#A855F7] border border-purple-500/20 font-semibold">
+                    {selectedDates.length} seleccionadas
                   </span>
-                ))}
+                </div>
+                <MonthCalendarPicker
+                  selectedDates={selectedDates}
+                  onToggleDate={handleToggleDate}
+                />
               </div>
+            </div>
 
-              {/* Day Numbers Grid */}
-              <div className="grid grid-cols-7 gap-1 place-items-center">
-                {calendarCells.map((cell, idx) => {
-                  const selected = cell.isCurrentMonth && isDateSelected(cell.date);
+            {/* Right Column: Holiday Names / Empty prompt */}
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-foreground dark:text-white block">
+                Nombres específicos <span className="text-muted-foreground dark:text-[#8F96AE] font-normal">(opcional)</span>
+              </label>
 
-                  if (!cell.isCurrentMonth) {
-                    return (
-                      <div
-                        key={idx}
-                        className="w-9 h-9 flex items-center justify-center text-xs font-medium text-muted-foreground/40 dark:text-[#3B425C] select-none"
-                      >
-                        {cell.day}
+              {selectedDates.length > 0 ? (
+                <div className="rounded-2xl border border-border dark:border-[#1E2335] bg-muted/50 dark:bg-[#111422] p-4 space-y-3">
+                  <p className="text-[11px] text-muted-foreground dark:text-[#8F96AE]">
+                    Asigna un nombre a cada feriado seleccionado para que el equipo lo identifique fácilmente:
+                  </p>
+                  <div className="space-y-2 max-h-[300px] md:max-h-[350px] overflow-y-auto pr-1">
+                    {selectedDates.map((dateStr) => (
+                      <div key={dateStr} className="flex items-center gap-2">
+                        <span className="px-3 py-2 rounded-xl border border-border dark:border-[#1E2335] bg-card dark:bg-[#141829] text-xs font-mono text-foreground dark:text-white min-w-[105px] text-center shrink-0">
+                          {dateStr}
+                        </span>
+                        <input
+                          type="text"
+                          placeholder="Ej. Día del Trabajador..."
+                          value={dateNames[dateStr] || ""}
+                          onChange={(e) =>
+                            setDateNames((prev) => ({
+                              ...prev,
+                              [dateStr]: e.target.value,
+                            }))
+                          }
+                          className="flex-1 h-9 px-3 rounded-xl border border-border dark:border-[#1E2335] bg-background dark:bg-[#141829] text-xs font-medium text-foreground dark:text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        />
                       </div>
-                    );
-                  }
-
-                  return (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => toggleDate(cell.date)}
-                      className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-semibold transition-all cursor-pointer ${
-                        selected
-                          ? "bg-white dark:bg-[#282F48] text-foreground dark:text-white border border-border dark:border-[#3E4868] shadow-sm font-bold scale-105"
-                          : "text-foreground dark:text-white/90 hover:bg-black/5 dark:hover:bg-white/5"
-                      }`}
-                    >
-                      {cell.day}
-                    </button>
-                  );
-                })}
-              </div>
-
-              {/* Bottom Counter */}
-              <p className="text-xs text-muted-foreground dark:text-[#8F96AE] text-center mt-3 font-normal">
-                Has seleccionado <strong className="text-foreground dark:text-white font-semibold">{selectedDates.length}</strong> días.
-              </p>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="rounded-2xl border border-dashed border-border dark:border-[#1E2335] bg-muted/30 dark:bg-[#111422]/60 p-8 flex flex-col items-center justify-center text-center space-y-3 min-h-[260px]">
+                  <div className="w-12 h-12 rounded-2xl bg-background dark:bg-[#141829] border border-border dark:border-[#1E2335] flex items-center justify-center text-purple-600 dark:text-[#A855F7]">
+                    <CalendarIcon className="w-6 h-6 stroke-[1.8]" />
+                  </div>
+                  <p className="text-xs font-semibold text-foreground dark:text-white">
+                    Ninguna fecha seleccionada
+                  </p>
+                  <p className="text-[11px] text-muted-foreground dark:text-[#8F96AE] max-w-[240px]">
+                    Haz clic en los días del calendario a la izquierda para marcarlos como feriados y asignarles un nombre.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
-
-          {/* Footer: Cancelar & Crear Colección Buttons */}
-          <div className="border-t border-border dark:border-[#1E2338] pt-4 flex items-center gap-3">
+          {/* Footer Action Buttons */}
+          <div className="flex items-center justify-end gap-3 pt-3 border-t border-border dark:border-[#1E2335]">
             <button
               type="button"
               onClick={handleClose}
               disabled={isSubmitting}
-              className="h-12 flex-1 rounded-2xl bg-[#F8FAFC] dark:bg-[#1A1D2D] border border-border dark:border-[#2A2F45] text-foreground dark:text-white font-semibold text-sm hover:bg-muted dark:hover:bg-[#23273C] active:scale-[0.99] transition-all cursor-pointer flex items-center justify-center disabled:opacity-50 shadow-2xs"
+              className="px-4 py-2.5 rounded-xl border border-border dark:border-[#1E2335] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1c2238] text-xs font-semibold text-foreground dark:text-white transition-colors cursor-pointer disabled:opacity-50"
             >
               Cancelar
             </button>
-
             <button
               type="submit"
               disabled={isSubmitting}
-              className="h-12 flex-1 rounded-2xl bg-gradient-to-r from-[#5B8CFF] to-[#A855F7] text-white font-semibold text-sm flex items-center justify-center gap-1.5 shadow-lg shadow-purple-500/25 hover:brightness-110 active:scale-[0.99] transition-all cursor-pointer disabled:opacity-50"
+              className="px-5 py-2.5 rounded-xl text-white text-xs font-semibold shadow-lg shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50"
+              style={{
+                background: "linear-gradient(90deg, #5B8CFF 0%, #A855F7 100%)",
+              }}
             >
-              <Plus className="w-4 h-4 text-white" />
+              <Plus className="w-4 h-4 stroke-[2.5]" />
               <span>{isSubmitting ? "Creando..." : "Crear colección"}</span>
             </button>
           </div>
         </form>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
+
+  return typeof document !== "undefined" ? createPortal(modalNode, document.body) : null;
 }
