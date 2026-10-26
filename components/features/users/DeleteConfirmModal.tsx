@@ -1,7 +1,15 @@
 "use client";
-import React from 'react';
-import { AlertCircle, Trash2 } from "lucide-react";
-import { User } from './UsersTable';
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { Trash2 } from "lucide-react";
+
+interface User {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  role?: string;
+}
 
 interface DeleteConfirmModalProps {
   user: User;
@@ -14,9 +22,17 @@ export default function DeleteConfirmModal({
   onConfirm,
   onCancel,
 }: DeleteConfirmModalProps) {
-  return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50">
-      <div className="bg-card border border-border rounded-[var(--radius-modal)] shadow-2xl max-w-md w-full mx-4 overflow-hidden">
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const modalNode = (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-[100] p-4">
+      <div className="bg-card border border-border rounded-[var(--radius-modal)] shadow-2xl max-w-md w-full mx-4 overflow-hidden relative z-[101]">
         <div className="p-8">
           <div className="flex items-start gap-5">
             {/* Icon */}
@@ -44,7 +60,7 @@ export default function DeleteConfirmModal({
                     <p className="font-medium text-foreground">
                       {user.firstName} {user.lastName}
                     </p>
-                    <p className="text-sm text-muted-foreground">{user.email}</p>
+                    <p className="text-sm text-text-4">{user.email}</p>
                   </div>
                 </div>
               </div>
@@ -52,23 +68,24 @@ export default function DeleteConfirmModal({
           </div>
         </div>
 
-        {/* Footer Buttons */}
-        <div className="border-t border-border bg-muted/50 px-8 py-5 flex gap-3 justify-end">
+        {/* Actions */}
+        <div className="border-t border-border bg-raised/50 px-8 py-4 flex gap-3 justify-end">
           <button
             onClick={onCancel}
-            className="px-6 py-3 rounded-2xl border border-line-2 text-text-2 hover:bg-raised font-medium transition-all active:scale-[0.985]"
+            className="px-6 py-2.5 rounded-[var(--radius-control)] border border-border text-foreground hover:bg-muted font-medium transition-colors cursor-pointer"
           >
             Cancelar
           </button>
           <button
             onClick={onConfirm}
-            className="px-6 py-3 rounded-2xl bg-destructive hover:bg-destructive/90 text-white font-semibold transition-all active:scale-[0.985] flex items-center gap-2"
+            className="px-6 py-2.5 rounded-[var(--radius-control)] bg-red hover:bg-red-ink text-destructive-foreground font-medium transition-colors cursor-pointer"
           >
-            <Trash2 size={18} />
-            Eliminar Usuario
+            Eliminar
           </button>
         </div>
       </div>
     </div>
   );
+
+  return typeof document !== "undefined" ? createPortal(modalNode, document.body) : null;
 }

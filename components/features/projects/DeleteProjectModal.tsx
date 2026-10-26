@@ -1,6 +1,8 @@
 "use client";
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { FolderKanban, AlertCircle, Trash2 } from "lucide-react";
+
 interface DeleteProjectModalProps {
   projectName: string;
   projectId: string;
@@ -14,9 +16,17 @@ export default function DeleteProjectModal({
   onConfirm,
   onCancel,
 }: DeleteProjectModalProps) {
-  return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-[#12141F] border border-border dark:border-[#1E2335] rounded-2xl shadow-2xl max-w-md w-full overflow-hidden">
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  const modalNode = (
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-xs flex items-center justify-center z-[100] p-4">
+      <div className="bg-white dark:bg-[#12141F] border border-border dark:border-[#1E2335] rounded-2xl shadow-2xl max-w-md w-full overflow-hidden relative z-[101]">
         <div className="p-6 sm:p-8">
           <div className="flex items-start gap-4">
             <div className="w-12 h-12 rounded-2xl bg-red/10 dark:bg-[#2A151D] flex items-center justify-center flex-shrink-0 border border-red/20 dark:border-[#4D1C27]">
@@ -73,4 +83,6 @@ export default function DeleteProjectModal({
       </div>
     </div>
   );
+
+  return typeof document !== "undefined" ? createPortal(modalNode, document.body) : null;
 }
