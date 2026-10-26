@@ -41,7 +41,7 @@ import { MOCK_COLLECTIONS } from "@/lib/mock-data";
 
 export default function HolidayListView() {
   const { token } = useAuth();
-  const [collections, setCollections] = useState<CollectionOutput[]>(MOCK_COLLECTIONS as any);
+  const [collections, setCollections] = useState<CollectionOutput[]>([]);
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
@@ -51,6 +51,7 @@ export default function HolidayListView() {
   const [pendingAssignment, setPendingAssignment] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
+  const [itemsPage, setItemsPage] = useState<Record<string, number>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Edit states for adding dates
@@ -70,7 +71,7 @@ export default function HolidayListView() {
       if (Array.isArray(data) && data.length > 0) {
         setCollections(data);
       } else {
-        setCollections(MOCK_COLLECTIONS as any);
+        setCollections([]);
       }
       if (assignedId) {
         setAssignedCollectionId(assignedId);
@@ -480,7 +481,7 @@ export default function HolidayListView() {
                         ) : (
                           <div className="max-h-[340px] sm:max-h-[380px] overflow-y-auto pr-1 sm:pr-1.5">
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-                              {col.items.map((item) => {
+                              {(col.items || []).slice(((itemsPage[col.id] || 1) - 1) * 5, (itemsPage[col.id] || 1) * 5).map((item) => {
                                 const dateObj = new Date(item.date + "T12:00:00");
                                 const days = [
                                   "Domingo",
@@ -530,6 +531,51 @@ export default function HolidayListView() {
                               })}
                             </div>
                           </div>
+                          {col.items && col.items.length > 5 && (
+                            <div className="flex items-center justify-between pt-2 px-1 text-xs text-muted-foreground border-t border-border/30 dark:border-[#1E2335]">
+                              <span>
+                                Mostrando {Math.min(((itemsPage[col.id] || 1) - 1) * 5 + 1, col.items.length)} - {Math.min((itemsPage[col.id] || 1) * 5, col.items.length)} de {col.items.length} feriados
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <span>
+                                  Página {itemsPage[col.id] || 1} de {Math.max(1, Math.ceil(col.items.length / 5))}
+                                </span>
+                                <div className="flex items-center gap-1">
+                                  <button
+                                    type="button"
+                                    disabled={(itemsPage[col.id] || 1) <= 1}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setItemsPage((prev) => ({
+                                        ...prev,
+                                        [col.id]: Math.max(1, (prev[col.id] || 1) - 1),
+                                      }));
+                                    }}
+                                    className="p-1 rounded border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                                    title="Página anterior"
+                                  >
+                                    <ChevronLeft className="w-3.5 h-3.5" />
+                                  </button>
+                                  <button
+                                    type="button"
+                                    disabled={(itemsPage[col.id] || 1) >= Math.ceil(col.items.length / 5)}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      const maxP = Math.ceil(col.items.length / 5);
+                                      setItemsPage((prev) => ({
+                                        ...prev,
+                                        [col.id]: Math.min(maxP, (prev[col.id] || 1) + 1),
+                                      }));
+                                    }}
+                                    className="p-1 rounded border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                                    title="Página siguiente"
+                                  >
+                                    <ChevronRight className="w-3.5 h-3.5" />
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         )}
                       </div>
                     )}

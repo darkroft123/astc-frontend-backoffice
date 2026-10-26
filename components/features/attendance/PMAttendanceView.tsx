@@ -167,7 +167,7 @@ export function PMAttendanceView() {
         : `Usuario (${item.userId?.slice(0, 8) || "—"})`;
       const projectName =
         item.projectName ||
-        (item.projectId ? projectMap[item.projectId] || item.projectId : "Gestión General");
+        (item.projectId ? projectMap[item.projectId] || (projects.length === 1 && projects[0]?.name ? projects[0].name : "Proyecto general") : "Gestión General");
 
       return {
         id: item.id,
