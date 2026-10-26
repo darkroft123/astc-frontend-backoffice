@@ -479,7 +479,8 @@ export default function HolidayListView() {
                             Esta colección no tiene fechas asignadas.
                           </p>
                         ) : (
-                          <div className="max-h-[340px] sm:max-h-[380px] overflow-y-auto pr-1 sm:pr-1.5">
+                          <>
+                            <div className="max-h-[340px] sm:max-h-[380px] overflow-y-auto pr-1 sm:pr-1.5">
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
                               {(col.items || []).slice(((itemsPage[col.id] || 1) - 1) * 5, (itemsPage[col.id] || 1) * 5).map((item) => {
                                 const dateObj = new Date(item.date + "T12:00:00");
@@ -576,6 +577,7 @@ export default function HolidayListView() {
                               </div>
                             </div>
                           )}
+                          </>
                         )}
                       </div>
                     )}
