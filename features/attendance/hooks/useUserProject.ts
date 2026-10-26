@@ -13,16 +13,6 @@ export interface Project {
   holidays?: string[];
 }
 
-export interface Project {
-  id: string;
-  name: string;
-  workStartTime?: string;
-  workEndTime?: string;
-  graceMinutes?: number;
-  timezone?: string | null;
-  holidays?: string[];
-}
-
 let cachedProjects: Project[] = [];
 let cachedPromise: Promise<Project[]> | null = null;
 let hasFetched = false;
