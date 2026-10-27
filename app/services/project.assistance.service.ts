@@ -226,7 +226,7 @@ export async function listTeamAttendance(
     {
       page,
       size,
-      projectId: projectId || undefined,
+      projectId: (!projectId || projectId === "all") ? undefined : projectId,
       userId: userId || undefined,
       fromDate: fromDate || undefined,
       toDate: toDate || undefined,
@@ -822,7 +822,15 @@ export async function getAllUsers(token: string): Promise<User[]> {
     token
   );
 
-  return data.listUsers;
+  const list = data.listUsers || [];
+  return list.map((u: any) => {
+    const fullName = [u.firstName, u.lastName].filter(Boolean).join(" ").trim() || u.username || u.email || "Usuario";
+    return {
+      ...u,
+      name: fullName,
+      fullName,
+    };
+  });
 }
 
 type ListProjectManagersResponse = {

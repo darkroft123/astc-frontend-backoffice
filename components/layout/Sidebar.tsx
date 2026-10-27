@@ -118,7 +118,7 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const avatarSrc = formatAvatarUrl(userProfile?.avatarUrl || user?.avatarUrl);
 
   const roleLabel =
-    role === "BACKOFFICE" ? "BACKOFFICE" : role === "ADMIN" ? "ADMINISTRADOR" : "ADMINISTRADOR";
+    role === "BACKOFFICE" ? "BACKOFFICE" : role === "ADMIN" ? "ADMIN" : "ADMIN";
 
   return (
     <div className="flex flex-col h-full">
