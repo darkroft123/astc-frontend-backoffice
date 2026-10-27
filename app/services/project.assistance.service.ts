@@ -384,16 +384,7 @@ export async function getProjectById(
         vacationEligibilityDays
         holidays
         createdAt
-        members {
-          userId
-          role
-          user {
-            username
-            firstName
-            lastName
-          }
-        }
-      }
+              }
     }
     `,
     { id },
@@ -527,16 +518,7 @@ export async function getAllProjects(
         holidays
         responsibleId
         createdAt
-        members {
-          userId
-          role
-          user {
-            username
-            firstName
-            lastName
-          }
-        }
-      }
+              }
     }
     `,
     {},

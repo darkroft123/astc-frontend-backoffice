@@ -660,10 +660,6 @@ export async function getMyProjects(token: string): Promise<{
             timezone
             vacationEligibilityDays
             holidays
-            members {
-              userId
-              createdAt
-            }
           }
         }
       `,

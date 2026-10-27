@@ -261,17 +261,17 @@ export default function UsersList() {
                         {u.roleCode === "ADMIN" || u.roleId === "ADMIN" || u.roleName === "Administrador" ? (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-violet/10 text-violet-ink border border-violet/20 dark:bg-violet/10 dark:text-[#c084fc] dark:border-violet/20 whitespace-nowrap">
                             <span className="w-1.5 h-1.5 rounded-full bg-violet shrink-0" />
-                            Administrador
+                            Admin
                           </span>
                         ) : u.roleCode === "PROJECT_MANAGER" || u.roleId === "PROJECT_MANAGER" || u.roleName === "Project manager" ? (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber/10 text-amber-ink border border-amber/20 dark:bg-amber/10 dark:text-amber dark:border-amber/20 whitespace-nowrap">
                             <span className="w-1.5 h-1.5 rounded-full bg-amber shrink-0" />
-                            Project manager
+                            Jefe de Proyecto
                           </span>
                         ) : (
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue/10 text-blue border border-blue/20 dark:bg-blue/10 dark:text-[#60a5fa] dark:border-blue/20 whitespace-nowrap">
                             <span className="w-1.5 h-1.5 rounded-full bg-blue shrink-0" />
-                            Team member
+                            Trabajador
                           </span>
                         )}
                       </td>
@@ -428,17 +428,17 @@ export default function UsersList() {
                   {isAdmin ? (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-violet/10 text-violet-ink border border-violet/20 dark:bg-[#241738] dark:text-[#C084FC] dark:border-[#401E68] whitespace-nowrap">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#C084FC] shrink-0" />
-                      Administrador
+                      Admin
                     </span>
                   ) : isProjectManager ? (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-amber/10 text-amber-ink border border-amber/20 dark:bg-[#2C2112] dark:text-[#FBBF24] dark:border-[#4E3815] whitespace-nowrap">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#FBBF24] shrink-0" />
-                      Project manager
+                      Jefe de Proyecto
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-blue/10 text-blue border border-blue/20 dark:bg-[#132238] dark:text-[#38BDF8] dark:border-[#1E3A5F] whitespace-nowrap">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#38BDF8] shrink-0" />
-                      Team member
+                      Trabajador
                     </span>
                   )}
 

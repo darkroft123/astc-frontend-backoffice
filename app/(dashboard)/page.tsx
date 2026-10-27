@@ -57,14 +57,14 @@ export default function AdminDashboardPage() {
   }
 
   /* ================= METRICS ================= */
-  const totalUsers = usersList.length > 0 ? usersList.length : 5;
+  const totalUsers = usersList.length;
   const teamMembersCount =
     usersList.filter(
       (u) =>
         u.roleCode === "TEAM_MEMBER" ||
         u.roleId === "TEAM_MEMBER" ||
         u.roleName?.toLowerCase().includes("member")
-    ).length || 3;
+    ).length;
 
   const pmsCount =
     usersList.filter(
@@ -72,7 +72,7 @@ export default function AdminDashboardPage() {
         u.roleCode === "PROJECT_MANAGER" ||
         u.roleId === "PROJECT_MANAGER" ||
         u.roleName?.toLowerCase().includes("project")
-    ).length || 1;
+    ).length;
 
   const adminsCount =
     usersList.filter(
@@ -80,9 +80,9 @@ export default function AdminDashboardPage() {
         u.roleCode === "ADMIN" ||
         u.roleId === "ADMIN" ||
         u.roleName?.toLowerCase().includes("admin")
-    ).length || 1;
+    ).length;
 
-  const totalProjects = projectsList.length > 0 ? Math.min(projectsList.length, 3) : 3;
+  const totalProjects = projectsList.length;
   const maxResourceCount = Math.max(totalUsers, teamMembersCount, pmsCount, totalProjects, 1);
   const getBarHeight = (value: number) =>
     Math.max(26, Math.round((value / maxResourceCount) * 118));
@@ -104,9 +104,9 @@ export default function AdminDashboardPage() {
   const pmArc = (pmsCount / totalUsers) * totalAvailable;
   const adminArc = (adminsCount / totalUsers) * totalAvailable;
 
-  const teamPercent = Math.round((teamMembersCount / totalUsers) * 100);
-  const pmPercent = Math.round((pmsCount / totalUsers) * 100);
-  const adminPercent = Math.round((adminsCount / totalUsers) * 100);
+  const teamPercent = totalUsers > 0 ? Math.round((teamMembersCount / totalUsers) * 100) : 0;
+  const pmPercent = totalUsers > 0 ? Math.round((pmsCount / totalUsers) * 100) : 0;
+  const adminPercent = totalUsers > 0 ? Math.round((adminsCount / totalUsers) * 100) : 0;
 
   return (
     <div className="relative min-h-screen bg-transparent pb-12">

@@ -37,9 +37,9 @@ export default function UsersTable({
 
   const getRoleLabel = (roleId: string) => {
     const roles: Record<string, string> = {
-      ADMIN: 'ADMINISTRADOR',
-      PROJECT_MANAGER: 'GERENTE',
-      TEAM_MEMBER: 'USUARIO',
+      ADMIN: 'Admin',
+      PROJECT_MANAGER: 'Jefe de Proyecto',
+      TEAM_MEMBER: 'Trabajador',
     };
 
     return roles[roleId] || roleId.toUpperCase();

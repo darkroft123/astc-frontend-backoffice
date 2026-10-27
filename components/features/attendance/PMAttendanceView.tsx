@@ -143,7 +143,7 @@ export function PMAttendanceView() {
     } finally {
       setIsLoading(false);
     }
-  }, [token, selectedProject, selectedRole, statusFilter, userMap]);
+  }, [token, selectedProject, selectedRole, statusFilter]);
 
   useEffect(() => {
     fetchAttendance();

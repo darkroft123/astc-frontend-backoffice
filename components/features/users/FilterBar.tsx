@@ -47,9 +47,9 @@ export default function FilterBar({
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">Todos los roles</SelectItem>
-            <SelectItem value="ADMIN">Administrador</SelectItem>
-            <SelectItem value="PROJECT_MANAGER">Project manager</SelectItem>
-            <SelectItem value="TEAM_MEMBER">Team member</SelectItem>
+            <SelectItem value="ADMIN">Admin</SelectItem>
+            <SelectItem value="PROJECT_MANAGER">Jefe de Proyecto</SelectItem>
+            <SelectItem value="TEAM_MEMBER">Trabajador</SelectItem>
           </SelectContent>
         </Select>
       </div>

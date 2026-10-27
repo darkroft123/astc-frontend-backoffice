@@ -44,21 +44,21 @@ const ROLES = {
 const ROLE_INFO = [
   {
     id: ROLES.TEAM_MEMBER,
-    title: "Team member",
+    title: "Trabajador",
     description:
       "Trabajador estándar. Marca asistencia con biometría facial y GPS, y envía justificaciones.",
     icon: UserIcon,
   },
   {
     id: ROLES.PROJECT_MANAGER,
-    title: "Project manager",
+    title: "Jefe de Proyecto",
     description:
       "Jefe de proyecto. Gestiona equipos, horarios de turno, excepciones y aprueba justificaciones.",
     icon: Briefcase,
   },
   {
     id: ROLES.ADMIN,
-    title: "Administrador",
+    title: "Admin",
     description:
       "Acceso total. Administra catálogo de usuarios, proyectos globales, sedes y reportes.",
     icon: Shield,
