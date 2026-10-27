@@ -83,6 +83,9 @@ export function AttendanceTable({
                 </tr>
               ) : (
                 paginatedRows.map((r, index) => {
+            const photos = (r.photoUrl || "").split(",").map((p: string) => p.trim()).filter(Boolean);
+            const checkInPhoto = photos.find((p: string) => !p.includes("_checkout") && !p.includes("checkout")) || null;
+            const checkOutPhoto = photos.find((p: string) => p.includes("_checkout") || p.includes("checkout")) || null;
                   const initials =
                     ((r.user?.firstName?.[0] || "") + (r.user?.lastName?.[0] || "") ||
                       r.userName?.[0] ||
@@ -154,10 +157,10 @@ export function AttendanceTable({
                       <td className="py-3.5 px-5 text-xs font-mono text-foreground">
                         <div className="flex items-center gap-1.5">
                           <span>{r.checkIn}</span>
-                          {r.photoUrl && (
+                          {r.checkIn && r.checkIn !== "-" && checkInPhoto && (
                             <button
                               type="button"
-                              onClick={() => setSelectedPhotoUrl(r.photoUrl)}
+                              onClick={() => setSelectedPhotoUrl(formatAvatarUrl(checkInPhoto))}
                               className="p-1 text-muted-foreground hover:text-foreground transition-colors"
                               title="Ver foto de entrada"
                             >
@@ -174,10 +177,10 @@ export function AttendanceTable({
                           ) : (
                             <span className="text-muted-foreground italic">Sin salida</span>
                           )}
-                          {r.checkOut && r.photoUrl && (
+                          {r.checkOut && r.checkOut !== "-" && checkOutPhoto && (
                             <button
                               type="button"
-                              onClick={() => setSelectedPhotoUrl(r.photoUrl)}
+                              onClick={() => setSelectedPhotoUrl(formatAvatarUrl(checkOutPhoto))}
                               className="p-1 text-muted-foreground hover:text-foreground transition-colors"
                               title="Ver foto de salida"
                             >
@@ -220,6 +223,9 @@ export function AttendanceTable({
           </div>
         ) : (
           paginatedRows.map((r) => {
+            const photos = (r.photoUrl || "").split(",").map((p: string) => p.trim()).filter(Boolean);
+            const checkInPhoto = photos.find((p: string) => !p.includes("_checkout") && !p.includes("checkout")) || null;
+            const checkOutPhoto = photos.find((p: string) => p.includes("_checkout") || p.includes("checkout")) || null;
             const initials =
               ((r.user?.firstName?.[0] || "") + (r.user?.lastName?.[0] || "") ||
                 r.userName?.[0] ||
@@ -299,10 +305,10 @@ export function AttendanceTable({
                       <span className="font-mono text-sm font-bold text-foreground dark:text-white">
                         {r.checkIn}
                       </span>
-                      {r.photoUrl && (
+                      {r.checkIn && r.checkIn !== "-" && checkInPhoto && (
                         <button
                           type="button"
-                          onClick={() => setSelectedPhotoUrl(r.photoUrl)}
+                          onClick={() => setSelectedPhotoUrl(formatAvatarUrl(checkInPhoto))}
                           className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
                           title="Ver foto de entrada"
                         >
@@ -323,10 +329,10 @@ export function AttendanceTable({
                           </span>
                         )}
                       </span>
-                      {r.checkOut && r.photoUrl && (
+                      {r.checkOut && r.checkOut !== "-" && checkOutPhoto && (
                         <button
                           type="button"
-                          onClick={() => setSelectedPhotoUrl(r.photoUrl)}
+                          onClick={() => setSelectedPhotoUrl(formatAvatarUrl(checkOutPhoto))}
                           className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
                           title="Ver foto de salida"
                         >
