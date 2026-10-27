@@ -8,9 +8,9 @@ export function RecentActivityCard({ users = [] }: { users?: any[] }) {
 
   // Define static fallback users matching the current design
   const defaultUsers = [
-    { initials: "JP", name: "Juan Pérez", action: "Subió justificación de ausencia", time: "1h", color: "blue" },
-    { initials: "ML", name: "María López", action: "Registró asistencia", time: "3h", color: "emerald" },
-    { initials: "CD", name: "Carlos Díaz", action: "Envió justificante médico", time: "5h", color: "amber" },
+    { initials: "JP", name: "Juan Pérez", action: "Subió justificación de ausencia", time: "1h", color: "blue" as const, avatarUrl: null },
+    { initials: "ML", name: "María López", action: "Registró asistencia", time: "3h", color: "emerald" as const, avatarUrl: null },
+    { initials: "CD", name: "Carlos Díaz", action: "Envió justificante médico", time: "5h", color: "amber" as const, avatarUrl: null },
   ];
 
   // Map dynamic users first, and pad/fallback with default users if less than 3
@@ -21,8 +21,9 @@ export function RecentActivityCard({ users = [] }: { users?: any[] }) {
       const name = `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.username || "Trabajador";
       const action = index === 0 ? "Subió justificación de ausencia" : index === 1 ? "Registró asistencia" : "Envió justificante médico";
       const time = index === 0 ? "1h" : index === 1 ? "3h" : "5h";
-      const color = index === 0 ? "blue" : index === 1 ? "emerald" : "amber";
-      return { initials, name, action, time, color };
+      const color = index === 0 ? "blue" as const : index === 1 ? "emerald" as const : "amber" as const;
+      const avatarUrl = user.avatarUrl || null;
+      return { initials, name, action, time, color, avatarUrl };
     }
     return defaultUsers[index];
   });
@@ -44,6 +45,7 @@ export function RecentActivityCard({ users = [] }: { users?: any[] }) {
               action={act.action}
               time={act.time}
               color={act.color}
+              avatarUrl={act.avatarUrl}
             />
           ))}
         </div>

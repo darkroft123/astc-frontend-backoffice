@@ -4,6 +4,8 @@ import { useState } from "react";
 import { StatusBadge } from "@/components/atoms/status-badge";
 import { LocationCell } from "@/components/atoms/LocationCell";
 import { Folder, ChevronLeft, ChevronRight, Loader2, Camera } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatAvatarUrl } from "@/lib/avatar-url";
 import {
   Dialog,
   DialogContent,
@@ -106,9 +108,14 @@ export function AttendanceTable({
                     >
                       <td className="py-3.5 px-5">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-8 h-8 rounded-full bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+                          <Avatar className="w-8 h-8 rounded-full shrink-0 shadow-sm">
+                          {formatAvatarUrl(r.user?.avatarUrl) && (
+                            <AvatarImage src={formatAvatarUrl(r.user?.avatarUrl)!} alt={r.userName} className="object-cover" />
+                          )}
+                          <AvatarFallback className="bg-avatar-gradient text-white font-bold text-xs">
                             {initials}
-                          </div>
+                          </AvatarFallback>
+                        </Avatar>
                           <div>
                             <p className="font-semibold text-sm text-foreground">{r.userName}</p>
                             <div className="flex items-center gap-1.5 mt-0.5">
@@ -235,9 +242,14 @@ export function AttendanceTable({
                 {/* Header row: Avatar, Name, Status */}
                 <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-9 h-9 rounded-full bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+                    <Avatar className="w-9 h-9 rounded-full shrink-0 shadow-sm">
+                    {formatAvatarUrl(r.user?.avatarUrl) && (
+                      <AvatarImage src={formatAvatarUrl(r.user?.avatarUrl)!} alt={r.userName} className="object-cover" />
+                    )}
+                    <AvatarFallback className="bg-avatar-gradient text-white font-bold text-xs">
                       {initials}
-                    </div>
+                    </AvatarFallback>
+                  </Avatar>
                     <div className="min-w-0">
                       <p className="font-semibold text-sm text-foreground dark:text-white truncate">
                         {r.userName}

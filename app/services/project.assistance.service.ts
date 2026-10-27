@@ -518,7 +518,12 @@ export async function getAllProjects(
         holidays
         responsibleId
         createdAt
-              }
+        members {
+          id
+          userId
+          role
+        }
+      }
     }
     `,
     {},

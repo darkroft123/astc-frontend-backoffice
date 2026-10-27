@@ -1,4 +1,5 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatAvatarUrl } from "@/lib/avatar-url";
 
 interface ActivityItemProps {
   initials: string;
@@ -6,9 +7,11 @@ interface ActivityItemProps {
   action: string;
   time: string;
   color: "blue" | "emerald" | "amber";
+  avatarUrl?: string | null;
 }
 
-export function ActivityItem({ initials, name, action, time, color }: ActivityItemProps) {
+export function ActivityItem({ initials, name, action, time, color, avatarUrl }: ActivityItemProps) {
+  const avatarSrc = formatAvatarUrl(avatarUrl);
   const colorMap: Record<string, string> = {
     blue: "bg-primary/10 text-primary",
     emerald: "bg-green/10 text-green-ink",
@@ -18,6 +21,7 @@ export function ActivityItem({ initials, name, action, time, color }: ActivityIt
   return (
     <div className="flex items-center gap-3">
       <Avatar className="h-9 w-9">
+        {avatarSrc && <AvatarImage src={avatarSrc} alt={name} className="object-cover" />}
         <AvatarFallback className={colorMap[color]}>
           {initials}
         </AvatarFallback>

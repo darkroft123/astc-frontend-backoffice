@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { formatAvatarUrl } from '@/lib/avatar-url';
 import { MoreVertical } from "lucide-react";
 import UserActionsMenu from './UserActionsMenu';
 import DeleteConfirmModal from './DeleteConfirmModal';
@@ -109,14 +111,21 @@ export default function UsersTable({
                 >
                   <td className={rowPadding}>
                     <div className="flex items-center gap-3">
-                      <div
-                        className={`bg-brand-gradient rounded-2xl flex items-center justify-center text-primary-foreground font-semibold flex-shrink-0 ${avatarSize}`}
-                      >
-                      {(user.firstName?.[0] || '') +
-                        ((user.lastName?.[0] || '') ||
-                          user.username?.[0] ||
-                          '?')}
-                    </div>
+                      <Avatar className={`rounded-2xl shrink-0 ${avatarSize}`}>
+                        {formatAvatarUrl(user.avatarUrl) && (
+                          <AvatarImage
+                            src={formatAvatarUrl(user.avatarUrl)!}
+                            alt={user.firstName || user.username}
+                            className="object-cover rounded-2xl"
+                          />
+                        )}
+                        <AvatarFallback className="bg-brand-gradient rounded-2xl text-primary-foreground font-semibold">
+                          {(user.firstName?.[0] || '') +
+                            ((user.lastName?.[0] || '') ||
+                              user.username?.[0] ||
+                              '?')}
+                        </AvatarFallback>
+                      </Avatar>
 
                     <div className="min-w-0">
                       <p className="font-semibold text-foreground truncate text-sm">
