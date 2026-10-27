@@ -26,6 +26,7 @@ import {
   ChevronRight,
   CheckCircle,
   Search,
+  Loader2,
 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -63,11 +64,13 @@ export default function HolidayListView() {
   const fetchCollections = async () => {
     if (!token) return;
     setLoading(true);
+    console.log("[HolidayListView Admin] Fetching global collections, token:", !!token);
     try {
       const [data, assignedId] = await Promise.all([
         getGlobalCollections(token).catch(() => null),
         getAdminSetting(token, "GLOBAL_ASSIGNED_COLLECTION_ID").catch(() => null),
       ]);
+      console.log("[HolidayListView Admin] getGlobalCollections received:", Array.isArray(data) ? data.length : data);
       if (Array.isArray(data) && data.length > 0) {
         setCollections(data);
       } else {
@@ -370,7 +373,12 @@ export default function HolidayListView() {
 
           {/* 4. LIST OF COLLECTIONS */}
           <div className="space-y-3.5 pt-1">
-            {filteredCollections.length === 0 ? (
+            {loading ? (
+              <div className="p-12 text-center text-muted-foreground bg-card dark:bg-[#0C0E18] border border-border dark:border-[#1E2335] rounded-2xl text-xs flex items-center justify-center gap-2">
+                <Loader2 className="w-5 h-5 animate-spin text-[#A855F7]" />
+                <span>Cargando colecciones...</span>
+              </div>
+            ) : filteredCollections.length === 0 ? (
               <div className="p-8 text-center text-muted-foreground bg-card dark:bg-[#0C0E18] border border-dashed border-border dark:border-[#1E2335] rounded-2xl text-xs">
                 {searchQuery ? "No se encontraron colecciones con ese criterio." : "No hay colecciones creadas."}
               </div>

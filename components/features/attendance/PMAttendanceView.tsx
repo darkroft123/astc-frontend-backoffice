@@ -119,6 +119,7 @@ export function PMAttendanceView() {
   const fetchAttendance = useCallback(async () => {
     if (!token) return;
     setIsLoading(true);
+    console.log("[AttendanceView Admin] Fetching attendance, project:", selectedProject, "role:", selectedRole, "status:", statusFilter);
     try {
       const data = await listTeamAttendance(
         token,
@@ -320,6 +321,7 @@ export function PMAttendanceView() {
           page={page}
           totalPages={totalPages}
           setPage={setPage}
+          isLoading={isLoading}
         />
 
         {/* CALENDAR DATE RANGE PICKER DIALOG */}

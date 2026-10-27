@@ -16,6 +16,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronDown,
+  Loader2,
 } from "lucide-react";
 import { getAllProjects, deleteProject } from "@/app/services/project.assistance.service";
 type Project = any;
@@ -52,7 +53,9 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
     if (!hydrated || !token) return;
     setIsLoading(true);
     try {
+      console.log("[Projects-View Admin] Fetching all projects, token:", !!token);
       const data = await getAllProjects(token);
+      console.log("[Projects-View Admin] getAllProjects received:", Array.isArray(data) ? data.length : data);
       const sorted = [...(data ?? [])].sort(
         (a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime()
       );
@@ -228,7 +231,12 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
 
         {/* MOBILE CARDS (Matches dark-gestion proyectos.svg & light-gestion proyectos.svg) */}
         <div className="md:hidden space-y-3">
-          {paginatedProjects.length === 0 ? (
+          {isLoading ? (
+            <div className="p-12 text-center text-xs text-muted-foreground bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl flex items-center justify-center gap-2">
+              <Loader2 className="w-5 h-5 animate-spin text-[#A855F7]" />
+              <span>Cargando proyectos...</span>
+            </div>
+          ) : paginatedProjects.length === 0 ? (
             <div className="p-8 text-center text-xs text-muted-foreground bg-card dark:bg-[#101322] border border-dashed border-border dark:border-[#1E2335] rounded-2xl">
               No hay proyectos para mostrar
             </div>
@@ -414,7 +422,16 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60 dark:divide-surface/60">
-                {paginatedProjects.length === 0 ? (
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={6} className="py-12 text-center">
+                      <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                        <Loader2 className="w-5 h-5 animate-spin text-[#A855F7]" />
+                        <span>Cargando proyectos...</span>
+                      </div>
+                    </td>
+                  </tr>
+                ) : paginatedProjects.length === 0 ? (
                   <tr>
                     <td colSpan={6} className="py-12 text-center text-sm text-muted-foreground">
                       No hay proyectos para mostrar

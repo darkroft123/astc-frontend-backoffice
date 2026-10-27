@@ -2,7 +2,7 @@
 
 import { StatusBadge } from "@/components/atoms/status-badge";
 import { LocationCell } from "@/components/atoms/LocationCell";
-import { Folder, ChevronLeft, ChevronRight } from "lucide-react";
+import { Folder, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 interface AttendanceTableProps {
   paginatedRows: any[];
@@ -11,6 +11,7 @@ interface AttendanceTableProps {
   page: number;
   totalPages: number;
   setPage: (updater: (prev: number) => number) => void;
+  isLoading?: boolean;
 }
 
 export function AttendanceTable({
@@ -20,6 +21,7 @@ export function AttendanceTable({
   page,
   totalPages,
   setPage,
+  isLoading = false,
 }: AttendanceTableProps) {
   return (
     <div className="space-y-4">
@@ -53,7 +55,16 @@ export function AttendanceTable({
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60 dark:divide-surface/60">
-              {paginatedRows.length === 0 ? (
+              {isLoading ? (
+                <tr>
+                  <td colSpan={7} className="py-12 text-center">
+                    <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                      <Loader2 className="w-5 h-5 animate-spin text-[#A855F7]" />
+                      <span>Cargando asistencias...</span>
+                    </div>
+                  </td>
+                </tr>
+              ) : paginatedRows.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="py-12 text-center text-sm text-muted-foreground">
                     No hay registros de asistencias para los filtros seleccionados
@@ -158,7 +169,12 @@ export function AttendanceTable({
 
       {/* MOBILE ATTENDANCE CARDS */}
       <div className="md:hidden space-y-3">
-        {paginatedRows.length === 0 ? (
+        {isLoading ? (
+          <div className="py-12 text-center text-xs text-muted-foreground bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl flex items-center justify-center gap-2">
+            <Loader2 className="w-5 h-5 animate-spin text-[#A855F7]" />
+            <span>Cargando asistencias...</span>
+          </div>
+        ) : paginatedRows.length === 0 ? (
           <div className="py-12 text-center text-xs text-muted-foreground bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl">
             No hay registros de asistencias para los filtros seleccionados
           </div>
