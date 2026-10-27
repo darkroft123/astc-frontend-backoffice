@@ -1,8 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { StatusBadge } from "@/components/atoms/status-badge";
 import { LocationCell } from "@/components/atoms/LocationCell";
-import { Folder, ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
+import { Folder, ChevronLeft, ChevronRight, Loader2, Camera } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
 interface AttendanceTableProps {
   paginatedRows: any[];
@@ -23,6 +30,8 @@ export function AttendanceTable({
   setPage,
   isLoading = false,
 }: AttendanceTableProps) {
+  const [selectedPhotoUrl, setSelectedPhotoUrl] = useState<string | null>(null);
+
   return (
     <div className="space-y-4">
       {/* DESKTOP ATTENDANCE TABLE */}
@@ -136,15 +145,39 @@ export function AttendanceTable({
                       </td>
 
                       <td className="py-3.5 px-5 text-xs font-mono text-foreground">
-                        {r.checkIn}
+                        <div className="flex items-center gap-1.5">
+                          <span>{r.checkIn}</span>
+                          {r.photoUrl && (
+                            <button
+                              type="button"
+                              onClick={() => setSelectedPhotoUrl(r.photoUrl)}
+                              className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+                              title="Ver foto de entrada"
+                            >
+                              <Camera className="w-3.5 h-3.5 text-[#A855F7]" />
+                            </button>
+                          )}
+                        </div>
                       </td>
 
                       <td className="py-3.5 px-5 text-xs font-mono text-foreground">
-                        {r.checkOut ? (
-                          r.checkOut
-                        ) : (
-                          <span className="text-muted-foreground italic">Sin salida</span>
-                        )}
+                        <div className="flex items-center gap-1.5">
+                          {r.checkOut ? (
+                            <span>{r.checkOut}</span>
+                          ) : (
+                            <span className="text-muted-foreground italic">Sin salida</span>
+                          )}
+                          {r.checkOut && r.photoUrl && (
+                            <button
+                              type="button"
+                              onClick={() => setSelectedPhotoUrl(r.photoUrl)}
+                              className="p-1 text-muted-foreground hover:text-foreground transition-colors"
+                              title="Ver foto de salida"
+                            >
+                              <Camera className="w-3.5 h-3.5 text-[#A855F7]" />
+                            </button>
+                          )}
+                        </div>
                       </td>
 
                       <td className="py-3.5 px-5">
@@ -199,39 +232,32 @@ export function AttendanceTable({
                 key={r.id}
                 className="bg-card dark:bg-[#101322] border border-border dark:border-[#1E2335] rounded-2xl p-4 space-y-3 shadow-sm"
               >
-                {/* Header row */}
-                <div className="flex items-start justify-between gap-2">
+                {/* Header row: Avatar, Name, Status */}
+                <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="w-10 h-10 rounded-2xl bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
+                    <div className="w-9 h-9 rounded-full bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
                       {initials}
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-bold text-foreground dark:text-white text-sm leading-tight truncate">
+                      <p className="font-semibold text-sm text-foreground dark:text-white truncate">
                         {r.userName}
-                      </h3>
-                      <div className="mt-1">
-                        <span
-                          className={`text-[10px] px-2 py-0.5 rounded-full font-medium border ${
-                            isAdmin
-                              ? "bg-violet/10 text-violet-ink border-violet/20 dark:bg-[#241738] dark:text-[#C084FC] dark:border-[#401E68]"
-                              : isPm
-                              ? "bg-amber/10 text-amber-ink border-amber/20 dark:bg-[#2C2112] dark:text-[#FBBF24] dark:border-[#4E3815]"
-                              : "bg-blue/10 text-blue border-blue/20 dark:bg-[#132238] dark:text-[#38BDF8] dark:border-[#1E3A5F]"
-                          }`}
-                        >
-                          {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Colaborador"}
-                        </span>
-                      </div>
+                      </p>
+                      <span
+                        className={`text-[10px] px-1.5 py-0.2 rounded font-medium border inline-block mt-0.5 ${
+                          isAdmin
+                            ? "bg-violet/10 text-violet-ink dark:text-violet border-violet/20"
+                            : isPm
+                            ? "bg-amber/10 text-amber-ink dark:text-amber border-amber/20"
+                            : "bg-blue/10 text-blue dark:text-blue border-blue/20"
+                        }`}
+                      >
+                        {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Colaborador"}
+                      </span>
                     </div>
                   </div>
-
-                  {/* Status badge */}
-                  <div className="shrink-0">
-                    <StatusBadge status={r.status} />
-                  </div>
+                  <StatusBadge status={r.status} />
                 </div>
 
-                {/* Email */}
                 {r.user?.email && (
                   <p className="text-xs text-muted-foreground dark:text-[#8F96AE] truncate">
                     {r.user.email}
@@ -257,21 +283,45 @@ export function AttendanceTable({
                     <span className="font-mono text-[10px] font-semibold text-muted-foreground dark:text-[#8F96AE] tracking-wider uppercase block">
                       ENTRADA
                     </span>
-                    <span className="font-mono text-sm font-bold text-foreground dark:text-white mt-1 block">
-                      {r.checkIn}
-                    </span>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="font-mono text-sm font-bold text-foreground dark:text-white">
+                        {r.checkIn}
+                      </span>
+                      {r.photoUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedPhotoUrl(r.photoUrl)}
+                          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                          title="Ver foto de entrada"
+                        >
+                          <Camera className="w-3.5 h-3.5 text-[#A855F7]" />
+                        </button>
+                      )}
+                    </div>
                   </div>
                   <div className="bg-muted/40 dark:bg-[#141829] border border-border/70 dark:border-[#1E2335] rounded-xl p-2.5">
                     <span className="font-mono text-[10px] font-semibold text-muted-foreground dark:text-[#8F96AE] tracking-wider uppercase block">
                       SALIDA
                     </span>
-                    <span className="font-mono text-sm font-bold text-foreground dark:text-white mt-1 block">
-                      {r.checkOut || (
-                        <span className="text-muted-foreground dark:text-[#8F96AE] font-normal text-xs">
-                          Sin salida
-                        </span>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="font-mono text-sm font-bold text-foreground dark:text-white">
+                        {r.checkOut || (
+                          <span className="text-muted-foreground dark:text-[#8F96AE] font-normal text-xs">
+                            Sin salida
+                          </span>
+                        )}
+                      </span>
+                      {r.checkOut && r.photoUrl && (
+                        <button
+                          type="button"
+                          onClick={() => setSelectedPhotoUrl(r.photoUrl)}
+                          className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition-colors"
+                          title="Ver foto de salida"
+                        >
+                          <Camera className="w-3.5 h-3.5 text-[#A855F7]" />
+                        </button>
                       )}
-                    </span>
+                    </div>
                   </div>
                 </div>
 
@@ -318,6 +368,23 @@ export function AttendanceTable({
           </button>
         </div>
       </div>
+
+      {/* Modal Photo Preview */}
+      <Dialog open={!!selectedPhotoUrl} onOpenChange={(open) => { if (!open) setSelectedPhotoUrl(null); }}>
+        <DialogContent className="max-w-md bg-card border-border p-4 rounded-2xl">
+          <div className="space-y-3">
+            <DialogTitle className="font-semibold text-base text-foreground">Foto de marcación</DialogTitle>
+            <DialogDescription className="sr-only">Vista previa de la foto de marcación</DialogDescription>
+            {selectedPhotoUrl && (
+              <img
+                src={selectedPhotoUrl}
+                alt="Foto de marcación"
+                className="w-full h-auto rounded-xl object-contain max-h-[400px] border border-border"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

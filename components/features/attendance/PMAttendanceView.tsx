@@ -181,6 +181,7 @@ export function PMAttendanceView() {
         checkIn: item.checkIn ? item.checkIn.substring(0, 5) : "—",
         checkOut: item.checkOut ? item.checkOut.substring(0, 5) : null,
         status: item.status || "ASISTENCIA",
+        photoUrl: item.photoUrl,
         locationName: item.locationName || "Condevilla Señor",
         latitude: item.latitude || -12.0123,
         longitude: item.longitude || -77.0543,
