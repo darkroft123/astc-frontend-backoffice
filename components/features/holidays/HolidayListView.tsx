@@ -211,29 +211,30 @@ export default function HolidayListView() {
   };
 
   const confirmAssignment = async () => {
-    if (pendingAssignment && token) {
-      const collectionIdToAssign = pendingAssignment;
-      try {
-        setAssignedCollectionId(collectionIdToAssign);
-        await updateAdminSetting(token, "GLOBAL_ASSIGNED_COLLECTION_ID", collectionIdToAssign).catch(() => null);
-        if (typeof window !== "undefined") {
-          localStorage.setItem("astc_global_assigned_collection_id", collectionIdToAssign);
-        }
+    if (!pendingAssignment) return;
+    const collectionIdToAssign = pendingAssignment;
+    setPendingAssignment(null); // Cierra el modal de inmediato
 
-        const projects = await getAllProjects(token).catch(() => []);
-        if (projects && projects.length > 0) {
-          await Promise.allSettled(
-            projects.map((p: any) => linkProjectToCollection(token, p.id, collectionIdToAssign))
-          );
-        }
-
-        toast({ title: "Colección asignada globalmente a los proyectos" });
-      } catch (error) {
-        console.error("Error confirmAssignment:", error);
-        toast({ title: "Error al asignar colección", variant: "destructive" });
+    if (!token) return;
+    try {
+      setAssignedCollectionId(collectionIdToAssign);
+      await updateAdminSetting(token, "GLOBAL_ASSIGNED_COLLECTION_ID", collectionIdToAssign).catch(() => null);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("astc_global_assigned_collection_id", collectionIdToAssign);
       }
+
+      const projects = await getAllProjects(token).catch(() => []);
+      if (projects && projects.length > 0) {
+        await Promise.allSettled(
+          projects.map((p: any) => linkProjectToCollection(token, p.id, collectionIdToAssign))
+        );
+      }
+
+      toast({ title: "Colección asignada globalmente a los proyectos" });
+    } catch (error) {
+      console.error("Error confirmAssignment:", error);
+      toast({ title: "Error al asignar colección", variant: "destructive" });
     }
-    setPendingAssignment(null);
   };
 
   return (
