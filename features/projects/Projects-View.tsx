@@ -18,7 +18,7 @@ import {
   ChevronDown,
   Loader2,
 } from "lucide-react";
-import { getAllProjects, deleteProject } from "@/app/services/project.assistance.service";
+import { getAllProjects, deleteProject, exportAttendance } from "@/app/services/project.assistance.service";
 type Project = any;
 import {
   Dialog,

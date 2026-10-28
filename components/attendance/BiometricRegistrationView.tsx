@@ -258,12 +258,13 @@ export default function BiometricRegistrationView({
         targetProject = { id: savedId, name: localStorage.getItem("selected_project_name") || "Proyecto" } as any;
       }
     }
-    if (!targetProject) {
-      alert("Por favor selecciona un proyecto antes de registrar asistencia.");
-      return;
+    if (targetProject) {
+      sessionStorage.setItem("attendance_project_id", targetProject.id);
+      sessionStorage.setItem("attendance_project_name", targetProject.name || "Proyecto");
+    } else {
+      sessionStorage.removeItem("attendance_project_id");
+      sessionStorage.setItem("attendance_project_name", "Sin proyecto");
     }
-    sessionStorage.setItem("attendance_project_id", targetProject.id);
-    sessionStorage.setItem("attendance_project_name", targetProject.name || "Proyecto");
     stopCamera();
     router.push(previewRoute);
   };
@@ -286,12 +287,13 @@ export default function BiometricRegistrationView({
         targetProject = { id: savedId, name: localStorage.getItem("selected_project_name") || "Proyecto" } as any;
       }
     }
-    if (!targetProject) {
-      alert("Por favor selecciona un proyecto antes de registrar asistencia.");
-      return;
+    if (targetProject) {
+      sessionStorage.setItem("attendance_project_id", targetProject.id);
+      sessionStorage.setItem("attendance_project_name", targetProject.name || "Proyecto");
+    } else {
+      sessionStorage.removeItem("attendance_project_id");
+      sessionStorage.setItem("attendance_project_name", "Sin proyecto");
     }
-    sessionStorage.setItem("attendance_project_id", targetProject.id);
-    sessionStorage.setItem("attendance_project_name", targetProject.name || "Proyecto");
     stopCamera();
     router.push(previewRoute);
   };
@@ -310,11 +312,10 @@ export default function BiometricRegistrationView({
     <div className="w-full space-y-6 text-foreground font-sans bg-transparent">
       {/* 1. TOP HEADER & OFFLINE BANNER */}
       <AttendanceHeader
-        projectName={project?.name || "Proyecto"}
+        projectName={project?.name || "Administración Central"}
         schedule={schedule}
-        projects={projects}
-        selectedProjectId={project?.id || ""}
-        onSelectProject={selectProject}
+        projects={[]}
+        selectedProjectId=""
         day={day}
         date={date}
         time={time}

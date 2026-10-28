@@ -187,7 +187,10 @@ export default function AttendancePreviewPage() {
     );
   }
 
-  const projectName = project?.name || "Proyecto";
+  const projectName =
+    project?.name ||
+    (typeof window !== "undefined" && sessionStorage.getItem("attendance_project_name")) ||
+    "Administración Central";
   const displayLat = lat ?? -12.0184;
   const displayLng = lng ?? -77.0817;
 
