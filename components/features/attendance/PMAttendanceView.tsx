@@ -37,14 +37,60 @@ export function PMAttendanceView() {
   const [, setUsers] = useState<User[]>([]);
   const [userMap, setUserMap] = useState<Record<string, User>>({});
 
+  const getDatesForPeriod = (period: Period): { start: string; end: string } => {
+    const today = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    const fmt = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    const end = fmt(today);
+
+    switch (period) {
+      case "today":
+        return { start: end, end };
+      case "thisweek": {
+        const d = new Date(today);
+        const day = d.getDay();
+        const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+        d.setDate(diff);
+        return { start: fmt(d), end };
+      }
+      case "month": {
+        const first = new Date(today.getFullYear(), today.getMonth(), 1);
+        return { start: fmt(first), end };
+      }
+      case "3months": {
+        const d = new Date(today);
+        d.setMonth(d.getMonth() - 3);
+        return { start: fmt(d), end };
+      }
+      case "6months": {
+        const d = new Date(today);
+        d.setMonth(d.getMonth() - 6);
+        return { start: fmt(d), end };
+      }
+      case "9months": {
+        const d = new Date(today);
+        d.setMonth(d.getMonth() - 9);
+        return { start: fmt(d), end };
+      }
+      case "total":
+      default:
+        return { start: "2024-01-01", end };
+    }
+  };
+
   const [activePeriod, setActivePeriod] = useState<Period>("month");
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-  const [customRange, setCustomRange] = useState({
-    start: "2026-09-01",
-    end: "2026-09-03",
-  });
-  const [tempStartDate, setTempStartDate] = useState("2026-09-01");
-  const [tempEndDate, setTempEndDate] = useState("2026-09-03");
+  const [customRange, setCustomRange] = useState(() => getDatesForPeriod("month"));
+  const [tempStartDate, setTempStartDate] = useState(() => getDatesForPeriod("month").start);
+  const [tempEndDate, setTempEndDate] = useState(() => getDatesForPeriod("month").end);
+
+  const handlePeriodChange = (p: Period) => {
+    setActivePeriod(p);
+    const newRange = getDatesForPeriod(p);
+    setCustomRange(newRange);
+    setTempStartDate(newRange.start);
+    setTempEndDate(newRange.end);
+  };
 
   const handleOpenCalendar = () => {
     setTempStartDate(customRange.start);
@@ -125,7 +171,9 @@ export function PMAttendanceView() {
         token,
         selectedProject === "all" ? undefined : selectedProject,
         undefined,
-        statusFilter === "all" ? undefined : statusFilter
+        statusFilter === "all" ? undefined : statusFilter,
+        customRange.start,
+        customRange.end
       );
 
       let list = Array.isArray(data) ? data : [];
@@ -144,7 +192,7 @@ export function PMAttendanceView() {
     } finally {
       setIsLoading(false);
     }
-  }, [token, selectedProject, selectedRole, statusFilter]);
+  }, [token, selectedProject, selectedRole, statusFilter, customRange]);
 
   useEffect(() => {
     fetchAttendance();
@@ -230,9 +278,18 @@ export function PMAttendanceView() {
       const result = await exportAttendance(token, {
         projectId: selectedProject === "all" ? undefined : selectedProject,
         status: statusFilter === "all" ? undefined : statusFilter,
+        fromDate: customRange.start,
+        toDate: customRange.end,
       });
       if (result?.content) {
-        const blob = new Blob([result.content], {
+        let exportContent = result.content;
+        if (!exportContent.startsWith("\uFEFF")) {
+          exportContent = "\uFEFF" + exportContent;
+        }
+        if (!exportContent.includes("sep=")) {
+          exportContent = "\uFEFFsep=;\r\n" + exportContent.replace(/^\uFEFF/, "");
+        }
+        const blob = new Blob([exportContent], {
           type: "text/csv;charset=utf-8;",
         });
         const url = URL.createObjectURL(blob);
@@ -290,7 +347,7 @@ export function PMAttendanceView() {
         {/* PERIOD / DATE SELECTOR BAR */}
         <AttendancePeriodSelector
           activePeriod={activePeriod}
-          setActivePeriod={setActivePeriod}
+          setActivePeriod={handlePeriodChange}
           dateRangeDisplay={dateRangeDisplay}
           onOpenCalendar={handleOpenCalendar}
         />
