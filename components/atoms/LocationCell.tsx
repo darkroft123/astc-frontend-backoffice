@@ -52,7 +52,7 @@ export function LocationCell({
       title={`Coordenadas: ${effectiveLat}, ${effectiveLng} (Ver en Google Maps)`}
     >
       <MapPin className="w-3.5 h-3.5 text-blue dark:text-blue shrink-0" />
-      <span className="truncate max-w-[140px]">{district || locationName || "Condevilla Señor"}</span>
+      <span className="truncate max-w-[140px]">{district || locationName || "Ubicación registrada"}</span>
     </a>
   );
 }

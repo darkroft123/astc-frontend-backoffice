@@ -1,5 +1,7 @@
 "use client";
 
+import { formatAttendanceTime } from "@/lib/timezone";
+
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { useAuth } from "@/app/jwt/auth/auth.provider";
 import {
@@ -226,11 +228,11 @@ export function PMAttendanceView() {
         userRole: u?.roleCode || (u as any)?.role || "TEAM_MEMBER",
         projectName,
         date: item.date,
-        checkIn: item.checkIn ? item.checkIn.substring(0, 5) : "—",
-        checkOut: item.checkOut ? item.checkOut.substring(0, 5) : null,
+        checkIn: formatAttendanceTime(item.checkIn, item.date),
+        checkOut: item.checkOut ? formatAttendanceTime(item.checkOut, item.date) : null,
         status: item.status || "ASISTENCIA",
         photoUrl: item.photoUrl,
-        locationName: item.locationName || "Condevilla Señor",
+        locationName: item.locationName || "Ubicación registrada",
         latitude: item.latitude || -12.0123,
         longitude: item.longitude || -77.0543,
       };
