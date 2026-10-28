@@ -44,7 +44,21 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
   const [projects, setProjects] = useState<Project[]>([]);
   const [page, setPage] = useState(1);
   const [selectedProjectForMembers, setSelectedProjectForMembers] = useState<Project | null>(null);
+  const [membersPage, setMembersPage] = useState(1);
+  const MEMBERS_PER_PAGE = 5;
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
+
+  useEffect(() => {
+    setMembersPage(1);
+  }, [selectedProjectForMembers]);
+
+  const totalMembers = selectedProjectForMembers?.members?.length || 0;
+  const totalMembersPages = Math.max(1, Math.ceil(totalMembers / MEMBERS_PER_PAGE));
+  const paginatedMembers = useMemo(() => {
+    if (!selectedProjectForMembers?.members) return [];
+    const start = (membersPage - 1) * MEMBERS_PER_PAGE;
+    return selectedProjectForMembers.members.slice(start, start + MEMBERS_PER_PAGE);
+  }, [selectedProjectForMembers, membersPage]);
 
   const [search, setSearch] = useState("");
   const [estadoFilter, setEstadoFilter] = useState("all");
@@ -561,13 +575,15 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
         >
           <DialogContent className="sm:max-w-md bg-white dark:bg-[#12141F] border border-border dark:border-[#1E2335] text-foreground dark:text-white rounded-2xl">
             <DialogHeader>
-              <DialogTitle className="text-foreground dark:text-white font-bold">Miembros de {selectedProjectForMembers?.name}</DialogTitle>
+              <DialogTitle className="text-foreground dark:text-white font-bold">
+                Miembros de {selectedProjectForMembers?.name} ({totalMembers})
+              </DialogTitle>
               <DialogDescription className="sr-only">Miembros asignados al proyecto</DialogDescription>
             </DialogHeader>
             <div className="py-2">
-              {selectedProjectForMembers?.members && selectedProjectForMembers.members.length > 0 ? (
+              {paginatedMembers && paginatedMembers.length > 0 ? (
                 <div className="space-y-2.5">
-                  {selectedProjectForMembers.members.map((m: any, idx: number) => {
+                  {paginatedMembers.map((m: any, idx: number) => {
                     const u = m.user;
                     return (
                       <div
@@ -593,6 +609,33 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                       </div>
                     );
                   })}
+
+                  {/* PAGINACIÓN DE MIEMBROS (5 EN 5) */}
+                  {totalMembersPages > 1 && (
+                    <div className="flex items-center justify-between pt-3 mt-2 border-t border-border/70 dark:border-[#1E2335] text-xs">
+                      <span className="text-muted-foreground dark:text-[#8F96AE]">
+                        Página {membersPage} de {totalMembersPages} ({totalMembers} miembros)
+                      </span>
+                      <div className="flex items-center gap-1.5">
+                        <button
+                          type="button"
+                          onClick={() => setMembersPage((p) => Math.max(1, p - 1))}
+                          disabled={membersPage <= 1}
+                          className="w-8 h-8 rounded-lg border border-border dark:border-[#1E2335] bg-card dark:bg-[#141829] flex items-center justify-center text-foreground hover:bg-muted dark:hover:bg-[#1C2238] transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setMembersPage((p) => Math.min(totalMembersPages, p + 1))}
+                          disabled={membersPage >= totalMembersPages}
+                          className="w-8 h-8 rounded-lg border border-border dark:border-[#1E2335] bg-card dark:bg-[#141829] flex items-center justify-center text-foreground hover:bg-muted dark:hover:bg-[#1C2238] transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground dark:text-[#8F96AE] text-center py-4">
