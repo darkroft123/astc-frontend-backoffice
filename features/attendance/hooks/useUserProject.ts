@@ -59,7 +59,6 @@ export function useUserProject() {
     }
 
     if (cachedToken !== token) {
-      console.log("[useUserProject Backoffice] Token changed, resetting cache.");
       cachedToken = token;
       cachedProjects = [];
       cachedPromise = null;
@@ -74,36 +73,30 @@ export function useUserProject() {
 
     if (!cachedPromise) {
       setLoadingProject(true);
-      console.log("[useUserProject Backoffice] Fetching projects for role:", role);
       cachedPromise = (async () => {
         try {
           let list: Project[] = [];
           if (role === "ADMIN") {
-            console.log("[useUserProject Backoffice] Admin detected, fetching getAllProjects...");
             list = await getAllProjects(token);
           } else {
             list = await getMyProjects(token);
             if (!list || list.length === 0) {
-              console.log("[useUserProject Backoffice] getMyProjects empty, trying getAllProjects...");
               list = await getAllProjects(token);
             }
           }
-          console.log("[useUserProject Backoffice] Fetched projects count:", list?.length);
           cachedProjects = list || [];
           hasFetched = true;
           return cachedProjects;
         } catch (err) {
-          console.error("❌ [useUserProject Backoffice] Project fetch failed:", err);
           try {
-            console.log("[useUserProject Backoffice] Attempting emergency getAllProjects fallback...");
             const fallback = await getAllProjects(token);
             if (Array.isArray(fallback) && fallback.length > 0) {
               cachedProjects = fallback;
               hasFetched = true;
               return cachedProjects;
             }
-          } catch (e2) {
-            console.error("❌ [useUserProject Backoffice] Emergency fallback failed:", e2);
+          } catch (_) {
+            // ignore fallback error
           }
           cachedProjects = [];
           hasFetched = false;
@@ -114,7 +107,6 @@ export function useUserProject() {
 
     cachedPromise.then((resolved) => {
       const list = resolved || [];
-      console.log("[useUserProject Backoffice] Setting projects list, total:", list.length);
       setProjects(list);
       setLoadingProject(false);
       if (typeof window !== "undefined") {
