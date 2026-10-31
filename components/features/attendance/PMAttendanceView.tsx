@@ -276,7 +276,7 @@ export function PMAttendanceView() {
   }, [filteredRows, page, pageSize]);
 
   const handleExportCSV = async () => {
-    if (!token) return;
+    if (!token || isLoading || filteredRows.length === 0) return;
     try {
       const result = await exportAttendance(token, {
         projectId: selectedProject === "all" ? undefined : selectedProject,
@@ -285,6 +285,13 @@ export function PMAttendanceView() {
         toDate: customRange.end,
       });
       if (result?.content) {
+        const cleanLines = result.content
+          .replace(/^(\uFEFF)?sep=;[\r\n]+/, "")
+          .split(/\r?\n/)
+          .filter((l) => l.trim().length > 0);
+        if (cleanLines.length <= 1) {
+          return;
+        }
         let exportContent = result.content;
         if (!exportContent.startsWith("\uFEFF")) {
           exportContent = "\uFEFF" + exportContent;
@@ -372,6 +379,7 @@ export function PMAttendanceView() {
           isLoading={isLoading}
           onRefresh={fetchAttendance}
           onExportCSV={handleExportCSV}
+          canExport={!isLoading && filteredRows.length > 0}
         />
 
         {/* ATTENDANCE TABLE (DESKTOP + MOBILE + PAGINATION) */}

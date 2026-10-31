@@ -22,6 +22,7 @@ interface AttendanceFilterBarProps {
   isLoading: boolean;
   onRefresh: () => void;
   onExportCSV: () => void;
+  canExport?: boolean;
 }
 
 export function AttendanceFilterBar({
@@ -37,6 +38,7 @@ export function AttendanceFilterBar({
   isLoading,
   onRefresh,
   onExportCSV,
+  canExport = true,
 }: AttendanceFilterBarProps) {
   return (
     <div className="grid grid-cols-1 sm:flex sm:flex-wrap items-center gap-3">
@@ -123,7 +125,13 @@ export function AttendanceFilterBar({
 
         <button
           onClick={onExportCSV}
-          className="flex items-center justify-center gap-2 px-4 h-10 rounded-xl text-sm font-medium border border-green/30 text-green-ink dark:text-green bg-green/10 hover:bg-green/20 transition-colors cursor-pointer"
+          disabled={!canExport || isLoading}
+          title={
+            !canExport
+              ? "No hay asistencias registradas para exportar"
+              : "Exportar asistencias a CSV"
+          }
+          className="flex items-center justify-center gap-2 px-4 h-10 rounded-xl text-sm font-medium border border-green/30 text-green-ink dark:text-green bg-green/10 hover:bg-green/20 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Download className="w-4 h-4" />
           Exportar CSV
