@@ -40,7 +40,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
   const router = useRouter();
   const { token, hydrated } = useAuth();
   const isAdmin = context === "ADMIN";
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [projects, setProjects] = useState<Project[]>([]);
   const [page, setPage] = useState(1);
   const [selectedProjectForMembers, setSelectedProjectForMembers] = useState<Project | null>(null);
@@ -93,7 +93,9 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
   }
 
   useEffect(() => {
-    fetchProjects();
+    if (!hydrated) return;
+    if (token) fetchProjects();
+    else setIsLoading(false);
   }, [hydrated, token]);
 
   useEffect(() => {

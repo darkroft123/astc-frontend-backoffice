@@ -23,7 +23,7 @@ import { AttendanceCustomRangeDialog } from "./components/AttendanceCustomRangeD
 type User = any;
 
 export function PMAttendanceView() {
-  const { user, role, token } = useAuth();
+  const { user, role, token, hydrated } = useAuth();
   const userRoleStr = (
     typeof role === "string"
       ? role
@@ -32,7 +32,7 @@ export function PMAttendanceView() {
   const isViewerAdmin =
     userRoleStr !== "PROJECT_MANAGER" && userRoleStr !== "TEAM_MEMBER";
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [rawAttendances, setRawAttendances] = useState<any[]>([]);
 
   const [projects, setProjects] = useState<any[]>([]);
@@ -178,15 +178,7 @@ export function PMAttendanceView() {
         customRange.end
       );
 
-      let list = Array.isArray(data) ? data : [];
-      if (selectedRole !== "ALL") {
-        list = list.filter((item: any) => {
-          const u = userMap[item.userId] || item.user;
-          const roleCode = u?.roleCode || (u as any)?.role;
-          return roleCode === selectedRole;
-        });
-      }
-
+      const list = Array.isArray(data) ? data : [];
       setRawAttendances(list);
     } catch (err) {
       console.error("Error fetching attendance in PMAttendanceView:", err);
@@ -194,11 +186,13 @@ export function PMAttendanceView() {
     } finally {
       setIsLoading(false);
     }
-  }, [token, selectedProject, selectedRole, statusFilter, customRange]);
+  }, [token, selectedProject, statusFilter, customRange]);
 
   useEffect(() => {
-    fetchAttendance();
-  }, [fetchAttendance]);
+    if (!hydrated) return;
+    if (token) fetchAttendance();
+    else setIsLoading(false);
+  }, [hydrated, token, fetchAttendance]);
 
   const projectMap = useMemo(() => {
     const map: Record<string, string> = {};
@@ -209,7 +203,14 @@ export function PMAttendanceView() {
   }, [projects]);
 
   const rows = useMemo(() => {
-    return rawAttendances.map((item) => {
+    return rawAttendances
+      .filter((item) => {
+        if (selectedRole === "ALL") return true;
+        const u = userMap[item.userId] || item.user;
+        const roleCode = u?.roleCode || (u as any)?.role;
+        return roleCode === selectedRole;
+      })
+      .map((item) => {
       const u = userMap[item.userId] || item.user;
       const userName = u
         ? `${u.firstName || ""} ${u.lastName || ""}`.trim() ||
@@ -237,7 +238,7 @@ export function PMAttendanceView() {
         longitude: item.longitude || -77.0543,
       };
     });
-  }, [rawAttendances, userMap, projectMap]);
+  }, [rawAttendances, userMap, projectMap, selectedRole, projects]);
 
   const filteredRows = useMemo(() => {
     if (!searchTerm.trim()) return rows;

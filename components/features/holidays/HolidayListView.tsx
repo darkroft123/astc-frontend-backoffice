@@ -41,9 +41,9 @@ import { es } from "date-fns/locale";
 import { MOCK_COLLECTIONS } from "@/lib/mock-data";
 
 export default function HolidayListView() {
-  const { token } = useAuth();
+  const { token, hydrated } = useAuth();
   const [collections, setCollections] = useState<CollectionOutput[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -91,8 +91,10 @@ export default function HolidayListView() {
   }, [collections]);
 
   useEffect(() => {
-    fetchCollections();
-  }, [token]);
+    if (!hydrated) return;
+    if (token) fetchCollections();
+    else setLoading(false);
+  }, [hydrated, token]);
 
   const filteredCollections = useMemo(() => {
     const lowerQuery = searchQuery.toLowerCase();

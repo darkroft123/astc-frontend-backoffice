@@ -14,7 +14,7 @@ const ITEMS_PER_PAGE = 5;
 export default function UsersList() {
   const router = useRouter();
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
@@ -37,9 +37,10 @@ export default function UsersList() {
 
   /* ================= LOAD USERS ================= */
   useEffect(() => {
-    if (!token || checkingAuth) return;
-    loadUsers();
-  }, [token, checkingAuth]);
+    if (!hydrated || checkingAuth) return;
+    if (token) loadUsers();
+    else setLoading(false);
+  }, [hydrated, token, checkingAuth]);
 
   async function loadUsers() {
     if (!token) return;
