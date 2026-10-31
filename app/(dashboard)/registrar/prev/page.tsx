@@ -135,6 +135,7 @@ export default function AttendancePreviewPage() {
         photoUrl: base64 || undefined,
       });
       clearSaved();
+      window.dispatchEvent(new Event("astc-attendance-updated"));
       router.push("/asistencias-pm");
     } catch (err: any) {
       alert(err?.message || "Error al registrar entrada.");
@@ -171,6 +172,7 @@ export default function AttendancePreviewPage() {
     try {
       await checkOut(token!, project?.id || null, base64 || null, lat, lng);
       clearSaved();
+      window.dispatchEvent(new Event("astc-attendance-updated"));
       router.push("/asistencias-pm");
     } catch (err: any) {
       alert(err?.message || "Error al registrar salida.");
@@ -194,9 +196,26 @@ export default function AttendancePreviewPage() {
   const displayLat = lat ?? -12.0184;
   const displayLng = lng ?? -77.0817;
 
-  const entryTimeFormatted = todayAtt?.checkIn ? formatAttendanceTime(todayAtt.checkOut ? todayAtt.checkIn : todayAtt.checkIn) : "08:52 a. m.";
-  const exitTimeFormatted = todayAtt?.checkOut ? formatAttendanceTime(todayAtt.checkOut) : "09:07 a. m.";
-  const timestampText = "2/9/2026, 10:55:21 p. m.";
+  const entryTimeFormatted = todayAtt?.checkIn ? formatAttendanceTime(todayAtt.checkIn) : "Pendiente";
+  const exitTimeFormatted = todayAtt?.checkOut ? formatAttendanceTime(todayAtt.checkOut) : "Pendiente";
+  const timestampText = new Date().toLocaleString("es-PE", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+
+  const now = new Date();
+  const currentHHmm = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+  const startTime = project?.workStartTime ? project.workStartTime.slice(0, 5) : "08:00";
+  const endTime = project?.workEndTime ? project.workEndTime.slice(0, 5) : "17:00";
+
+  const isAfterHours = currentHHmm > endTime;
+  const isEarlyExit = currentHHmm < endTime;
+  const isLateEntry = currentHHmm > startTime;
 
   const warningCard = (
     !base64 ? (
