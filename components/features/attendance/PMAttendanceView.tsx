@@ -33,6 +33,7 @@ export function PMAttendanceView() {
     userRoleStr !== "PROJECT_MANAGER" && userRoleStr !== "TEAM_MEMBER";
 
   const [isLoading, setIsLoading] = useState(true);
+  const [metaLoading, setMetaLoading] = useState(true);
   const [rawAttendances, setRawAttendances] = useState<any[]>([]);
 
   const [projects, setProjects] = useState<any[]>([]);

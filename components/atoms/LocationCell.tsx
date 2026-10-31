@@ -34,7 +34,7 @@ export function LocationCell({
       return (
         <span className="inline-flex items-center gap-1.5 text-blue dark:text-blue text-xs">
           <MapPin className="w-3.5 h-3.5 text-blue dark:text-blue shrink-0" />
-          <span className="truncate max-w-[140px]">{locationName}</span>
+          <span className="whitespace-nowrap">{locationName}</span>
         </span>
       );
     }
@@ -52,7 +52,7 @@ export function LocationCell({
       title={`Coordenadas: ${effectiveLat}, ${effectiveLng} (Ver en Google Maps)`}
     >
       <MapPin className="w-3.5 h-3.5 text-blue dark:text-blue shrink-0" />
-      <span className="truncate max-w-[140px]">{district || locationName || "Ubicación registrada"}</span>
+      <span className="whitespace-nowrap">{district || locationName || "Ubicación registrada"}</span>
     </a>
   );
 }
