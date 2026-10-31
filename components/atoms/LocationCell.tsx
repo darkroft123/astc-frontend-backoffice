@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { getDistrictFromCoords } from "@/lib/geocoding";
 import { MapPin } from "lucide-react";
+
 export function LocationCell({
   lat,
   lng,
@@ -15,22 +16,29 @@ export function LocationCell({
   longitude?: number | null;
   locationName?: string | null;
 }) {
-  const [district, setDistrict] = useState<string | null>(locationName || null);
+  const isPlaceholderName =
+    !locationName ||
+    locationName === "Ubicación registrada" ||
+    locationName === "Cargando...";
+
+  const [district, setDistrict] = useState<string | null>(
+    !isPlaceholderName ? locationName : null
+  );
   const effectiveLat = lat ?? latitude;
   const effectiveLng = lng ?? longitude;
 
   useEffect(() => {
-    if (locationName) {
+    if (locationName && !isPlaceholderName) {
       setDistrict(locationName);
       return;
     }
     if (effectiveLat != null && effectiveLng != null) {
       getDistrictFromCoords(effectiveLat, effectiveLng).then(setDistrict);
     }
-  }, [effectiveLat, effectiveLng, locationName]);
+  }, [effectiveLat, effectiveLng, locationName, isPlaceholderName]);
 
   if (effectiveLat == null || effectiveLng == null) {
-    if (locationName) {
+    if (locationName && !isPlaceholderName) {
       return (
         <span className="inline-flex items-center gap-1.5 text-blue dark:text-blue text-xs">
           <MapPin className="w-3.5 h-3.5 text-blue dark:text-blue shrink-0" />
@@ -52,7 +60,7 @@ export function LocationCell({
       title={`Coordenadas: ${effectiveLat}, ${effectiveLng} (Ver en Google Maps)`}
     >
       <MapPin className="w-3.5 h-3.5 text-blue dark:text-blue shrink-0" />
-      <span className="whitespace-nowrap">{district || locationName || "Ubicación registrada"}</span>
+      <span className="whitespace-nowrap">{district || "Cargando..."}</span>
     </a>
   );
 }

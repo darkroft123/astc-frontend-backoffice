@@ -235,9 +235,9 @@ export function PMAttendanceView() {
         checkOut: item.checkOut ? formatAttendanceTime(item.checkOut, item.date) : null,
         status: item.status || "ASISTENCIA",
         photoUrl: item.photoUrl,
-        locationName: item.locationName || "Ubicación registrada",
-        latitude: item.latitude || -12.0123,
-        longitude: item.longitude || -77.0543,
+        locationName: item.locationName || null,
+        latitude: item.latitude != null ? item.latitude : null,
+        longitude: item.longitude != null ? item.longitude : null,
       };
     });
   }, [rawAttendances, userMap, projectMap, selectedRole, projects]);
