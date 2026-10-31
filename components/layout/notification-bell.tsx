@@ -14,7 +14,7 @@ import { notificationService, InAppNotification, getNotificationColor, getNotifi
 import { useAuth } from "@/app/jwt/auth/auth.provider";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 const ICON_MAP = {
   AlertTriangle,
@@ -31,29 +31,36 @@ const ICON_MAP = {
 };
 
 export function NotificationBell() {
-  const { user, hydrated } = useAuth();
+  const { user, token, hydrated } = useAuth();
   const router = useRouter();
-  const effectiveUserId = user?.id || "";
+  const pathname = usePathname();
+  const effectiveUserId = user?.id || user?.sub || "";
   const [unreadCount, setUnreadCount] = useState(0);
   const [notifications, setNotifications] = useState<InAppNotification[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const handleNotificationClick = async (n: InAppNotification) => {
-    await handleMarkAsRead(n);
+  useEffect(() => {
+    if (token) {
+      notificationService.setToken(token);
+    }
+  }, [token]);
+
+  const handleNotificationClick = (n: InAppNotification) => {
+    void handleMarkAsRead(n);
     setOpen(false);
     if (n.actionLink) {
       let target = n.actionLink;
       if (target.includes("/asistencias")) {
         target = "/asistencias-pm";
       } else if (target.includes("/notificaciones")) {
-        target = "/notificaciones";
+        target = `/notificaciones?id=${n.id}`;
       } else if (target.startsWith("/team-member")) {
-        target = "/notificaciones";
+        target = `/notificaciones?id=${n.id}`;
       }
       router.push(target);
     } else {
-      router.push("/notificaciones");
+      router.push(`/notificaciones?id=${n.id}`);
     }
   };
 
@@ -70,7 +77,10 @@ export function NotificationBell() {
   }, [effectiveUserId]);
 
   const fetchNotifications = useCallback(async (silent = false) => {
-    if (!effectiveUserId) return;
+    if (!effectiveUserId) {
+      setLoading(false);
+      return;
+    }
     if (!silent) setLoading(true);
     try {
       const res = await notificationService.getNotifications(effectiveUserId, 1, 10);
@@ -139,6 +149,10 @@ export function NotificationBell() {
     setUnreadCount(0);
     notifyUnreadCountChanged();
   };
+
+  if (pathname?.includes("/notificaciones")) {
+    return null;
+  }
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -212,7 +226,7 @@ export function NotificationBell() {
                       "flex items-start gap-3 p-3 transition-all relative overflow-hidden group cursor-pointer",
                       n.read ? "bg-card hover:bg-raised" : "bg-primary/10 hover:bg-primary/15"
                     )}
-                    onClick={() => handleNotificationClick(n)}
+                    onSelect={() => handleNotificationClick(n)}
                     inset
                   >
                     {/* Semantic side border indicator */}

@@ -20,6 +20,7 @@ import { notificationService } from "@/lib/notification.service";
 import { useUserProject } from "@/features/attendance/hooks/useUserProject";
 import { getGraphQLUrl } from "@/lib/api-host";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { useMobileSidebar } from "@/components/layout/MobileSidebar";
 import { getUser } from "@/app/services/users.service";
 
 const navItems = [
@@ -35,8 +36,9 @@ const navItems = [
 export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   const { user, role, token, logout, hydrated } = useAuth();
-  const { project, projects, selectProject } = useUserProject();
-  const [unreadCount, setUnreadCount] = useState(2);
+  const { setOpen } = useMobileSidebar();
+  const { project } = useUserProject();
+  const [unreadCount, setUnreadCount] = useState(0);
   const [userProfile, setUserProfile] = useState<any>(null);
   const [attendanceLabel, setAttendanceLabel] = useState("Registrar asistencia");
 
@@ -64,10 +66,8 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
     };
     updateLabel();
     window.addEventListener("astc-attendance-updated", updateLabel);
-    window.addEventListener("focus", updateLabel);
     return () => {
       window.removeEventListener("astc-attendance-updated", updateLabel);
-      window.removeEventListener("focus", updateLabel);
     };
   }, [hydrated, token, project?.id]);
 
@@ -83,23 +83,27 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   }, [hydrated, token, user?.sub, user?.id]);
 
   useEffect(() => {
-    if (hydrated && user?.id && token) {
+    const uid = user?.id || user?.sub;
+    if (hydrated && uid && token) {
       notificationService.setToken(token);
-      notificationService
-        .getUnreadCount(user.id)
-        .then((cnt) => setUnreadCount(cnt > 0 ? cnt : 2))
-        .catch(() => setUnreadCount(2));
-
-      const interval = setInterval(() => {
+      const refreshUnread = () => {
         notificationService
-          .getUnreadCount(user.id)
-          .then((cnt) => setUnreadCount(cnt > 0 ? cnt : 2))
-          .catch(() => setUnreadCount(2));
-      }, 60000);
+          .getUnreadCount(uid)
+          .then((cnt) => setUnreadCount(cnt || 0))
+          .catch(() => setUnreadCount(0));
+      };
 
-      return () => clearInterval(interval);
+      refreshUnread();
+      window.addEventListener("astc-notification-updated", refreshUnread);
+
+      const interval = setInterval(refreshUnread, 60000);
+
+      return () => {
+        clearInterval(interval);
+        window.removeEventListener("astc-notification-updated", refreshUnread);
+      };
     }
-  }, [hydrated, user?.id, token]);
+  }, [hydrated, user?.id, user?.sub, token]);
 
   const getInitials = (name: string) => {
     if (!name) return "AD";
@@ -164,7 +168,10 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
         <div className="mt-2.5">
           <Link
             href="/projects"
-            onClick={onNavigate}
+            onClick={() => {
+              setOpen(false);
+              onNavigate?.();
+            }}
             className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl bg-muted/60 border border-border/80 dark:bg-surface dark:border-raised text-xs text-foreground hover:bg-muted dark:hover:bg-raised transition-colors group cursor-pointer"
           >
             <FolderKanban className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors shrink-0" strokeWidth={1.8} />
@@ -194,7 +201,10 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
             <Link
               key={item.name}
               href={item.href}
-              onClick={onNavigate}
+              onClick={() => {
+                setOpen(false);
+                onNavigate?.();
+              }}
               className={cn(
                 "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-normal transition-all group",
                 isActive
@@ -212,9 +222,9 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                 />
                 <span className="truncate">{displayNameItem}</span>
               </div>
-              {item.name === "Notificaciones" && (
+              {item.name === "Notificaciones" && unreadCount > 0 && (
                 <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-red text-white font-bold text-[10px] px-1.5 shrink-0">
-                  {unreadCount > 9 ? "9+" : unreadCount > 0 ? unreadCount : "2"}
+                  {unreadCount > 9 ? "9+" : unreadCount}
                 </span>
               )}
             </Link>
