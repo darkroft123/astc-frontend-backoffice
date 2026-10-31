@@ -34,6 +34,7 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
+import { TimezoneSelector } from "@/components/ui/timezone-selector";
 
 const ROLES = {
   ADMIN: "018f6b7a-0001-7000-8000-000000000001",
@@ -176,6 +177,7 @@ export default function CreateUserPage() {
     email: "",
     roleId: ROLES.TEAM_MEMBER,
     country: "Peru",
+    timezone: "America/Lima",
     phoneLocal: "",
     password: "",
     confirmPassword: "",
@@ -236,6 +238,7 @@ export default function CreateUserPage() {
         phoneLocal: parsed.localDigits,
         roleId: data.roleId || ROLES.TEAM_MEMBER,
         country: parsed.countryId,
+        timezone: COUNTRIES[parsed.countryId]?.timezone || "America/Lima",
         password: "",
         confirmPassword: "",
       });
@@ -277,7 +280,17 @@ export default function CreateUserPage() {
     setFormData((prev) => ({
       ...prev,
       country: newCountryId,
+      timezone: newConfig.timezone,
       phoneLocal: prev.phoneLocal.slice(0, newConfig.digits),
+    }));
+  };
+
+  const handleTimezoneChange = (tz: string) => {
+    const found = Object.values(COUNTRIES).find((c) => c.timezone === tz);
+    setFormData((prev) => ({
+      ...prev,
+      timezone: tz,
+      ...(found ? { country: found.id } : {}),
     }));
   };
 
@@ -623,17 +636,22 @@ export default function CreateUserPage() {
                   </p>
                 </div>
 
-                {/* ZONA HORARIA CALLOUT */}
-                <div className="mt-4 p-3.5 rounded-xl bg-primary/5 dark:bg-primary/10 border border-primary/20 space-y-1">
+                {/* ZONA HORARIA INTERACTIVA */}
+                <div className="mt-4 p-3.5 rounded-xl bg-card border border-border space-y-2.5 shadow-xs">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-xs font-semibold text-primary">
+                    <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5 text-primary" />
-                      <span>Zona horaria: {currentCountry.name}</span>
-                    </div>
-                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-card border border-primary/20 text-primary">
+                      <span>Zona horaria del usuario</span>
+                    </label>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded-md bg-primary/10 border border-primary/20 text-primary">
                       {currentCountry.utcOffset}
                     </span>
                   </div>
+                  <TimezoneSelector
+                    value={formData.timezone || currentCountry.timezone}
+                    onChange={handleTimezoneChange}
+                    className="w-full text-xs"
+                  />
                   <p className="text-[11px] text-muted-foreground">
                     {currentCountry.description}
                   </p>
