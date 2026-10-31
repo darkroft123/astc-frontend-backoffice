@@ -161,7 +161,8 @@ export function PMAttendanceView() {
         map[u.id] = u;
       }
       setUserMap(map);
-    });
+      setMetaLoading(false);
+    }).catch(() => setMetaLoading(false));
   }, [token]);
 
   const fetchAttendance = useCallback(async () => {
@@ -216,7 +217,7 @@ export function PMAttendanceView() {
         ? `${u.firstName || ""} ${u.lastName || ""}`.trim() ||
           u.username ||
           u.email
-        : `Usuario (${item.userId?.slice(0, 8) || "—"})`;
+        : "Usuario";
       const projectName =
         item.projectName ||
         (item.projectId ? projectMap[item.projectId] || (projects.length === 1 && projects[0]?.name ? projects[0].name : "Proyecto general") : "Gestión General");
@@ -376,7 +377,7 @@ export function PMAttendanceView() {
           projects={projects}
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
-          isLoading={isLoading}
+          isLoading={isLoading || metaLoading}
           onRefresh={fetchAttendance}
           onExportCSV={handleExportCSV}
           canExport={!isLoading && filteredRows.length > 0}
@@ -390,7 +391,7 @@ export function PMAttendanceView() {
           page={page}
           totalPages={totalPages}
           setPage={setPage}
-          isLoading={isLoading}
+          isLoading={isLoading || metaLoading}
         />
 
         {/* CALENDAR DATE RANGE PICKER DIALOG */}

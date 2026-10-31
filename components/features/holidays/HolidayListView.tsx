@@ -76,8 +76,10 @@ export default function HolidayListView() {
       } else {
         setCollections([]);
       }
-      if (assignedId) {
+      if (assignedId && Array.isArray(data) && data.some((c: any) => c.id === assignedId)) {
         setAssignedCollectionId(assignedId);
+      } else {
+        setAssignedCollectionId(null);
       }
     } catch (error) {
       console.error("Failed to fetch collections:", error);
@@ -310,7 +312,7 @@ export default function HolidayListView() {
                   Asignada global
                 </span>
                 <div className="text-2xl sm:text-3xl font-bold text-foreground dark:text-white leading-none mt-1">
-                  {assignedCollectionId ? 1 : 0}
+                  {assignedCollectionId && collections.some((c) => c.id === assignedCollectionId) ? 1 : 0}
                 </div>
               </div>
             </div>

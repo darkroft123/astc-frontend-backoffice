@@ -47,53 +47,44 @@ export default function UsersList() {
 
     setLoading(true);
     try {
-      const userData = await listUsers(token).catch((e) => {
-        console.error("Error listUsers in UsersList:", e);
-        return [];
-      });
-      const rawUsers = Array.isArray(userData) ? userData : (userData?.items || []);
-
-      // Render users immediately without waiting for getAllProjects
-      setUsers(
-        rawUsers.map((u: any) => ({
-          ...u,
-          projectAssigned: u.projectAssigned || "Sin proyecto",
-          projects: Array.isArray(u.projects) ? u.projects : [],
-        }))
-      );
-      setLoading(false);
-
-      // Enrich projects asynchronously
-      getAllProjects(token)
-        .then((projectsData) => {
-          const projects = Array.isArray(projectsData) ? projectsData : [];
-          setUsers(
-            rawUsers.map((u: any) => {
-              const userProjects = projects.filter(
-                (p: any) =>
-                  p.responsibleId === u.id ||
-                  (Array.isArray(p.members) &&
-                    p.members.some((m: any) => (m.userId || m.id) === u.id))
-              );
-              const projectAssigned =
-                userProjects.length > 0
-                  ? userProjects.map((p: any) => p.name).join(", ")
-                  : "Sin proyecto";
-
-              return {
-                ...u,
-                projectAssigned,
-                projects: userProjects,
-              };
-            })
-          );
-        })
-        .catch((e) => {
+      const [userData, projectsData] = await Promise.all([
+        listUsers(token).catch((e) => {
+          console.error("Error listUsers in UsersList:", e);
+          return [];
+        }),
+        getAllProjects(token).catch((e) => {
           console.error("Error getAllProjects in UsersList:", e);
-        });
+          return [];
+        }),
+      ]);
+
+      const rawUsers = Array.isArray(userData) ? userData : (userData?.items || []);
+      const projects = Array.isArray(projectsData) ? projectsData : [];
+
+      setUsers(
+        rawUsers.map((u: any) => {
+          const userProjects = projects.filter(
+            (p: any) =>
+              p.responsibleId === u.id ||
+              (Array.isArray(p.members) &&
+                p.members.some((m: any) => (m.userId || m.id) === u.id))
+          );
+          const projectAssigned =
+            userProjects.length > 0
+              ? userProjects.map((p: any) => p.name).join(", ")
+              : "Sin proyecto";
+
+          return {
+            ...u,
+            projectAssigned,
+            projects: userProjects,
+          };
+        })
+      );
     } catch (err) {
       console.error("Error loadUsers:", err);
       setUsers([]);
+    } finally {
       setLoading(false);
     }
   }

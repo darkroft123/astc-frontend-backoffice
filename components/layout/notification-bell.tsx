@@ -150,10 +150,6 @@ export function NotificationBell() {
     notifyUnreadCountChanged();
   };
 
-  if (pathname?.includes("/notificaciones")) {
-    return null;
-  }
-
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
