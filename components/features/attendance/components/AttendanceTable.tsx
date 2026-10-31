@@ -42,25 +42,25 @@ export function AttendanceTable({
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="border-b border-border/80 dark:border-surface bg-muted/30 dark:bg-transparent">
-                <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
+                <th className="py-3 px-3.5 lg:px-4 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                   COLABORADOR
                 </th>
-                <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
+                <th className="py-3 px-3.5 lg:px-4 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                   PROYECTO
                 </th>
-                <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
+                <th className="py-3 px-3.5 lg:px-4 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                   FECHA
                 </th>
-                <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
+                <th className="py-3 px-3.5 lg:px-4 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                   ENTRADA
                 </th>
-                <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
+                <th className="py-3 px-3.5 lg:px-4 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                   SALIDA
                 </th>
-                <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
+                <th className="py-3 px-3.5 lg:px-4 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                   ESTADO
                 </th>
-                <th className="py-3.5 px-5 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
+                <th className="py-3 px-3.5 lg:px-4 font-mono text-[10.5px] uppercase tracking-wider font-semibold text-muted-foreground dark:text-text-5">
                   UBICACIÓN GPS
                 </th>
               </tr>
@@ -109,7 +109,7 @@ export function AttendanceTable({
                           : "bg-transparent hover:bg-muted/20 dark:hover:bg-surface/40"
                       }`}
                     >
-                      <td className="py-3.5 px-5">
+                      <td className="py-3 px-3.5 lg:px-4">
                         <div className="flex items-center gap-2.5">
                           <Avatar className="w-8 h-8 rounded-full shrink-0 shadow-sm">
                           {formatAvatarUrl(r.user?.avatarUrl) && (
@@ -134,7 +134,7 @@ export function AttendanceTable({
                                 {isAdmin ? "Administrador" : isPm ? "Jefe de proyecto" : "Colaborador"}
                               </span>
                               {r.user?.email && (
-                                <span className="text-[11px] text-muted-foreground truncate max-w-[150px]">
+                                <span className="text-[11px] text-muted-foreground truncate max-w-[140px]">
                                   {r.user.email}
                                 </span>
                               )}
@@ -143,18 +143,18 @@ export function AttendanceTable({
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-5">
+                      <td className="py-3 px-3.5 lg:px-4">
                         <div className="flex items-center gap-1.5 text-xs font-medium text-foreground">
                           <Folder className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
                           <span>{r.projectName}</span>
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-5 text-xs font-mono text-foreground">
+                      <td className="py-3 px-3.5 lg:px-4 text-xs font-mono text-foreground">
                         {formatDateDisplay(r.date)}
                       </td>
 
-                      <td className="py-3.5 px-5 text-xs font-mono text-foreground">
+                      <td className="py-3 px-3.5 lg:px-4 text-xs font-mono text-foreground">
                         <div className="flex items-center gap-1.5">
                           <span>{r.checkIn}</span>
                           {r.checkIn && r.checkIn !== "-" && checkInPhoto && (
@@ -170,7 +170,7 @@ export function AttendanceTable({
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-5 text-xs font-mono text-foreground">
+                      <td className="py-3 px-3.5 lg:px-4 text-xs font-mono text-foreground">
                         <div className="flex items-center gap-1.5">
                           {r.checkOut ? (
                             <span>{r.checkOut}</span>
@@ -190,11 +190,11 @@ export function AttendanceTable({
                         </div>
                       </td>
 
-                      <td className="py-3.5 px-5">
+                      <td className="py-3 px-3.5 lg:px-4">
                         <StatusBadge status={r.status} />
                       </td>
 
-                      <td className="py-3.5 px-5">
+                      <td className="py-3 px-3.5 lg:px-4">
                         <LocationCell
                           locationName={r.locationName}
                           latitude={r.latitude}
