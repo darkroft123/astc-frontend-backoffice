@@ -263,12 +263,13 @@ export default function HolidayListView() {
             </p>
           </div>
 
-          {/* Desktop Right Header Actions */}
-          <div className="flex items-center gap-2.5">
+          {/* Header Actions: 50/50 Importar & Nueva colección */}
+          <div className="grid grid-cols-2 gap-2.5 w-full md:w-auto">
+            <HolidayImporter onImport={handleImportHolidays} year={new Date().getFullYear()} />
             <button
               type="button"
               onClick={() => setIsFormOpen(true)}
-              className="w-full md:w-auto h-11 px-5 rounded-2xl text-white font-semibold text-xs shadow-lg shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+              className="h-11 px-4 rounded-xl text-white font-semibold text-xs shadow-md shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
               style={{
                 background: "linear-gradient(90deg, #5B8CFF 0%, #A855F7 100%)",
               }}
@@ -280,7 +281,7 @@ export default function HolidayListView() {
         </div>
 
         {/* UNIFIED MAIN CONTAINER ("Un cuadro entero, no 3") */}
-        <div className="rounded-[22px] border border-border dark:border-[#1E2335] bg-card/60 dark:bg-[#0C0E18] p-4 sm:p-5 md:p-6 shadow-sm space-y-5 sm:space-y-6">
+        <div className="space-y-6">
           {/* 2. TOP 3 KPI METRIC CARDS */}
           <div className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-1">
             {/* Card 1: Colecciones disponibles (Amber) */}
@@ -336,8 +337,7 @@ export default function HolidayListView() {
           </div>
 
           {/* Divider Line */}
-          <div className="border-t border-border/60 dark:border-[#1E2335] -mx-4 sm:-mx-5 md:-mx-6" />
-
+          
           {/* 3. FILTERS, SEARCH & ACTIONS BAR */}
           <div className="pt-1">
             <div className="flex flex-col md:flex-row items-stretch md:items-end justify-between gap-3.5">
