@@ -67,7 +67,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 <span>{subPageInfo.title}</span>
               </button>
               <div className="shrink-0 flex items-center pr-0.5">
-                <NotificationBell />
+                <NotificationBell iconOnly />
               </div>
             </div>
           )}

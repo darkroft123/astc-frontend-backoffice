@@ -263,13 +263,12 @@ export default function HolidayListView() {
             </p>
           </div>
 
-          {/* Header Actions: 50/50 Importar & Nueva colección */}
-          <div className="grid grid-cols-2 gap-2.5 w-full md:w-auto">
-            <HolidayImporter onImport={handleImportHolidays} year={new Date().getFullYear()} />
+          {/* Top Action: Nueva colección */}
+          <div className="flex items-center gap-2.5 w-full md:w-auto">
             <button
               type="button"
               onClick={() => setIsFormOpen(true)}
-              className="h-11 px-4 rounded-xl text-white font-semibold text-xs shadow-md shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+              className="w-full md:w-auto h-11 px-5 rounded-xl text-white font-semibold text-xs shadow-md shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
               style={{
                 background: "linear-gradient(90deg, #5B8CFF 0%, #A855F7 100%)",
               }}
