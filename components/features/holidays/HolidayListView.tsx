@@ -402,66 +402,71 @@ export default function HolidayListView() {
                     }`}
                   >
                     {/* Header Row */}
-                    <div
-                      onClick={() => toggleExpand(col.id)}
-                      className="p-4 flex items-center justify-between gap-3 cursor-pointer select-none"
-                    >
-                      <div className="flex items-center gap-3 min-w-0 flex-1">
-                        <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-[#281B0C] border border-amber-200 dark:border-[#483713] flex items-center justify-center text-amber-600 dark:text-[#FBBF24] shrink-0">
-                          <Layers className="w-5 h-5" />
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <h4 className="text-sm font-bold text-foreground dark:text-white break-words">
+                    <div className="p-4 flex flex-col">
+                      {/* Row 1: Icon + Title/Subtitle + Expand Chevron (Image 2) */}
+                      <div
+                        onClick={() => toggleExpand(col.id)}
+                        className="flex items-center justify-between gap-3 cursor-pointer select-none"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-[#281B0C] border border-amber-200 dark:border-[#483713] flex items-center justify-center text-amber-600 dark:text-[#FBBF24] shrink-0">
+                            <Layers className="w-5 h-5" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h4 className="text-sm font-bold text-foreground dark:text-white truncate">
                               {col.name}
                             </h4>
-                            <span className="font-mono text-[9px] font-bold px-2 py-0.5 rounded-md bg-[#FEF3C7] dark:bg-[#282114] text-[#D97706] dark:text-[#EAB308] border border-[#FDE68A] dark:border-[#483718] uppercase tracking-wider shrink-0">
-                              GLOBAL
-                            </span>
+                            <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-0.5 truncate leading-snug">
+                              {col.items?.length || 0} feriados · Creado {format(new Date(col.createdAt || Date.now()), "dd MMM yyyy", { locale: es })}
+                            </p>
                           </div>
-                          <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-0.5 leading-snug">
-                            {col.items?.length || 0} feriados · Creado {format(new Date(col.createdAt || Date.now()), "dd MMM yyyy", { locale: es })}
-                          </p>
+                        </div>
+
+                        <div className="w-8 h-8 rounded-xl bg-background dark:bg-[#12141F] border border-border dark:border-[#1E2335] flex items-center justify-center text-muted-foreground shrink-0 transition-transform">
+                          {isExpanded ? (
+                            <ChevronUp className="w-4 h-4" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4" />
+                          )}
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
-                        {isAssigned ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-[#0C251C] dark:text-[#34D399] dark:border-[#194B37]">
-                            <CheckCircle className="w-3.5 h-3.5" />
-                            <span className="hidden sm:inline">Asignado</span>
-                          </span>
-                        ) : (
+                      {/* Row 2: GLOBAL Tag on Left + Action Buttons on Right (Image 2) */}
+                      <div className="flex items-center justify-between pt-3 mt-3 border-t border-border/40 dark:border-[#1E2335]">
+                        <span className="font-mono text-[9px] font-bold px-2 py-0.5 rounded-md bg-[#FEF3C7] dark:bg-[#282114] text-[#D97706] dark:text-[#EAB308] border border-[#FDE68A] dark:border-[#483718] uppercase tracking-wider shrink-0">
+                          GLOBAL
+                        </span>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          {isAssigned ? (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-[#0C251C] dark:text-[#34D399] dark:border-[#194B37]">
+                              <CheckCircle className="w-3.5 h-3.5" />
+                              <span>Asignado</span>
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setPendingAssignment(col.id);
+                              }}
+                              className="px-3.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 dark:bg-[#20183A] dark:hover:bg-[#2B1F4F] dark:border-[#3E256C] dark:text-[#C4B5FD] text-xs font-semibold cursor-pointer transition-colors"
+                            >
+                              Asignar
+                            </button>
+                          )}
+
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setPendingAssignment(col.id);
+                              handleDelete(col.id);
                             }}
-                            className="px-3.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 dark:bg-[#20183A] dark:hover:bg-[#2B1F4F] dark:border-[#3E256C] dark:text-[#C4B5FD] text-xs font-semibold cursor-pointer transition-colors"
+                            title="Eliminar colección"
+                            className="w-8 h-8 rounded-xl border border-red-500/20 dark:border-[#4D1C27] bg-red-500/10 dark:bg-[#24131A] hover:bg-red-500/20 dark:hover:bg-[#321721] flex items-center justify-center text-red-600 dark:text-[#EF4444] transition-colors cursor-pointer"
                           >
-                            Asignar
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
-                        )}
-
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(col.id);
-                          }}
-                          title="Eliminar colección"
-                          className="w-8 h-8 rounded-xl border border-red-500/20 dark:border-[#4D1C27] bg-red-500/10 dark:bg-[#24131A] hover:bg-red-500/20 dark:hover:bg-[#321721] flex items-center justify-center text-red-600 dark:text-[#EF4444] transition-colors cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-
-                        <div className="w-8 h-8 rounded-xl bg-background dark:bg-[#12141F] border border-border dark:border-[#1E2335] flex items-center justify-center text-muted-foreground">
-                          {isExpanded ? (
-                            <ChevronUp className="w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4" />
-                          )}
                         </div>
                       </div>
                     </div>
