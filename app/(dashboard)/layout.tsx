@@ -5,6 +5,7 @@ import { SidebarNav } from "@/components/layout/Sidebar";
 import { NotificationBell } from "@/components/layout/notification-bell";
 import { MobileSidebarProvider, MobileSidebar, HamburgerButton } from "@/components/layout/MobileSidebar";
 import { usePathname } from "next/navigation";
+import { useAuthGuard } from "@/app/jwt/auth/useAuthGuard";
 
 import { MobileHeader } from "@/components/layout/MobileHeader";
 import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
@@ -12,6 +13,7 @@ import { cn } from "@/lib/utils";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const { hydrated, token, user, checkingAuth } = useAuthGuard(["ADMIN"]);
 
   // On creation or edition pages, the page itself renders its own mobile header (<- Back + Notification Bell)
   // and the Figma design excludes the global MobileHeader and MobileBottomNav.
@@ -19,6 +21,14 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     pathname?.startsWith("/users/create") ||
     pathname?.startsWith("/projects/create") ||
     pathname?.includes("/projects/edit");
+
+  if (!hydrated || checkingAuth || !token || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen w-full">

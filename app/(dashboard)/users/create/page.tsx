@@ -426,7 +426,7 @@ export default function CreateUserPage() {
   }
 
   return (
-    <div className="relative min-h-screen bg-transparent overflow-hidden pb-12">
+    <div className="relative min-h-screen bg-transparent overflow-x-hidden pb-12 pt-1 md:pt-0">
       <div className="relative w-full max-w-7xl mx-auto space-y-6 z-10">
         {/* MOBILE TOP BAR (MATCHING SVG: <- Usuarios + Notification Bell) */}
         <div className="flex md:hidden items-center justify-between pb-1">
@@ -444,7 +444,7 @@ export default function CreateUserPage() {
         {/* SECTION HEADER */}
         <div className="flex items-start md:items-center justify-between gap-4">
           <div className="flex items-start md:items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#6366F1] to-[#A855F7] flex items-center justify-center text-white shadow-md shrink-0">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#5B8CFF] via-[#A855F7] to-[#22C3E6] flex items-center justify-center text-white shadow-md shrink-0">
               {isEditMode ? (
                 <UserCheck className="w-6 h-6 shrink-0 aspect-square" strokeWidth={1.8} />
               ) : (
@@ -951,3 +951,4 @@ export default function CreateUserPage() {
     </div>
   );
 }
+

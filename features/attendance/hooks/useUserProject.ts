@@ -4,15 +4,15 @@ import { useAuth } from "@/app/jwt/auth/auth.provider";
 import { getMyProjects } from "@/app/services/assistance.service";
 import { getAllProjects } from "@/app/services/project.assistance.service";
 
-export interface Project {
-  id: string;
-  name: string;
-  workStartTime?: string;
-  workEndTime?: string;
-  graceMinutes?: number;
-  timezone?: string | null;
-  holidays?: string[];
-}
+export const DEFAULT_MOCK_PROJECT: Project = {
+  id: "proj-general",
+  name: "Proyecto General",
+  workStartTime: "08:00",
+  workEndTime: "17:00",
+  graceMinutes: 15,
+  timezone: "America/Lima",
+  holidays: [],
+};
 
 let cachedProjects: Project[] = [];
 let cachedPromise: Promise<Project[]> | null = null;
