@@ -18,7 +18,9 @@ import {
   ChevronDown,
   Loader2,
 } from "lucide-react";
-import { getAllProjects, deleteProject, exportAttendance } from "@/app/services/project.assistance.service";
+import { getAllProjects, deleteProject, exportAttendance, getProjectMembers } from "@/app/services/project.assistance.service";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatAvatarUrl } from "@/lib/avatar-url";
 type Project = any;
 import {
   Dialog,
@@ -44,21 +46,39 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
   const [projects, setProjects] = useState<Project[]>([]);
   const [page, setPage] = useState(1);
   const [selectedProjectForMembers, setSelectedProjectForMembers] = useState<Project | null>(null);
+  const [projectMembers, setProjectMembers] = useState<any[]>([]);
+  const [loadingMembers, setLoadingMembers] = useState(false);
   const [membersPage, setMembersPage] = useState(1);
   const MEMBERS_PER_PAGE = 5;
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
   useEffect(() => {
     setMembersPage(1);
-  }, [selectedProjectForMembers]);
+    if (!selectedProjectForMembers || !token) {
+      setProjectMembers([]);
+      return;
+    }
+    setLoadingMembers(true);
+    getProjectMembers(token, selectedProjectForMembers.id)
+      .then((m) => {
+        setProjectMembers(Array.isArray(m) ? m : []);
+      })
+      .catch((err) => {
+        console.error("Error fetching project members:", err);
+        setProjectMembers(selectedProjectForMembers.members || []);
+      })
+      .finally(() => {
+        setLoadingMembers(false);
+      });
+  }, [selectedProjectForMembers, token]);
 
-  const totalMembers = selectedProjectForMembers?.members?.length || 0;
+  const totalMembers = projectMembers.length > 0 ? projectMembers.length : (selectedProjectForMembers?.members?.length || 0);
   const totalMembersPages = Math.max(1, Math.ceil(totalMembers / MEMBERS_PER_PAGE));
   const paginatedMembers = useMemo(() => {
-    if (!selectedProjectForMembers?.members) return [];
+    const list = projectMembers.length > 0 ? projectMembers : (selectedProjectForMembers?.members || []);
     const start = (membersPage - 1) * MEMBERS_PER_PAGE;
-    return selectedProjectForMembers.members.slice(start, start + MEMBERS_PER_PAGE);
-  }, [selectedProjectForMembers, membersPage]);
+    return list.slice(start, start + MEMBERS_PER_PAGE);
+  }, [projectMembers, selectedProjectForMembers, membersPage]);
 
   const [search, setSearch] = useState("");
   const [estadoFilter, setEstadoFilter] = useState("all");
@@ -575,38 +595,56 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
           open={!!selectedProjectForMembers}
           onOpenChange={(open) => !open && setSelectedProjectForMembers(null)}
         >
-          <DialogContent className="sm:max-w-md bg-white dark:bg-[#12141F] border border-border dark:border-[#1E2335] text-foreground dark:text-white rounded-2xl">
-            <DialogHeader>
-              <DialogTitle className="text-foreground dark:text-white font-bold">
+          <DialogContent className="sm:max-w-md w-[calc(100%-2rem)] max-h-[85vh] flex flex-col bg-white dark:bg-[#12141F] border border-border dark:border-[#1E2335] text-foreground dark:text-white rounded-2xl p-5 shadow-2xl">
+            <DialogHeader className="pr-8 text-left space-y-1">
+              <DialogTitle className="text-base sm:text-lg font-bold text-foreground dark:text-white truncate">
                 Miembros de {selectedProjectForMembers?.name} ({totalMembers})
               </DialogTitle>
-              <DialogDescription className="sr-only">Miembros asignados al proyecto</DialogDescription>
+              <DialogDescription className="text-xs text-muted-foreground dark:text-[#8F96AE]">
+                Personal y roles asignados a este proyecto
+              </DialogDescription>
             </DialogHeader>
-            <div className="py-2">
-              {paginatedMembers && paginatedMembers.length > 0 ? (
+
+            <div className="py-2 flex-1 overflow-y-auto min-h-0">
+              {loadingMembers ? (
+                <div className="py-8 flex flex-col items-center justify-center gap-2 text-muted-foreground dark:text-[#8F96AE]">
+                  <Loader2 className="w-6 h-6 animate-spin text-primary" />
+                  <span className="text-xs">Cargando miembros...</span>
+                </div>
+              ) : paginatedMembers && paginatedMembers.length > 0 ? (
                 <div className="space-y-2.5">
                   {paginatedMembers.map((m: any, idx: number) => {
                     const u = m.user;
+                    const fullName = u ? `${u.firstName || ""} ${u.lastName || ""}`.trim() : "";
+                    const displayName = fullName || u?.username || "Trabajador";
+                    const usernameDisplay = u?.username ? `@${u.username}` : (m.userId ? `@${m.userId}` : "");
+                    const roleLabel = m.role || u?.roleCode || "TEAM_MEMBER";
+
                     return (
                       <div
-                        key={idx}
-                        className="flex justify-between items-center p-3 bg-[#F8FAFC] dark:bg-[#181B2A] border border-border/80 dark:border-[#1E2335] rounded-xl"
+                        key={m.id || idx}
+                        className="flex items-center justify-between gap-3 p-3 bg-[#F8FAFC] dark:bg-[#181B2A] border border-border/80 dark:border-[#1E2335] rounded-xl overflow-hidden shadow-2xs"
                       >
-                        <div className="flex items-center gap-3">
-                          <div className="w-8 h-8 rounded-xl bg-avatar-gradient flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
-                            {((u?.firstName?.[0] || u?.username?.[0] || "C") as string).toUpperCase()}
-                          </div>
-                          <div>
-                            <p className="font-semibold text-foreground dark:text-white text-sm">
-                              {u ? `${u.firstName || ""} ${u.lastName || ""}`.trim() || u.username : "Trabajador"}
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <Avatar className="w-9 h-9 rounded-xl shrink-0">
+                            {u?.avatarUrl && <AvatarImage src={formatAvatarUrl(u.avatarUrl)} />}
+                            <AvatarFallback className="bg-gradient-to-tr from-[#5B8CFF] via-[#A855F7] to-[#22C3E6] text-white font-bold text-xs rounded-xl">
+                              {((displayName[0] || "U") as string).toUpperCase()}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="min-w-0 flex-1">
+                            <p className="font-semibold text-foreground dark:text-white text-xs sm:text-sm truncate">
+                              {displayName}
                             </p>
-                            <p className="text-xs text-muted-foreground dark:text-[#8F96AE]">
-                              @{u?.username || m.userId}
-                            </p>
+                            {usernameDisplay && (
+                              <p className="text-[11px] sm:text-xs text-muted-foreground dark:text-[#8F96AE] truncate">
+                                {usernameDisplay}
+                              </p>
+                            )}
                           </div>
                         </div>
-                        <span className="text-xs bg-primary/10 text-primary dark:bg-violet/15 dark:text-[#C084FC] px-2.5 py-0.5 rounded-full font-medium">
-                          {m.role || "TEAM_MEMBER"}
+                        <span className="shrink-0 text-[10px] sm:text-xs bg-primary/10 text-primary dark:bg-violet/15 dark:text-[#C084FC] px-2.5 py-1 rounded-full font-semibold">
+                          {roleLabel}
                         </span>
                       </div>
                     );
@@ -640,7 +678,7 @@ export function ProjectsManagementView({ context = "ADMIN" }: { context?: "ADMIN
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground dark:text-[#8F96AE] text-center py-4">
+                <p className="text-sm text-muted-foreground dark:text-[#8F96AE] text-center py-6">
                   No hay miembros asignados a este proyecto.
                 </p>
               )}
