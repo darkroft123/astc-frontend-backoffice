@@ -264,11 +264,11 @@ export default function HolidayListView() {
           </div>
 
           {/* Top Action: Nueva colección */}
-          <div className="flex items-center gap-2.5 w-full md:w-auto">
+          <div className="hidden md:flex items-center gap-2.5">
             <button
               type="button"
               onClick={() => setIsFormOpen(true)}
-              className="w-full md:w-auto h-11 px-5 rounded-xl text-white font-semibold text-xs shadow-md shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+              className="h-11 px-5 rounded-xl text-white font-semibold text-xs shadow-md shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
               style={{
                 background: "linear-gradient(90deg, #5B8CFF 0%, #A855F7 100%)",
               }}
@@ -369,8 +369,19 @@ export default function HolidayListView() {
               </div>
 
               {/* Action Toolbar on Right */}
-              <div className="flex items-center gap-2.5">
+              <div className="grid grid-cols-2 md:flex items-center gap-2.5 w-full md:w-auto">
                 <HolidayImporter onImport={handleImportHolidays} year={new Date().getFullYear()} />
+                <button
+                  type="button"
+                  onClick={() => setIsFormOpen(true)}
+                  className="md:hidden h-11 px-3 sm:px-4 rounded-xl text-white font-semibold text-xs shadow-md shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  style={{
+                    background: "linear-gradient(90deg, #5B8CFF 0%, #A855F7 100%)",
+                  }}
+                >
+                  <Plus className="w-4 h-4 stroke-[2.5]" />
+                  <span>Nueva colección</span>
+                </button>
               </div>
             </div>
           </div>
