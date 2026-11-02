@@ -206,9 +206,9 @@ export function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
                 onNavigate?.();
               }}
               className={cn(
-                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-sm font-normal transition-all group",
+                "flex items-center justify-between rounded-xl px-3.5 py-2.5 text-[15px] leading-[22.5px] transition-all group",
                 isActive
-                  ? "bg-primary/10 text-primary border border-primary/25 shadow-2xs font-semibold dark:bg-violet/10 dark:text-[#c084fc] dark:border-violet/20"
+                  ? "bg-primary/10 text-primary border border-primary/25 shadow-2xs font-bold dark:bg-violet/10 dark:text-[#c084fc] dark:border-violet/20"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted/60 dark:hover:bg-surface"
               )}
             >
