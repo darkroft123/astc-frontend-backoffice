@@ -406,20 +406,20 @@ export default function HolidayListView() {
                       onClick={() => toggleExpand(col.id)}
                       className="p-4 flex items-center justify-between gap-3 cursor-pointer select-none"
                     >
-                      <div className="flex items-center gap-3 min-w-0">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
                         <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-[#281B0C] border border-amber-200 dark:border-[#483713] flex items-center justify-center text-amber-600 dark:text-[#FBBF24] shrink-0">
                           <Layers className="w-5 h-5" />
                         </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2">
-                            <h4 className="text-sm font-bold text-foreground dark:text-white truncate">
+                        <div className="min-w-0 flex-1">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <h4 className="text-sm font-bold text-foreground dark:text-white break-words">
                               {col.name}
                             </h4>
                             <span className="font-mono text-[9px] font-bold px-2 py-0.5 rounded-md bg-[#FEF3C7] dark:bg-[#282114] text-[#D97706] dark:text-[#EAB308] border border-[#FDE68A] dark:border-[#483718] uppercase tracking-wider shrink-0">
                               GLOBAL
                             </span>
                           </div>
-                          <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-0.5 truncate">
+                          <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-0.5 leading-snug">
                             {col.items?.length || 0} feriados · Creado {format(new Date(col.createdAt || Date.now()), "dd MMM yyyy", { locale: es })}
                           </p>
                         </div>

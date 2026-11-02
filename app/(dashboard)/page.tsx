@@ -276,7 +276,7 @@ export default function AdminDashboardPage() {
                   Consolidado de roles, trabajadores y proyectos
                 </p>
               </div>
-              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 text-xs px-2.5 py-0.5 rounded-full font-medium">
+              <span className="bg-primary/10 text-primary border border-primary/20 dark:bg-violet/10 dark:text-[#7c9aff] dark:border-violet/20 text-xs px-3 py-1 rounded-full font-medium whitespace-nowrap shrink-0 ml-3">
                 {totalProjects} proyectos
               </span>
             </div>

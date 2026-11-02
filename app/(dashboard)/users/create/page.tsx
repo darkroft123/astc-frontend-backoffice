@@ -429,7 +429,7 @@ export default function CreateUserPage() {
     <div className="relative min-h-screen bg-transparent overflow-x-hidden pb-12 pt-1 md:pt-0">
       <div className="relative w-full max-w-7xl mx-auto space-y-6 z-10">
         {/* MOBILE TOP BAR (MATCHING SVG: <- Usuarios + Notification Bell) */}
-        <div className="flex md:hidden items-center justify-between pb-1">
+        <div className="flex md:hidden items-center justify-between pt-1 pb-2 px-0.5">
           <button
             type="button"
             onClick={() => router.push("/users")}
