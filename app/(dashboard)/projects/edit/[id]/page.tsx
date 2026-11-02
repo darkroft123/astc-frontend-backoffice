@@ -48,7 +48,7 @@ export default function EditProjectPage() {
   }
 
   return (
-    <div className="min-h-screen bg-muted/50 p-4">
+    <div className="min-h-screen bg-transparent">
       <ProjectForm
         mode="edit"
         initialData={project}
