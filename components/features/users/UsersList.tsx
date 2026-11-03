@@ -477,12 +477,12 @@ export default function UsersList() {
       </div>
 
       {/* FOOTER / PAGINATION */}
-      <div className="flex items-center justify-between px-1 pt-2">
+      <div className="relative flex items-center justify-between px-1 pt-2">
         <span className="text-xs text-muted-foreground dark:text-text-5 font-medium">
           {filteredUsers.length} usuarios
         </span>
 
-        <div className="flex items-center gap-2">
+        <div className="sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex items-center gap-2">
           <button
             type="button"
             className="h-8 w-8 rounded-lg border border-border bg-card dark:bg-inset dark:border-raised flex items-center justify-center text-muted-foreground dark:text-text-5 hover:text-foreground dark:hover:text-white disabled:opacity-30 transition-colors cursor-pointer disabled:cursor-not-allowed"

@@ -474,11 +474,11 @@ export default function NotificationsPage() {
 
         {/* 5. PAGINATION */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-between pt-4 text-xs text-muted-foreground dark:text-text-5">
+          <div className="relative flex items-center justify-between pt-4 text-xs text-muted-foreground dark:text-text-5">
             <span>
-              {filtered.length} notificaciones · Página {currentPage} de {totalPages}
+              {filtered.length} notificaciones
             </span>
-            <div className="flex items-center gap-2">
+            <div className="sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -488,6 +488,9 @@ export default function NotificationsPage() {
               >
                 Anterior
               </Button>
+              <span className="font-medium px-1">
+                Página {currentPage} de {totalPages}
+              </span>
               <Button
                 variant="outline"
                 size="sm"

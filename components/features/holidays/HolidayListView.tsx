@@ -617,7 +617,7 @@ export default function HolidayListView() {
 
           {/* 5. PAGINATION FOOTER */}
           {filteredCollections.length > 0 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 px-1 text-xs text-muted-foreground dark:text-[#8F96AE]">
+            <div className="relative flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 px-1 text-xs text-muted-foreground dark:text-[#8F96AE]">
               <div>
                 <span>
                   Mostrando{" "}
@@ -636,33 +636,28 @@ export default function HolidayListView() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <span>
-                  Página <strong className="text-foreground dark:text-white">{currentPage}</strong> de{" "}
-                  <strong className="text-foreground dark:text-white">{totalPages}</strong>
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    disabled={currentPage <= 1}
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
-                    title="Página anterior"
-                  >
-                    <ChevronLeft className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline text-xs">Anterior</span>
-                  </button>
-                  <button
-                    type="button"
-                    disabled={currentPage >= totalPages}
-                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                    className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
-                    title="Página siguiente"
-                  >
-                    <span className="hidden sm:inline text-xs">Siguiente</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+              <div className="sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={currentPage <= 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
+                  title="Página anterior"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline text-xs">Anterior</span>
+                </button>
+                <span className="font-medium px-1">Página <strong className="text-foreground dark:text-white">{currentPage}</strong> de <strong className="text-foreground dark:text-white">{totalPages}</strong></span>
+                <button
+                  type="button"
+                  disabled={currentPage >= totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
+                  title="Página siguiente"
+                >
+                  <span className="hidden sm:inline text-xs">Siguiente</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
           )}
