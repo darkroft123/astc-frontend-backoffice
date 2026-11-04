@@ -56,7 +56,7 @@ export function MobileHeader({ customSubtitle }: MobileHeaderProps) {
   if (hiddenByPage) return null;
 
   return (
-    <header className="md:hidden sticky top-0 z-30 w-full bg-white dark:bg-[#0C0E18] border-b border-border dark:border-[#1E2335] px-4 py-3 flex items-center justify-between gap-3 shadow-xs dark:shadow-md transition-colors">
+    <header className="md:hidden sticky top-0 z-30 w-full bg-white dark:bg-[#0C0E18] border-b border-border dark:border-[#1E2335] px-3.5 py-2.5 flex items-center justify-between gap-2.5 shadow-xs dark:shadow-md transition-colors">
       {/* Left: Hamburger & User Info */}
       <div className="flex items-center gap-3 min-w-0 flex-1">
         <button
@@ -64,24 +64,24 @@ export function MobileHeader({ customSubtitle }: MobileHeaderProps) {
           className="p-1 -ml-1 text-foreground dark:text-white hover:text-purple-600 dark:hover:text-purple-300 transition-colors shrink-0 cursor-pointer"
           aria-label="Abrir menú"
         >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 6H20" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M4 12H20" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-            <path d="M4 18H20" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
+            <line x1="4" y1="6.5" x2="19" y2="6.5" />
+            <line x1="4" y1="12" x2="19" y2="12" />
+            <line x1="4" y1="17.5" x2="13" y2="17.5" />
           </svg>
         </button>
 
         {/* User Avatar Squircle matching admin SVG */}
-        <Avatar className="w-11 h-11 rounded-2xl shrink-0 shadow-md">
+        <Avatar className="w-8 h-8 rounded-xl shrink-0 shadow-sm">
           {formatAvatarUrl(user?.avatarUrl) && (
             <AvatarImage
               src={formatAvatarUrl(user?.avatarUrl)!}
               alt={displayName}
-              className="object-cover rounded-2xl"
+              className="object-cover rounded-xl"
             />
           )}
           <AvatarFallback
-            className="rounded-2xl flex items-center justify-center font-bold text-white text-base"
+            className="rounded-xl flex items-center justify-center font-bold text-white text-xs"
             style={{
               background: "linear-gradient(135deg, #5B8CFF 0%, #A855F7 55%, #22C3E6 100%)",
               boxShadow: "0 4px 14px rgba(168, 85, 247, 0.3)",
@@ -93,17 +93,17 @@ export function MobileHeader({ customSubtitle }: MobileHeaderProps) {
 
         {/* Name and Email */}
         <div className="min-w-0 flex-1 overflow-hidden">
-          <p className="font-bold text-[15px] leading-tight text-foreground dark:text-white tracking-tight truncate">
+          <p className="font-bold text-sm leading-tight text-foreground dark:text-white tracking-tight truncate">
             {displayName || "admin"}
           </p>
-          <p className="text-xs text-muted-foreground dark:text-[#8F96AE] truncate mt-0.5 font-normal">
+          <p className="text-[11px] text-muted-foreground dark:text-[#8F96AE] truncate mt-0.5 font-normal">
             {user?.email || "admin@astc.com"}
           </p>
         </div>
       </div>
 
       {/* Right: Notification Bell */}
-      <div className="shrink-0 flex items-center">
+      <div className="shrink-0 flex items-center pr-0.5">
         <NotificationBell />
       </div>
     </header>

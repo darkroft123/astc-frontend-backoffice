@@ -21,7 +21,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { formatAvatarUrl } from "@/lib/avatar-url";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,6 +34,7 @@ import {
 } from "@/components/ui/select";
 import { TimezoneSelector } from "@/components/ui/timezone-selector";
 import { DEFAULT_TIMEZONE } from "@/lib/timezones";
+import { formatAvatarUrl, getInitials } from "@/lib/avatar-url";
 
 import {
   createProject,
@@ -116,6 +116,13 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
       }
     }
   }, [mode, initialData]);
+
+    useEffect(() => {
+    window.dispatchEvent(new CustomEvent("astc-hide-mobile-header", { detail: { hide: true } }));
+    return () => {
+      window.dispatchEvent(new CustomEvent("astc-hide-mobile-header", { detail: { hide: false } }));
+    };
+  }, []);
 
   function toggleMember(userId: string) {
     setSelectedMemberIds((prev) =>
@@ -209,26 +216,15 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
   );
 
   return (
-    <div className="relative min-h-screen bg-transparent overflow-hidden pb-12">
+    <div className="relative min-h-screen bg-transparent overflow-x-hidden pb-12 pt-3 md:pt-0">
       <div className="relative w-full max-w-7xl mx-auto space-y-6 z-10">
 
-        {/* MOBILE TOP BAR (MATCHING SVG: <- Proyectos + Notification Bell) */}
-        <div className="flex md:hidden items-center justify-between pb-1">
-          <button
-            type="button"
-            onClick={() => router.push("/projects")}
-            className="flex items-center gap-2 text-sm font-semibold text-foreground hover:opacity-80 transition-opacity cursor-pointer"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Proyectos</span>
-          </button>
-          <NotificationBell />
-        </div>
+        
 
         {/* SECTION HEADER */}
         <div className="flex items-start md:items-center justify-between gap-4">
           <div className="flex items-start md:items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#6366F1] to-[#A855F7] flex items-center justify-center text-white shadow-md shrink-0">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#5B8CFF] via-[#A855F7] to-[#22C3E6] flex items-center justify-center text-white shadow-md shrink-0">
               <FolderKanban className="w-6 h-6 shrink-0 aspect-square" strokeWidth={1.8} />
             </div>
             <div>
@@ -302,7 +298,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Detalles sobre el alcance o entregables..."
                     rows={3}
-                    className="w-full border border-border rounded-xl p-3 text-xs bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors"
+                    className="w-full border border-border rounded-xl p-3 text-xs bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary shadow-xs transition-colors resize-none"
                   />
                 </div>
 
@@ -380,7 +376,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
 
                 <div className="space-y-2 pt-1">
                   <Label className="text-xs font-medium text-foreground">Días de antigüedad para vacaciones</Label>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-nowrap overflow-x-auto pb-0.5">
                     <Input
                       type="number"
                       min={0}
@@ -388,11 +384,11 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                       onChange={(e) => setVacationEligibilityDays(Number(e.target.value) || 0)}
                       className="h-11 px-3.5 rounded-xl border border-border bg-background text-foreground text-xs w-24 shadow-xs"
                     />
-                    <div className="flex gap-2 flex-wrap">
+                    <div className="flex items-center gap-2 flex-nowrap shrink-0">
                       <button
                         type="button"
                         onClick={() => setVacationEligibilityDays(90)}
-                        className={`text-xs px-3 py-2 rounded-xl border transition-all cursor-pointer font-medium ${
+                        className={`text-xs px-3 py-2 rounded-xl border transition-all cursor-pointer font-medium whitespace-nowrap shrink-0 ${
                           vacationEligibilityDays === 90
                             ? "bg-primary/10 border-primary/40 text-primary font-semibold shadow-xs"
                             : "bg-background border-border text-muted-foreground hover:bg-muted"
@@ -403,7 +399,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                       <button
                         type="button"
                         onClick={() => setVacationEligibilityDays(180)}
-                        className={`text-xs px-3 py-2 rounded-xl border transition-all cursor-pointer font-medium ${
+                        className={`text-xs px-3 py-2 rounded-xl border transition-all cursor-pointer font-medium whitespace-nowrap shrink-0 ${
                           vacationEligibilityDays === 180
                             ? "bg-primary/10 border-primary/40 text-primary font-semibold shadow-xs"
                             : "bg-background border-border text-muted-foreground hover:bg-muted"
@@ -471,7 +467,9 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                     ) : (
                       paginatedPMs.map((u) => {
                         const isSelected = responsibleId === u.id;
-                        const initials = `${(u.firstName?.[0] || "").toUpperCase()}${(u.lastName?.[0] || "").toUpperCase()}` || "U";
+                        const mFullName = `${u.firstName || ""} ${u.lastName || ""}`.trim();
+                        const mDisplayName = mFullName || u.username || "Usuario";
+                        const initials = getInitials(mDisplayName);
                         return (
                           <label
                             key={u.id}
@@ -492,13 +490,15 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                                 {formatAvatarUrl(u.avatarUrl) && (
                                   <AvatarImage src={formatAvatarUrl(u.avatarUrl)!} alt={u.firstName || u.username} className="object-cover" />
                                 )}
-                                <AvatarFallback className="bg-gradient-to-tr from-purple-500 to-indigo-500 text-white font-bold text-[10px]">
+                                <AvatarFallback className="bg-gradient-to-tr from-[#5B8CFF] via-[#A855F7] to-[#22C3E6] text-white font-bold text-[10px]">
                                   {initials}
                                 </AvatarFallback>
                               </Avatar>
-                              <span className="font-medium text-foreground truncate">{u.firstName} {u.lastName}</span>
+                              <div className="flex items-center gap-2 min-w-0 flex-wrap">
+                                <span className="font-medium text-foreground text-xs">{mDisplayName}</span>
+                                <span className="text-[10px] text-muted-foreground font-mono">@{u.username}</span>
+                              </div>
                             </div>
-                            <span className="text-[10px] text-muted-foreground font-mono shrink-0 ml-2">@{u.username}</span>
                           </label>
                         );
                       })
@@ -591,7 +591,7 @@ export default function ProjectForm({ mode = "create", initialData }: any) {
                                 {formatAvatarUrl(u.avatarUrl) && (
                                   <AvatarImage src={formatAvatarUrl(u.avatarUrl)!} alt={u.firstName || u.username} className="object-cover" />
                                 )}
-                                <AvatarFallback className="bg-gradient-to-tr from-purple-500 to-indigo-500 text-white font-bold text-[10px]">
+                                <AvatarFallback className="bg-gradient-to-tr from-[#5B8CFF] via-[#A855F7] to-[#22C3E6] text-white font-bold text-[10px]">
                                   {initials}
                                 </AvatarFallback>
                               </Avatar>

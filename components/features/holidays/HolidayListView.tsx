@@ -263,12 +263,12 @@ export default function HolidayListView() {
             </p>
           </div>
 
-          {/* Desktop Right Header Actions */}
-          <div className="flex items-center gap-2.5">
+          {/* Top Action: Nueva colección */}
+          <div className="hidden md:flex items-center gap-2.5">
             <button
               type="button"
               onClick={() => setIsFormOpen(true)}
-              className="w-full md:w-auto h-11 px-5 rounded-2xl text-white font-semibold text-xs shadow-lg shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
+              className="h-11 px-5 rounded-xl text-white font-semibold text-xs shadow-md shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer shrink-0"
               style={{
                 background: "linear-gradient(90deg, #5B8CFF 0%, #A855F7 100%)",
               }}
@@ -280,7 +280,7 @@ export default function HolidayListView() {
         </div>
 
         {/* UNIFIED MAIN CONTAINER ("Un cuadro entero, no 3") */}
-        <div className="rounded-[22px] border border-border dark:border-[#1E2335] bg-card/60 dark:bg-[#0C0E18] p-4 sm:p-5 md:p-6 shadow-sm space-y-5 sm:space-y-6">
+        <div className="space-y-6">
           {/* 2. TOP 3 KPI METRIC CARDS */}
           <div className="grid grid-cols-3 gap-2.5 sm:gap-4 pt-1">
             {/* Card 1: Colecciones disponibles (Amber) */}
@@ -336,8 +336,7 @@ export default function HolidayListView() {
           </div>
 
           {/* Divider Line */}
-          <div className="border-t border-border/60 dark:border-[#1E2335] -mx-4 sm:-mx-5 md:-mx-6" />
-
+          
           {/* 3. FILTERS, SEARCH & ACTIONS BAR */}
           <div className="pt-1">
             <div className="flex flex-col md:flex-row items-stretch md:items-end justify-between gap-3.5">
@@ -370,8 +369,19 @@ export default function HolidayListView() {
               </div>
 
               {/* Action Toolbar on Right */}
-              <div className="flex items-center gap-2.5">
+              <div className="grid grid-cols-2 md:flex items-center gap-2.5 w-full md:w-auto">
                 <HolidayImporter onImport={handleImportHolidays} year={new Date().getFullYear()} />
+                <button
+                  type="button"
+                  onClick={() => setIsFormOpen(true)}
+                  className="md:hidden h-11 px-3 sm:px-4 rounded-xl text-white font-semibold text-xs shadow-md shadow-purple-500/25 hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  style={{
+                    background: "linear-gradient(90deg, #5B8CFF 0%, #A855F7 100%)",
+                  }}
+                >
+                  <Plus className="w-4 h-4 stroke-[2.5]" />
+                  <span>Nueva colección</span>
+                </button>
               </div>
             </div>
           </div>
@@ -402,66 +412,71 @@ export default function HolidayListView() {
                     }`}
                   >
                     {/* Header Row */}
-                    <div
-                      onClick={() => toggleExpand(col.id)}
-                      className="p-4 flex items-center justify-between gap-3 cursor-pointer select-none"
-                    >
-                      <div className="flex items-center gap-3 min-w-0">
-                        <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-[#281B0C] border border-amber-200 dark:border-[#483713] flex items-center justify-center text-amber-600 dark:text-[#FBBF24] shrink-0">
-                          <Layers className="w-5 h-5" />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2">
+                    <div className="p-4 flex flex-col">
+                      {/* Row 1: Icon + Title/Subtitle + Expand Chevron (Image 2) */}
+                      <div
+                        onClick={() => toggleExpand(col.id)}
+                        className="flex items-center justify-between gap-3 cursor-pointer select-none"
+                      >
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-[#281B0C] border border-amber-200 dark:border-[#483713] flex items-center justify-center text-amber-600 dark:text-[#FBBF24] shrink-0">
+                            <Layers className="w-5 h-5" />
+                          </div>
+                          <div className="min-w-0 flex-1">
                             <h4 className="text-sm font-bold text-foreground dark:text-white truncate">
                               {col.name}
                             </h4>
-                            <span className="font-mono text-[9px] font-bold px-2 py-0.5 rounded-md bg-[#FEF3C7] dark:bg-[#282114] text-[#D97706] dark:text-[#EAB308] border border-[#FDE68A] dark:border-[#483718] uppercase tracking-wider shrink-0">
-                              GLOBAL
-                            </span>
+                            <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-0.5 truncate leading-snug">
+                              {col.items?.length || 0} feriados · Creado {format(new Date(col.createdAt || Date.now()), "dd MMM yyyy", { locale: es })}
+                            </p>
                           </div>
-                          <p className="text-xs text-muted-foreground dark:text-[#8F96AE] mt-0.5 truncate">
-                            {col.items?.length || 0} feriados · Creado {format(new Date(col.createdAt || Date.now()), "dd MMM yyyy", { locale: es })}
-                          </p>
+                        </div>
+
+                        <div className="w-8 h-8 rounded-xl bg-background dark:bg-[#12141F] border border-border dark:border-[#1E2335] flex items-center justify-center text-muted-foreground shrink-0 transition-transform">
+                          {isExpanded ? (
+                            <ChevronUp className="w-4 h-4" />
+                          ) : (
+                            <ChevronRight className="w-4 h-4" />
+                          )}
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2 shrink-0">
-                        {isAssigned ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-[#0C251C] dark:text-[#34D399] dark:border-[#194B37]">
-                            <CheckCircle className="w-3.5 h-3.5" />
-                            <span className="hidden sm:inline">Asignado</span>
-                          </span>
-                        ) : (
+                      {/* Row 2: GLOBAL Tag on Left + Action Buttons on Right (Image 2) */}
+                      <div className="flex items-center justify-between pt-3 mt-3 border-t border-border/40 dark:border-[#1E2335]">
+                        <span className="font-mono text-[9px] font-bold px-2 py-0.5 rounded-md bg-[#FEF3C7] dark:bg-[#282114] text-[#D97706] dark:text-[#EAB308] border border-[#FDE68A] dark:border-[#483718] uppercase tracking-wider shrink-0">
+                          GLOBAL
+                        </span>
+
+                        <div className="flex items-center gap-2 shrink-0">
+                          {isAssigned ? (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-[#0C251C] dark:text-[#34D399] dark:border-[#194B37]">
+                              <CheckCircle className="w-3.5 h-3.5" />
+                              <span>Asignado</span>
+                            </span>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setPendingAssignment(col.id);
+                              }}
+                              className="px-3.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 dark:bg-[#20183A] dark:hover:bg-[#2B1F4F] dark:border-[#3E256C] dark:text-[#C4B5FD] text-xs font-semibold cursor-pointer transition-colors"
+                            >
+                              Asignar
+                            </button>
+                          )}
+
                           <button
                             type="button"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setPendingAssignment(col.id);
+                              handleDelete(col.id);
                             }}
-                            className="px-3.5 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-700 dark:bg-[#20183A] dark:hover:bg-[#2B1F4F] dark:border-[#3E256C] dark:text-[#C4B5FD] text-xs font-semibold cursor-pointer transition-colors"
+                            title="Eliminar colección"
+                            className="w-8 h-8 rounded-xl border border-red-500/20 dark:border-[#4D1C27] bg-red-500/10 dark:bg-[#24131A] hover:bg-red-500/20 dark:hover:bg-[#321721] flex items-center justify-center text-red-600 dark:text-[#EF4444] transition-colors cursor-pointer"
                           >
-                            Asignar
+                            <Trash2 className="w-3.5 h-3.5" />
                           </button>
-                        )}
-
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDelete(col.id);
-                          }}
-                          title="Eliminar colección"
-                          className="w-8 h-8 rounded-xl border border-red-500/20 dark:border-[#4D1C27] bg-red-500/10 dark:bg-[#24131A] hover:bg-red-500/20 dark:hover:bg-[#321721] flex items-center justify-center text-red-600 dark:text-[#EF4444] transition-colors cursor-pointer"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-
-                        <div className="w-8 h-8 rounded-xl bg-background dark:bg-[#12141F] border border-border dark:border-[#1E2335] flex items-center justify-center text-muted-foreground">
-                          {isExpanded ? (
-                            <ChevronUp className="w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4" />
-                          )}
                         </div>
                       </div>
                     </div>
@@ -602,7 +617,7 @@ export default function HolidayListView() {
 
           {/* 5. PAGINATION FOOTER */}
           {filteredCollections.length > 0 && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 px-1 text-xs text-muted-foreground dark:text-[#8F96AE]">
+            <div className="relative flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 px-1 text-xs text-muted-foreground dark:text-[#8F96AE]">
               <div>
                 <span>
                   Mostrando{" "}
@@ -621,33 +636,28 @@ export default function HolidayListView() {
                 </span>
               </div>
 
-              <div className="flex items-center gap-3">
-                <span>
-                  Página <strong className="text-foreground dark:text-white">{currentPage}</strong> de{" "}
-                  <strong className="text-foreground dark:text-white">{totalPages}</strong>
-                </span>
-                <div className="flex items-center gap-1.5">
-                  <button
-                    type="button"
-                    disabled={currentPage <= 1}
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
-                    title="Página anterior"
-                  >
-                    <ChevronLeft className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline text-xs">Anterior</span>
-                  </button>
-                  <button
-                    type="button"
-                    disabled={currentPage >= totalPages}
-                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                    className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
-                    title="Página siguiente"
-                  >
-                    <span className="hidden sm:inline text-xs">Siguiente</span>
-                    <ChevronRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+              <div className="sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex items-center gap-2">
+                <button
+                  type="button"
+                  disabled={currentPage <= 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
+                  title="Página anterior"
+                >
+                  <ChevronLeft className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline text-xs">Anterior</span>
+                </button>
+                <span className="font-medium px-1">Página <strong className="text-foreground dark:text-white">{currentPage}</strong> de <strong className="text-foreground dark:text-white">{totalPages}</strong></span>
+                <button
+                  type="button"
+                  disabled={currentPage >= totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="h-8 px-2.5 rounded-lg border border-border dark:border-[#22283D] bg-card dark:bg-[#141829] hover:bg-muted dark:hover:bg-[#1C2238] disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-1 text-foreground dark:text-white transition-colors cursor-pointer"
+                  title="Página siguiente"
+                >
+                  <span className="hidden sm:inline text-xs">Siguiente</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
               </div>
             </div>
           )}

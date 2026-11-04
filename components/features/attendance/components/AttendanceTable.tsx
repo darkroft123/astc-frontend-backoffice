@@ -366,7 +366,7 @@ export function AttendanceTable({
           {filteredRows.length} {filteredRows.length === 1 ? "registro" : "registros"}
         </span>
 
-        <div className="flex items-center gap-2">
+        <div className="sm:absolute sm:left-1/2 sm:-translate-x-1/2 flex items-center gap-2">
           <button
             disabled={page <= 1}
             onClick={() => setPage((p) => p - 1)}

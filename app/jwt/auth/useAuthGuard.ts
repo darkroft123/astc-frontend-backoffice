@@ -39,7 +39,7 @@ export function useAuthGuard(allowedRoles: string[]) {
       token,
       user,
       role,
-      checkingAuth: checking || !hydrated || !token,
+      checkingAuth: checking || !hydrated || !token || !user,
     }),
     [hydrated, token, user, role, checking]
   );
